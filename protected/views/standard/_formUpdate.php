@@ -32,7 +32,16 @@
                        );
         } 
         $typelist = CHtml::listData($data,'value','text');
-        echo $form->dropDownListRow($model, 'material_id', $typelist,array('class'=>'span5','empty'=>"")); 
+        echo $form->dropDownListRow($model, 'material_id', $typelist,array('class'=>'span5','empty'=>"",
+        						'ajax' => array(
+									'type'=>'POST', //request type
+									'data'=>array('material'=>'js:this.value'),
+									'url'=>CController::createUrl('./labtype/getLabtypeByMaterial'), 		
+									'update'=>'#labtype', //selector to update
+							
+								)
+
+        	)); 
 
 	 ?>
 
@@ -42,33 +51,49 @@
 
 
 <div id="errorHeader" name="errorHeader" class=""></div>
+
 <div class="row-fluid">
- 	<div class="span5">
+ 	<div class="span4">
 		<?php 
 		$labtypeModels = Yii::app()->db->createCommand()
                         ->select('id,name')
                         ->from('labtypes')
-                        ->where('material_id='.$model->)
+                        ->where('material_id='.$model->material_id)
                         ->order('id')
                         ->queryAll();
 		$data = array();
-        foreach ($materialModels as $key => $value) {
-          $data[] = array(
+
+        foreach ($labtypeModels as $key => $value) {
+          		$data[] = array(
                           'value'=>$value['id'],
                           'text'=>$value['name'],
                        );
         } 
+
         $typelist = CHtml::listData($data,'value','text');
 
-		echo CHtml::dropDownList('labtype','', array('empty'=>'กรุณาเลือกวิธีการทดสอบ'));
+		echo CHtml::dropDownList('labtype','',$typelist, array('class'=>'span12','empty'=>'เลือกวิธีการทดสอบ',
+								'ajax' => array(
+									'type'=>'POST', //request type
+									'data'=>array('labtype'=>'js:this.value'),
+									'url'=>CController::createUrl('./labtype/getLabtypeInput'), 		
+									'update'=>'#parameter', //selector to update
+							
+								)
 
-		echo CHtml::textField('name', '',array('class'=>'span12','placeholder'=>'ชื่อ'));        ?>
+			));
+
+		   ?>
+	</div>
+	<div class="span4">
+		<?php 
+		
+		echo CHtml::dropDownList('parameter','', array('empty'=>'เลือกพารามิเตอร์'),array('class'=>'span12','onchange' => ''));
+
+		 ?>
 	</div>
 	<div class="span2">
-		<?php echo CHtml::textField('column', '',array('class'=>'span12','placeholder'=>'คอลัมภ์')); ?>
-	</div>
-	<div class="span3">
-		<?php echo CHtml::textField('formula', '',array('class'=>'span12','placeholder'=>'สูตรคำนวณ')); ?>
+		<?php echo CHtml::textField('value', '',array('class'=>'span12','placeholder'=>'ค่า')); ?>
 	</div>
 	
 	<div class="span2">
@@ -79,32 +104,26 @@
 		    'type'=>'success',
 		    'label'=>'เพิ่มข้อมูล',
 		    'icon'=>'plus-sign',
-		    'url'=>array('createHeader'),
+		    'url'=>array('createParameter'),
 		    'htmlOptions'=>array('class'=>'span12','style'=>''),
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
-                	'data' => array('name' => 'js:$("#name").val()','column' => 'js:$("#column").val()','formula' => 'js:$("#formula").val()'),
+                	'data' => array('standard' => $model->id,'parameter' => 'js:$("#parameter").val()','value' => 'js:$("#value").val()'),
                 	'success' => 'function(msg){  
                 		
-                		
-                		error = "";
-                		var obj = $.parseJSON(msg);
-                		jQuery.each(obj, function(i, val) {
-						   error += val+"<br>";
-						});
+                		console.log(msg)
 
-						if(error!="")
+						if(msg!="")
                              $("#errorHeader").addClass( "alert alert-block alert-error" );
 						else	
 							 $("#errorHeader").removeClass( "alert alert-block alert-error" );
 						                		 
-                		$("#errorHeader").html(error); 
+                		$("#errorHeader").html(msg); 
                 		
-                		$("#formula").val("");
-                		$("#name").val("");
-                		$("#column").val(""); 
-                		$.fn.yiiGridView.update("labtype-input-header-grid"); 
+                		$("#value").val("");
+                		
+                		$.fn.yiiGridView.update("parameter-grid"); 
                 	}',
                 	'error'=>'function(html){  console.log("fail");  }'
                 ) 
@@ -121,33 +140,42 @@
 <?php
 
 		$this->widget('bootstrap.widgets.TbGridView',array(
-			'id'=>'labtype-input-header-grid',
+			'id'=>'parameter-grid',
 			'type'=>'bordered condensed',
 			'selectableRows' =>2,
 			'htmlOptions'=>array('style'=>'padding-top:5px'),
 		    'enablePagination' => true,
 		    'summaryText'=>'แสดงผล {start} ถึง {end} จากทั้งหมด {count} ข้อมูล',
 		    'template'=>"{items}<div class='row-fluid'><div class='span6'>{pager}</div><div class='span6'>{summary}</div></div>",
-			'dataProvider'=>StandardParameter::model()->searchByStandard('header'),
+			'dataProvider'=>StandardParameter::model()->searchByStandard($model->id),
 			
 			'columns'=>array(
 				
 				'name'=>array(
-					    'name' => 'labtype_input_id',					   
+					    'name' => 'labtype_input_id',	
+					    'value'=>'LabtypeInput::Model()->FindByPk($data->labtype_input_id)->name',						   
 						'headerHtmlOptions' => array('style' => 'width:40%;text-align:center;'),  	            	  	
 						'htmlOptions'=>array('style'=>'text-align:left'),
 						
 	  			),
 				'value'=>array(
 					    'name' => 'value',					   
-						'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
+						'headerHtmlOptions' => array('style' => 'width:25%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+					
+	  			),
+	  			'labtype'=>array(
+					    'name' => 'labtype_input_id',	
+					    'header'=>'วิธีการทดสอบ',	
+					    'value'=>'Labtype::Model()->FindByPk(LabtypeInput::Model()->FindByPk($data->labtype_input_id)->labtype_id)->name',			   
+						'headerHtmlOptions' => array('style' => 'width:30%;text-align:center;'),  	            	  	
 						'htmlOptions'=>array('style'=>'text-align:center'),
 					
 	  			),
 			
 				array(
 					'class'=>'bootstrap.widgets.TbButtonColumn',
-					'template' => '{delete}',
+					'template' => '{delete}'
 				),
 			),
 		)); 

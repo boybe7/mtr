@@ -31,11 +31,11 @@ class StandardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','createParameter'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','deleteStandard','deleteSelected'),
 				'expression'=>'Yii::app()->user->isSuperUser()',
 			),
 			array('deny',  // deny all users
@@ -78,6 +78,39 @@ class StandardController extends Controller
 		));
 	}
 
+	public function actionCreateParameter()
+	{
+		$model = new StandardParameter;
+
+
+		if(isset($_POST['parameter']) && isset($_POST['standard']))
+		{
+			
+			//get type
+			$modelParam = LabtypeInput::model()->findByPk($_POST['parameter']);
+
+			if($modelParam->type == 'header' &&  $_POST['value']=='')
+			{
+				echo ("ค่าพารามิเตอร์ไม่ควรว่าง");	
+			}
+			else{
+				$value = isset($_POST['value']) ? isset($_POST['value']) : '';
+			
+				$model->value = $value;
+				$model->labtype_input_id = $_POST['parameter'];
+				$model->standard_id = $_POST['standard'];
+
+				//echo CActiveForm::validate($model);
+
+				$model->save();
+			}
+
+		
+		}
+
+	
+	}
+
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -112,15 +145,48 @@ class StandardController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			//$this->loadModel($id)->delete();
+
+			$model=StandardParameter::model()->findByPk($id);
+			$model->delete();
+
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('update'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
+
+	public function actionDeleteStandard($id)
+	{
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$this->loadModel($id)->delete();
+
+
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}
+
+	public function actionDeleteSelected()
+    {
+    	$autoIdAll = $_POST['selectedID'];
+        if(count($autoIdAll)>0)
+        {
+            foreach($autoIdAll as $autoId)
+            {
+                $this->loadModel($autoId)->delete();
+            }
+        }    
+    }
+
 
 	/**
 	 * Lists all models.

@@ -31,7 +31,7 @@ class LabtypeController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','template','getLabtypeByMaterial','createHeader','createRaw','updateInput'),
+				'actions'=>array('create','update','template','getLabtypeByMaterial','getLabtypeInput','createHeader','createRaw','updateInput'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -66,6 +66,22 @@ class LabtypeController extends Controller
         
         echo CHtml::tag('option', array('value' => ''), CHtml::encode("กรุณาเลือกวิธีการทดสอบ"), true);
   
+        foreach ($data as $value => $name) {            
+            echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+        }
+	}
+
+	public function actionGetLabtypeInput()
+	{
+
+		$labtype = isset($_POST['labtype']) ? $_POST['labtype'] : '';
+ 
+        $data = LabtypeInput::model()->findAll('labtype_id=:id', array(':id' => $labtype));        
+               
+        $data = CHtml::listData($data, 'id', 'name');
+        
+       
+  		echo CHtml::tag('option', array('value' => ''), CHtml::encode("กรุณาเลือกพารามิเตอร์"), true);
         foreach ($data as $value => $name) {            
             echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
         }
