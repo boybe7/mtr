@@ -1,0 +1,75 @@
+2016/05/19 10:29:41 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'M' for key 'code_UNIQUE'. The SQL statement executed was: INSERT INTO `materials` (`name`, `code`) VALUES (:yp0, :yp1).
+in C:\xampp\htdocs\mtr\protected\controllers\MaterialController.php (84)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/05/19 10:29:41 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'M' for key 'code_UNIQUE'. The SQL statement executed was: INSERT INTO `materials` (`name`, `code`) VALUES (:yp0, :yp1)' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 C:\xampp\htdocs\mtr\protected\controllers\MaterialController.php(84): CActiveRecord->save()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): MaterialController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('material/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/material/create
+HTTP_REFERER=http://localhost/mtr/material/index
+---
+2016/05/19 10:29:45 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'M' for key 'code_UNIQUE'. The SQL statement executed was: INSERT INTO `materials` (`name`, `code`) VALUES (:yp0, :yp1).
+in C:\xampp\htdocs\mtr\protected\controllers\MaterialController.php (84)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/05/19 10:29:45 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'M' for key 'code_UNIQUE'. The SQL statement executed was: INSERT INTO `materials` (`name`, `code`) VALUES (:yp0, :yp1)' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 C:\xampp\htdocs\mtr\protected\controllers\MaterialController.php(84): CActiveRecord->save()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): MaterialController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('material/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/material/create
+HTTP_REFERER=http://localhost/mtr/material/index
+---
+2016/05/19 10:30:06 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'M' for key 'code_UNIQUE'. The SQL statement executed was: INSERT INTO `materials` (`name`, `code`) VALUES (:yp0, :yp1).
+in C:\xampp\htdocs\mtr\protected\controllers\MaterialController.php (84)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/05/19 10:30:06 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'M' for key 'code_UNIQUE'. The SQL statement executed was: INSERT INTO `materials` (`name`, `code`) VALUES (:yp0, :yp1)' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 C:\xampp\htdocs\mtr\protected\controllers\MaterialController.php(84): CActiveRecord->save()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): MaterialController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('material/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/material/create
+HTTP_REFERER=http://localhost/mtr/material/index
+---

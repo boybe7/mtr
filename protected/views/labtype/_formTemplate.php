@@ -63,6 +63,182 @@
 <!-- <h4>ชนิดวัสดุ : <?php    echo $modelMat->name;?></h4>
 <h4>วิธีการทดสอบ : <?php echo $modelLab->name;?></h4>
  -->
+
+<h5>Raw</h5>
+<div id="errorRaw" name="errorRaw" class=""></div>
+<div class="row-fluid">
+ 	<div class="span5">
+		<?php 
+		        echo CHtml::textField('nameRaw', '',array('class'=>'span12','placeholder'=>'ชื่อ'));
+
+        ?>
+	</div>
+	<div class="span2">
+		<?php echo CHtml::textField('columnRaw', '',array('class'=>'span12','placeholder'=>'คอลัมภ์')); ?>
+	</div>
+	
+	<div class="span3">
+		<?php echo CHtml::textField('formula', '',array('class'=>'span12','placeholder'=>'สูตรคำนวณ')); ?>
+	</div>
+	<div class="span2">
+		<?php
+		$this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'ajaxLink',
+		    
+		    'type'=>'success',
+		    'label'=>'เพิ่มข้อมูล',
+		    'icon'=>'plus-sign',
+		    'url'=>array('createRaw'),
+		    'htmlOptions'=>array('class'=>'span12','style'=>''),
+		    'ajaxOptions'=>array(
+		    	    
+		     	    'type' => 'POST',
+                	'data' => array('labtype'=>$id,'name' => 'js:$("#nameRaw").val()','column' => 'js:$("#columnRaw").val()','formula' => 'js:$("#formula").val()'),
+                	'success' => 'function(msg){ 
+
+                		error = "";
+                		var obj = $.parseJSON(msg);
+                		
+                		jQuery.each(obj, function(i, val) {
+                		  
+						     error += val+"<br>";
+						
+						});
+
+
+
+						if(error!="")
+                             $("#errorRaw").addClass( "alert alert-block alert-error" );
+						else	
+							 $("#errorRaw").removeClass( "alert alert-block alert-error" );
+						                		 
+                		$("#errorRaw").html(error); 	
+
+                		$("#columnRaw").val("");
+                		$("#nameRaw").val(""); 
+                		$.fn.yiiGridView.update("labtype-input-raw-grid"); }'
+                ) 
+		)); 
+
+
+
+
+		?>
+	</div>	
+	
+</div>
+
+<?php
+
+		$this->widget('bootstrap.widgets.TbGridView',array(
+			'id'=>'labtype-input-raw-grid',
+			'type'=>'bordered condensed',
+			'selectableRows' =>2,
+			'htmlOptions'=>array('style'=>'padding-top:5px'),
+		    'enablePagination' => true,
+		    'summaryText'=>'แสดงผล {start} ถึง {end} จากทั้งหมด {count} ข้อมูล',
+		    'template'=>"{items}<div class='row-fluid'><div class='span6'>{pager}</div><div class='span6'>{summary}</div></div>",
+			'dataProvider'=>$model->searchByType('raw',$id),
+			// 'filter'=>$model,
+			'columns'=>array(
+				
+				'name'=>array(
+					    'name' => 'name',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'name',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("name"))),
+						'headerHtmlOptions' => array('style' => 'width:40%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:left'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-raw-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+				'col_index'=>array(
+					    'name' => 'col_index',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'col_index',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("col_index"))),
+						'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-raw-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+				'formula'=>array(
+					    'name' => 'formula',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-raw-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+				
+				array(
+					'class'=>'bootstrap.widgets.TbButtonColumn',
+					'template' => '{delete}',
+				),
+			),
+		)); 
+
+	 ?>
+
+ <hr>
+
+
 <h5>Header</h5>
 <div id="errorHeader" name="errorHeader" class=""></div>
 <div class="row-fluid">
@@ -247,148 +423,6 @@
 
 	 ?>
 
-
-<hr>
-<h5>Raw</h5>
-<div id="errorRaw" name="errorRaw" class=""></div>
-<div class="row-fluid">
- 	<div class="span5">
-		<?php 
-		        echo CHtml::textField('nameRaw', '',array('class'=>'span12','placeholder'=>'ชื่อ'));
-
-        ?>
-	</div>
-	<div class="span2">
-		<?php echo CHtml::textField('columnRaw', '',array('class'=>'span12','placeholder'=>'คอลัมภ์')); ?>
-	</div>
-	
-	
-	<div class="span2">
-		<?php
-		$this->widget('bootstrap.widgets.TbButton', array(
-		    'buttonType'=>'ajaxLink',
-		    
-		    'type'=>'success',
-		    'label'=>'เพิ่มข้อมูล',
-		    'icon'=>'plus-sign',
-		    'url'=>array('createRaw'),
-		    'htmlOptions'=>array('class'=>'span12','style'=>''),
-		    'ajaxOptions'=>array(
-		    	    
-		     	    'type' => 'POST',
-                	'data' => array('labtype'=>$id,'name' => 'js:$("#nameRaw").val()','column' => 'js:$("#columnRaw").val()'),
-                	'success' => 'function(msg){ 
-
-                		error = "";
-                		var obj = $.parseJSON(msg);
-                		
-                		jQuery.each(obj, function(i, val) {
-                		  
-						     error += val+"<br>";
-						
-						});
-
-
-
-						if(error!="")
-                             $("#errorRaw").addClass( "alert alert-block alert-error" );
-						else	
-							 $("#errorRaw").removeClass( "alert alert-block alert-error" );
-						                		 
-                		$("#errorRaw").html(error); 	
-
-                		$("#columnRaw").val("");$("#name").val(""); $.fn.yiiGridView.update("labtype-input-raw-grid"); }'
-                ) 
-		)); 
-
-
-
-
-		?>
-	</div>	
-	
-</div>
-
-<?php
-
-		$this->widget('bootstrap.widgets.TbGridView',array(
-			'id'=>'labtype-input-raw-grid',
-			'type'=>'bordered condensed',
-			'selectableRows' =>2,
-			'htmlOptions'=>array('style'=>'padding-top:5px'),
-		    'enablePagination' => true,
-		    'summaryText'=>'แสดงผล {start} ถึง {end} จากทั้งหมด {count} ข้อมูล',
-		    'template'=>"{items}<div class='row-fluid'><div class='span6'>{pager}</div><div class='span6'>{summary}</div></div>",
-			'dataProvider'=>$model->searchByType('raw',$id),
-			// 'filter'=>$model,
-			'columns'=>array(
-				
-				'name'=>array(
-					    'name' => 'name',
-					    'class' => 'editable.EditableColumn',
-					    // 'filter'=>CHtml::activeTextField($model, 'name',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("name"))),
-						'headerHtmlOptions' => array('style' => 'width:60%;text-align:center;'),  	            	  	
-						'htmlOptions'=>array('style'=>'text-align:left'),
-						'editable' => array( //editable section
-							//'apply' => '$data->user_status != 4', //can't edit deleted users
-							//'text'=>'Click',
-							//'tooltip'=>'Click',
-							'title'=>'แก้ไข',
-							'url' => $this->createUrl('updateInput'),
-							'success' => 'js: function(response, newValue) {
-											if(!response.success) return response.msg;
-
-												$("#labtype-input-raw-grid").yiiGridView("update",{});
-											}',
-							'options' => array(
-								'ajaxOptions' => array('dataType' => 'json'),
-
-							), 
-							'placement' => 'right',
-							'display' => 'js: function() {
-						
-							    
-							}'
-						)
-	  			),
-				'col_index'=>array(
-					    'name' => 'col_index',
-					    'class' => 'editable.EditableColumn',
-					    // 'filter'=>CHtml::activeTextField($model, 'col_index',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("col_index"))),
-						'headerHtmlOptions' => array('style' => 'text-align:center;'),  	            	  	
-						'htmlOptions'=>array('style'=>'text-align:center'),
-						'editable' => array( //editable section
-							//'apply' => '$data->user_status != 4', //can't edit deleted users
-							//'text'=>'Click',
-							//'tooltip'=>'Click',
-							'title'=>'แก้ไข',
-							'url' => $this->createUrl('updateInput'),
-							'success' => 'js: function(response, newValue) {
-											if(!response.success) return response.msg;
-
-												$("#labtype-input-raw-grid").yiiGridView("update",{});
-											}',
-							'options' => array(
-								'ajaxOptions' => array('dataType' => 'json'),
-
-							), 
-							'placement' => 'right',
-							'display' => 'js: function() {
-						
-							    
-							}'
-						)
-	  			),
-		
-				
-				array(
-					'class'=>'bootstrap.widgets.TbButtonColumn',
-					'template' => '{delete}',
-				),
-			),
-		)); 
-
-	 ?>
 	
 	<div class="form-actions">
 		<div class="pull-right">
@@ -412,5 +446,7 @@
 		?>
 		</div>
 	</div>
+
+
 
 <?php $this->endWidget(); ?>

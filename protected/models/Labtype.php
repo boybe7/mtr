@@ -57,7 +57,7 @@ class Labtype extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'ชื่อวิธีการทดสอบ',
-			'cost' => 'ราคา',
+			'cost' => 'อัตราค่าทดสอบ',
 			'is_chemical_test' => 'ทดสอบด้านเคมี', //(0=No, 1=Yes)
 			'material_id' => 'ชนิดวัสดุ',
 		);

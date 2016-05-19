@@ -34,7 +34,7 @@ class LabtypeInput extends CActiveRecord
 			array('name, formula', 'length', 'max'=>200),
 			array('col_index', 'length', 'max'=>2),
 			array('type', 'length', 'max'=>10),
-			array('col_index+type+labtype_id', 'application.extensions.uniqueMultiColumnValidator'),
+			array('col_index+labtype_id', 'application.extensions.uniqueMultiColumnValidator'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name, col_index, formula, type, labtype_id', 'safe', 'on'=>'search'),
