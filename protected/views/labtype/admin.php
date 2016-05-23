@@ -94,13 +94,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
 	  	            	  		)   	  		
         ),
-		'name'=>array(
-			    'name' => 'name',
-			    'filter'=>CHtml::activeTextField($model, 'name',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("name"))),
-				'headerHtmlOptions' => array('style' => 'width:45%;text-align:center;'),  	            	  	
-				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
-	  	),
-		'material_id'=>array(
+        'material_id'=>array(
 			    'name' => 'material_id',
 			    //'value' => array($model,'getName'),
 			    'value'=>'Material::Model()->FindByPk($data->material_id)->name',
@@ -108,6 +102,13 @@ $this->widget('bootstrap.widgets.TbButton', array(
 				'headerHtmlOptions' => array('style' => 'width:25%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:center;')
 	  	),
+		'name'=>array(
+			    'name' => 'name',
+			    'filter'=>CHtml::activeTextField($model, 'name',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("name"))),
+				'headerHtmlOptions' => array('style' => 'width:45%;text-align:center;'),  	            	  	
+				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
+	  	),
+		
 		'cost'=>array(
 			    'name' => 'cost',
 			    'filter'=>CHtml::activeTextField($model, 'cost',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("cost"))),

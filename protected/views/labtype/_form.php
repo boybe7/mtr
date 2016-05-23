@@ -12,8 +12,6 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'name',array('class'=>'span8','maxlength'=>200)); ?>
-
 	<?php
 
 	 	//echo $form->textFieldRow($model,'material_id',array('class'=>'span5')); 
@@ -34,9 +32,14 @@
                        );
         } 
         $typelist = CHtml::listData($data,'value','text');
-        echo $form->dropDownListRow($model, 'material_id', $typelist,array('class'=>'span5','empty'=>"")); 
+        echo $form->dropDownListRow($model, 'material_id', $typelist,array('class'=>'span3','empty'=>"")); 
 
 	 ?>
+
+	<?php echo $form->textFieldRow($model,'name',array('class'=>'span8','maxlength'=>200)); ?>
+	<?php echo $form->textFieldRow($model,'name_report',array('class'=>'span8','maxlength'=>200)); ?>
+
+	
 
 	<?php echo $form->textFieldRow($model,'cost',array('class'=>'span3','maxlength'=>10)); ?>
 

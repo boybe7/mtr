@@ -1,23 +1,22 @@
 <?php
 
 /**
- * This is the model class for table "labtypes".
+ * This is the model class for table "vendors".
  *
- * The followings are the available columns in table 'labtypes':
+ * The followings are the available columns in table 'vendors':
  * @property integer $id
  * @property string $name
- * @property string $cost
- * @property integer $is_chemical_test
- * @property integer $material_id
+ * @property string $address
+ * @property integer $type
  */
-class Labtype extends CActiveRecord
+class Vendor extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'labtypes';
+		return 'vendors';
 	}
 
 	/**
@@ -28,13 +27,13 @@ class Labtype extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, cost, is_chemical_test, material_id,name_report', 'required'),
-			array('is_chemical_test, material_id', 'numerical', 'integerOnly'=>true),
+			array('name, type', 'required'),
+			array('type', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>200),
-			array('cost', 'length', 'max'=>10),
+			array('address', 'length', 'max'=>500),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, cost, is_chemical_test, material_id', 'safe', 'on'=>'search'),
+			array('id, name, address, type', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,11 +55,9 @@ class Labtype extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'ชื่อวิธีการทดสอบ',
-			'cost' => 'อัตราค่าทดสอบ',
-			'is_chemical_test' => 'ทดสอบด้านเคมี', //(0=No, 1=Yes)
-			'material_id' => 'ชนิดวัสดุ',
-			'name_report'=>'ชื่อปรากฎในรายงาน'
+			'name' => 'ชื่อเจ้าของตัวอย่าง/ผู้ผลิต',
+			'address' => 'ที่อยู่',
+			'type' => 'ประเภท (1=เจ้าของตัวอย่าง,2=ผู้ผลิต)',
 		);
 	}
 
@@ -84,23 +81,19 @@ class Labtype extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('cost',$this->cost,true);
-		$criteria->compare('is_chemical_test',$this->is_chemical_test);
-		$criteria->compare('material_id',$this->material_id);
-		$criteria->compare('name_report',$this->name_report,true);
-
+		$criteria->compare('address',$this->address,true);
+		$criteria->compare('type',$this->type);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
 
-	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Labtype the static model class
+	 * @return Vendor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

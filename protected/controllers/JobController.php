@@ -1,6 +1,6 @@
 <?php
 
-class StandardController extends Controller
+class JobController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -31,12 +31,12 @@ class StandardController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','createParameter'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','deleteStandard','deleteSelected'),
-				'expression'=>'Yii::app()->user->isSuperUser()',
+				'actions'=>array('admin','delete'),
+				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -61,55 +61,21 @@ class StandardController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Standard;
+		$model=new Job;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Standard']))
+		if(isset($_POST['Job']))
 		{
-			$model->attributes=$_POST['Standard'];
+			$model->attributes=$_POST['Job'];
 			if($model->save())
-				$this->redirect(array('index'));
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
 		));
-	}
-
-	public function actionCreateParameter()
-	{
-		$model = new StandardParameter;
-
-
-		if(isset($_POST['parameter']) && isset($_POST['standard']))
-		{
-			
-			//get type
-			$modelParam = LabtypeInput::model()->findByPk($_POST['parameter']);
-
-			if($modelParam->type == 'header' &&  $_POST['value']=='')
-			{
-				echo ("ค่าพารามิเตอร์ไม่ควรว่าง");	
-			}
-			else{
-				$value = isset($_POST['value']) ? $_POST['value'] : '';
-			
-				$model->value = $value;
-				$model->labtype_input_id = $_POST['parameter'];
-				$model->standard_id = $_POST['standard'];
-
-				//echo CActiveForm::validate($model);
-				//var_dump($model);
-
-				$model->save();
-			}
-
-		
-		}
-
-	
 	}
 
 	/**
@@ -124,11 +90,11 @@ class StandardController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Standard']))
+		if(isset($_POST['Job']))
 		{
-			$model->attributes=$_POST['Standard'];
+			$model->attributes=$_POST['Job'];
 			if($model->save())
-				$this->redirect(array('index'));
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
@@ -146,68 +112,24 @@ class StandardController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			//$this->loadModel($id)->delete();
-
-			$model=StandardParameter::model()->findByPk($id);
-			$model->delete();
-
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('update'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
-
-	public function actionDeleteStandard($id)
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 
-
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-
-	public function actionDeleteSelected()
-    {
-    	$autoIdAll = $_POST['selectedID'];
-        if(count($autoIdAll)>0)
-        {
-            foreach($autoIdAll as $autoId)
-            {
-                
-                $models=StandardParameter::model()->findAll('standard_id=:id', array(':id' => $autoId));   
-                foreach ($models as $key => $m) {
-                	 $m->delete();
-                }
-			   
-
-                $this->loadModel($autoId)->delete();
-            }
-        }    
-    }
-
 
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-		$model=new Standard('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Standard']))
-			$model->attributes=$_GET['Standard'];
-
-		$this->render('admin',array(
-			'model'=>$model,
+		$dataProvider=new CActiveDataProvider('Job');
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -216,10 +138,10 @@ class StandardController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Standard('search');
+		$model=new Job('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Standard']))
-			$model->attributes=$_GET['Standard'];
+		if(isset($_GET['Job']))
+			$model->attributes=$_GET['Job'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -233,7 +155,7 @@ class StandardController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Standard::model()->findByPk($id);
+		$model=Job::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -245,7 +167,7 @@ class StandardController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='standard-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='job-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
