@@ -1,23 +1,29 @@
 <?php
 
 /**
- * This is the model class for table "labtypes".
+ * This is the model class for table "request_standards".
  *
- * The followings are the available columns in table 'labtypes':
+ * The followings are the available columns in table 'request_standards':
  * @property integer $id
- * @property string $name
+ * @property string $material_detail
+ * @property string $lot_no
+ * @property integer $lot_num
+ * @property integer $sampling_num
  * @property string $cost
- * @property integer $is_chemical_test
- * @property integer $material_id
+ * @property integer $labtype_id
+ * @property integer $request_id
+ * @property integer $standard_id
+ * @property string $conclude
+ * @property string $note
  */
-class Labtype extends CActiveRecord
+class RequestStandard extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'labtypes';
+		return 'request_standards';
 	}
 
 	/**
@@ -28,13 +34,15 @@ class Labtype extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, cost, is_chemical_test, material_id,name_report', 'required'),
-			array('is_chemical_test, material_id', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>200),
+			array('lot_no, lot_num, sampling_num, cost, labtype_id, request_id, standard_id', 'required'),
+			array('lot_num, sampling_num, labtype_id, request_id, standard_id', 'numerical', 'integerOnly'=>true),
+			array('material_detail', 'length', 'max'=>200),
+			array('lot_no, conclude', 'length', 'max'=>500),
 			array('cost', 'length', 'max'=>10),
+			array('note', 'length', 'max'=>400),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, cost, is_chemical_test, material_id', 'safe', 'on'=>'search'),
+			array('id, material_detail, lot_no, lot_num, sampling_num, cost, labtype_id, request_id, standard_id, conclude, note', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,12 +64,16 @@ class Labtype extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'ชื่อวิธีการทดสอบ',
-			'cost' => 'อัตราค่าทดสอบ',
-			'is_chemical_test' => 'ทดสอบด้านเคมี', //(0=No, 1=Yes)
-			'material_id' => 'ชนิดวัสดุ',
-			'name_report'=>'ชื่อปรากฎในรายงาน',
-		
+			'material_detail' => 'รายละเอียดวัสดุ',
+			'lot_no' => 'เลข lot',
+			'lot_num' => 'จำนวน lot',
+			'sampling_num' => 'จำนวนตัวอย่าง',
+			'cost' => 'ค่าธรรมเนียมทดสอบ',
+			'labtype_id' => 'Labtype',
+			'request_id' => 'Request',
+			'standard_id' => 'Standard',
+			'conclude' => 'สรุปผลการทดสอบ',
+			'note' => 'หมายเหตุ',
 		);
 	}
 
@@ -84,24 +96,27 @@ class Labtype extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('material_detail',$this->material_detail,true);
+		$criteria->compare('lot_no',$this->lot_no,true);
+		$criteria->compare('lot_num',$this->lot_num);
+		$criteria->compare('sampling_num',$this->sampling_num);
 		$criteria->compare('cost',$this->cost,true);
-		$criteria->compare('is_chemical_test',$this->is_chemical_test);
-		$criteria->compare('material_id',$this->material_id);
-		$criteria->compare('name_report',$this->name_report,true);
-
+		$criteria->compare('labtype_id',$this->labtype_id);
+		$criteria->compare('request_id',$this->request_id);
+		$criteria->compare('standard_id',$this->standard_id);
+		$criteria->compare('conclude',$this->conclude,true);
+		$criteria->compare('note',$this->note,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
 
-	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Labtype the static model class
+	 * @return RequestStandard the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
