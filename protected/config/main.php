@@ -21,7 +21,10 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'editable.*' //easy include of editable classes [x-editable extension]
+		'editable.*', //easy include of editable classes [x-editable extension]
+		
+		'ext.KeenActiveDataProvider', // Alias to right location.
+        'ext.RelatedSearchBehavior',  // Alias to right location.
 	),
     'language'=>'th', 
 	'modules'=>array(

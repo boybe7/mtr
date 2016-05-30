@@ -34,7 +34,7 @@ class Labtype extends CActiveRecord
 			array('cost', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, cost, is_chemical_test, material_id', 'safe', 'on'=>'search'),
+			array('id, name, cost, is_chemical_test, material_id,matname', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,8 +46,23 @@ class Labtype extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'material'=>array(self::BELONGS_TO, 'Material', 'material_id'),
+			'req_std'=>array(self::HAS_MANY, 'RequestStandard', 'labtype_id'),
 		);
 	}
+
+	public function behaviors() {
+	    return array(
+	            // Add RelatedSearchBehavior
+	            'relatedsearch'=>array(
+	                    'class'=>'RelatedSearchBehavior',
+	                    'relations'=>array(
+	                            'matname'=>'material.name',
+	                    ),
+	            ),
+	    );
+	}
+
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -91,9 +106,14 @@ class Labtype extends CActiveRecord
 		$criteria->compare('name_report',$this->name_report,true);
 
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
+		// return new CActiveDataProvider($this, array(
+		// 	'criteria'=>$criteria,
+		// ));
+
+		return $this->relatedsearch(
+		        $criteria,
+		        array()
+		);
 	}
 
 	

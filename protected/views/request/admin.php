@@ -116,11 +116,11 @@ $this->widget('bootstrap.widgets.TbButton', array(
 				'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),
-	  	'lot'=>array(
-			    'header' => 'Lot no.',
+	  	'sampling'=>array(
+			    'header' => 'หมายเลขตัวอย่าง',
 			     'type'=>'raw',
 			    'value'=>array($this,'getLot'), 
-			    'filter'=>CHtml::activeTextField($model, 'owner_id',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("owner_id"))),
+			    'filter'=>CHtml::activeTextField($model, 'sampling_no',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("sampling_no"))),
 				'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),
@@ -144,19 +144,8 @@ $this->widget('bootstrap.widgets.TbButton', array(
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),
-			'template' => '{update}{template}',
-			'buttons'=>array
-            (
-                'template' => array
-                (
-                    'label'=>'template',
-                    'icon'=>'plus',
-                    'url'=>'Yii::app()->createUrl("labtype/template", array("id"=>$data->id))',
-                    'options'=>array(
-                        'class'=>'',
-                    ),
-                ),
-            )    
+			'template' => '{update}',
+			
 		),
 	),
 )); ?>

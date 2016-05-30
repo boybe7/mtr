@@ -19,7 +19,7 @@ class Request extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-    public $material;
+    public $material,$sampling_no;
 
 
 	public function tableName()
@@ -41,7 +41,7 @@ class Request extends CActiveRecord
 			array('detail', 'length', 'max'=>500),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, request_no, date, vendor_id, owner_id, job_id, contract_id, detail, status,material', 'safe', 'on'=>'search'),
+			array('id, request_no, date, vendor_id, owner_id, job_id, contract_id, detail, status,material,sampling_no', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,6 +53,9 @@ class Request extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'req_std'=>array(self::HAS_MANY, 'RequestStandard', 'request_id'),
+			'vendor'=>array(self::BELONGS_TO, 'Vendor', 'vendor_id'),
+			'owner'=>array(self::BELONGS_TO, 'Vendor', 'owner_id'),
 		);
 	}
 
@@ -76,6 +79,34 @@ class Request extends CActiveRecord
 		);
 	}
 
+	function behaviors() {
+	    return array(
+	        'relatedsearch'=>array(
+	             'class'=>'RelatedSearchBehavior',
+	             'relations'=>array(
+	                  'material'=>'req_std.labtype.material.name',
+	                  'owner_id'=>'owner.name'
+	             ),
+	         ),
+	    );
+	}
+
+	/**
+	 * Not used in this example, but the next code allows autoscopes provided
+	 * by RelatedSearchBehavior.
+	 */
+	public function __call($name,$parameters) {
+	    try {
+	        return parent::__call($name,$parameters);
+	    } catch (CException $e) {
+	        if(preg_match('/'.Yii::t('yii',quotemeta(Yii::t('yii','{class} and its behaviors do not have a method or closure named "{name}".')),array('{class}'=>'.*','{name}'=>'.*')).'/',$e->getMessage())) {
+	            return $this->autoScope($name, $parameters);
+	        } else {
+	            throw $e;
+	        }
+	    }
+	}
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *
@@ -93,20 +124,39 @@ class Request extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		$alias=$this->getTableAlias(true,false).".";
+		//$criteria->with = array("req_std");
+		//$criteria->together = true;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('request_no',$this->request_no,true);
-		$criteria->compare('date',$this->date,true);
-		$criteria->compare('vendor_id',$this->vendor_id);
-		$criteria->compare('owner_id',$this->owner_id);
-		$criteria->compare('job_id',$this->job_id);
-		$criteria->compare('contract_id',$this->contract_id);
-		$criteria->compare('detail',$this->detail,true);
-		$criteria->compare('status',$this->status);
+		//$criteria->compare($alias.'id',$this->id);
+		$criteria->compare($alias.'request_no',$this->request_no,true);
+		$criteria->compare($alias.'date',$this->date,true);
+		$criteria->compare($alias.'vendor_id',$this->vendor_id);
+		$criteria->compare($alias.'owner_id',$this->owner_id);
+		$criteria->compare($alias.'job_id',$this->job_id);
+		$criteria->compare($alias.'contract_id',$this->contract_id);
+		$criteria->compare($alias.'detail',$this->detail,true);
+		$criteria->compare($alias.'status',$this->status);
 
-		return new CActiveDataProvider($this, array(
+		//$criteria->compare( 'req_std.labtype_id.', $this->material, true );
+
+		
+
+		/*return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-		));
+			'sort'=>array(
+			    'defaultOrder'=>'date ASC',
+			  )
+		));*/
+
+		return $this->relatedSearch(
+	            $criteria,
+	            array(
+	                    'pagination'=>array('pageSize'=>10),
+	            	
+	            )
+	
+	    );
 	}
 
 	/**

@@ -54,6 +54,8 @@ class RequestStandard extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'request'=>array(self::BELONGS_TO, 'Request', 'request_id'),
+			'labtype'=>array(self::BELONGS_TO, 'Labtype', 'labtype_id'),
 		);
 	}
 
@@ -94,6 +96,9 @@ class RequestStandard extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		//$criteria->with = array("labtype");
+		//$criteria->together = true;
+
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('material_detail',$this->material_detail,true);
@@ -107,9 +112,14 @@ class RequestStandard extends CActiveRecord
 		$criteria->compare('conclude',$this->conclude,true);
 		$criteria->compare('note',$this->note,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
+		//return new CActiveDataProvider($this, array(
+		//	'criteria'=>$criteria,
+		//));
+
+		return $this->relatedsearch(
+		        $criteria,
+		        array()
+		);
 	}
 
 	/**
