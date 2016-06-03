@@ -38,10 +38,10 @@ class Request extends CActiveRecord
 			array('request_no, date, owner_id, job_id, status', 'required'),
 			array('vendor_id, owner_id, job_id, contract_id, status', 'numerical', 'integerOnly'=>true),
 			array('request_no', 'length', 'max'=>15),
-			array('detail', 'length', 'max'=>500),
+			array('detail,note', 'length', 'max'=>500),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, request_no, date, vendor_id, owner_id, job_id, contract_id, detail, status,material,sampling_no', 'safe', 'on'=>'search'),
+			array('id, request_no, date, vendor_id, owner_id, job_id, contract_id, detail, status,material,sampling_no,note', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,8 +73,10 @@ class Request extends CActiveRecord
 			'job_id' => 'ประเภทงาน',
 			'contract_id' => 'สัญญา',
 			'detail' => 'เรื่อง/งาน',
-			'status' => 'Status',
-			'material'=>'ชนิดวัสดุ'
+			'status' => 'สถานะ',
+			'material'=>'ชนิดวัสดุ',
+			'sampling_no'=>'หมายเลขตัวอย่าง',
+			'note'=>'สาเหตุ'
 
 		);
 	}
@@ -85,7 +87,9 @@ class Request extends CActiveRecord
 	             'class'=>'RelatedSearchBehavior',
 	             'relations'=>array(
 	                  'material'=>'req_std.labtype.material.name',
-	                  'owner_id'=>'owner.name'
+	                  'owner_id'=>'owner.name',
+	                  'sampling_no'=>'req_std.sampling_no',
+
 	             ),
 	         ),
 	    );
@@ -138,6 +142,7 @@ class Request extends CActiveRecord
 		$criteria->compare($alias.'detail',$this->detail,true);
 		$criteria->compare($alias.'status',$this->status);
 
+
 		//$criteria->compare( 'req_std.labtype_id.', $this->material, true );
 
 		
@@ -169,4 +174,50 @@ class Request extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function beforeSave()
+    {
+      
+
+        $str_date = explode("/", $this->date);
+        if(count($str_date)>1)
+        	$this->date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+     
+        
+        return parent::beforeSave();
+   }
+
+	protected function afterSave(){
+            parent::afterSave();
+            $str_date = explode("-", $this->date);
+            if(count($str_date)>1)
+            	$this->date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+         
+    }
+
+	public function beforeFind()
+    {
+          
+
+        $str_date = explode("/", $this->date);
+        if(count($str_date)>1)
+        	$this->date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+    
+        return parent::beforeSave();
+   }
+
+	protected function afterFind(){
+            parent::afterFind();
+    
+
+            $str_date = explode("-", $this->date);
+            if($this->date=='0000-00-00')
+            	$this->date = '';
+            else if(count($str_date)>1)
+            	$this->date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+      
+           
+     }
 }

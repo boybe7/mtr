@@ -34,7 +34,7 @@ class RequestStandard extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('lot_no, lot_num, sampling_num, cost, labtype_id, request_id, standard_id', 'required'),
+			array('lot_no, lot_num, sampling_num, cost, labtype_id, request_id, standard_id,sampling_no', 'required'),
 			array('lot_num, sampling_num, labtype_id, request_id, standard_id', 'numerical', 'integerOnly'=>true),
 			array('material_detail', 'length', 'max'=>200),
 			array('lot_no, conclude', 'length', 'max'=>500),
@@ -42,7 +42,7 @@ class RequestStandard extends CActiveRecord
 			array('note', 'length', 'max'=>400),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, material_detail, lot_no, lot_num, sampling_num, cost, labtype_id, request_id, standard_id, conclude, note', 'safe', 'on'=>'search'),
+			array('id, material_detail, lot_no, lot_num, sampling_num, cost, labtype_id, request_id, standard_id, conclude, note,sampling_no', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,11 +71,12 @@ class RequestStandard extends CActiveRecord
 			'lot_num' => 'จำนวน lot',
 			'sampling_num' => 'จำนวนตัวอย่าง',
 			'cost' => 'ค่าธรรมเนียมทดสอบ',
-			'labtype_id' => 'Labtype',
+			'labtype_id' => 'วิธีการทดสอบ',
 			'request_id' => 'Request',
-			'standard_id' => 'Standard',
+			'standard_id' => 'มาตรฐานการทดสอบ',
 			'conclude' => 'สรุปผลการทดสอบ',
 			'note' => 'หมายเหตุ',
+			'sampling_no'=>'หมายเลขตัวอย่าง'
 		);
 	}
 
@@ -111,6 +112,7 @@ class RequestStandard extends CActiveRecord
 		$criteria->compare('standard_id',$this->standard_id);
 		$criteria->compare('conclude',$this->conclude,true);
 		$criteria->compare('note',$this->note,true);
+		$criteria->compare('sampling_no',$this->sampling_no,true);
 
 		//return new CActiveDataProvider($this, array(
 		//	'criteria'=>$criteria,

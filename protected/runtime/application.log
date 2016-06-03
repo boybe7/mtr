@@ -3067,3 +3067,397 @@ Stack trace:
 REQUEST_URI=/mtr/request/index?Request%5Brequest_no%5D=&Request%5Bowner_id%5D=&Request%5Bmaterial%5D=xxx&Request%5Bsampling_no%5D=&Request%5Bdate%5D=&Request%5Bjob_id%5D=&Request_page=1&ajax=labtype-grid
 HTTP_REFERER=http://localhost/mtr/request/index
 ---
+2016/06/01 11:34:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "GetContract" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('GetContract')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GetContract')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('Contract/GetCon...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/Contract/GetContract?term=x
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/01 11:34:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "GetContract" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('GetContract')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GetContract')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('Contract/GetCon...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/Contract/GetContract?term=
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/01 11:35:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "GetContract" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('GetContract')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GetContract')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('Contract/GetCon...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/Contract/GetContract?term=c
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/01 11:35:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "GetContract" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('GetContract')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GetContract')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('Contract/GetCon...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/Contract/GetContract?term=
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/01 13:21:00 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'คุณไม่ได้รับอนุญาตให้ดำเนินการดังกล่าว' in C:\xampp\htdocs\mtr\framework\web\auth\CAccessControlFilter.php:182
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\auth\CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), '\xE0\xB8\x84\xE0\xB8\xB8\xE0\xB8\x93\xE0\xB9\x84\xE0\xB8\xA1...')
+#1 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GetContract')
+#8 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('Contract/GetCon...')
+#9 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/mtr/Contract/GetContract?term=
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/01 14:47:14 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1/2559' for key 'request_no_UNIQUE'. The SQL statement executed was: INSERT INTO `requests` (`request_no`, `date`, `job_id`, `vendor_id`, `owner_id`, `detail`, `contract_id`, `status`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7).
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (132)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/01 14:47:14 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1/2559' for key 'request_no_UNIQUE'. The SQL statement executed was: INSERT INTO `requests` (`request_no`, `date`, `job_id`, `vendor_id`, `owner_id`, `detail`, `contract_id`, `status`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7)' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(132): CActiveRecord->save()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/create
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/01 15:38:12 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mtr.c_cer_doc' doesn't exist. The SQL statement executed was: SELECT max(strSplit(running_no,"/", 1)) as max
+FROM `c_cer_doc`
+WHERE strSplit(running_no,"/", 2)=2559.
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (55)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (167)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/01 15:38:12 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mtr.c_cer_doc' doesn't exist. The SQL statement executed was: SELECT max(strSplit(running_no,"/", 1)) as max
+FROM `c_cer_doc`
+WHERE strSplit(running_no,"/", 2)=2559' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(55): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(167): RequestController->gentRequstNo()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/create
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/06/01 15:38:47 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mtr.request' doesn't exist. The SQL statement executed was: SELECT max(strSplit(request_no,"/", 1)) as max
+FROM `request`
+WHERE strSplit(request_no,"/", 2)=2559.
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (55)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (167)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/01 15:38:47 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mtr.request' doesn't exist. The SQL statement executed was: SELECT max(strSplit(request_no,"/", 1)) as max
+FROM `request`
+WHERE strSplit(request_no,"/", 2)=2559' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(55): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(167): RequestController->gentRequstNo()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/create
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/06/01 15:39:02 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42000]: Syntax error or access violation: 1305 FUNCTION mtr.strSplit does not exist. The SQL statement executed was: SELECT max(strSplit(request_no,"/", 1)) as max
+FROM `requests`
+WHERE strSplit(request_no,"/", 2)=2559.
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (55)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (167)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/01 15:39:02 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42000]: Syntax error or access violation: 1305 FUNCTION mtr.strSplit does not exist. The SQL statement executed was: SELECT max(strSplit(request_no,"/", 1)) as max
+FROM `requests`
+WHERE strSplit(request_no,"/", 2)=2559' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(55): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(167): RequestController->gentRequstNo()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/create')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/create
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/06/03 14:12:46 [error] [php] Undefined variable: con (C:\xampp\htdocs\mtr\protected\views\request\_form.php:197)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): RequestController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#3 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(782): RequestController->renderPartial()
+#6 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(181): RequestController->render()
+#7 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#12 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#13 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#15 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#16 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#17 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#18 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#19 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/create
+in C:\xampp\htdocs\mtr\protected\views\request\_form.php (197)
+in C:\xampp\htdocs\mtr\protected\views\request\create.php (11)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (181)
+2016/06/03 14:18:52 [error] [php] Undefined variable: index (C:\xampp\htdocs\mtr\protected\views\request\_form.php:198)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): RequestController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#3 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(782): RequestController->renderPartial()
+#6 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(182): RequestController->render()
+#7 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#12 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#13 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#15 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#16 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#17 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#18 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#19 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/create
+in C:\xampp\htdocs\mtr\protected\views\request\_form.php (198)
+in C:\xampp\htdocs\mtr\protected\views\request\create.php (11)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (182)
+2016/06/03 14:19:10 [error] [exception.CException] exception 'CException' with message 'RequestController ไม่สามารถค้นหา "//requeststandard/_form" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:878
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\views\request\_form.php(200): CController->renderPartial('//requeststanda...', Array)
+#1 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#4 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): CController->renderPartial('_form', Array)
+#5 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(782): CController->renderPartial('create', Array, true)
+#9 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(182): CController->render('create', Array)
+#10 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#14 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#15 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#16 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#17 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#18 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#19 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#20 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/create')
+#21 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#22 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#23 {main}
+REQUEST_URI=/mtr/request/create
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/06/03 14:21:13 [error] [php] Undefined variable: title (C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php:7)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\views\request\_form.php(200): RequestController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#3 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#5 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): RequestController->renderPartial()
+#6 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#7 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#9 C:\xampp\htdocs\mtr\framework\web\CController.php(782): RequestController->renderPartial()
+#10 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(182): RequestController->render()
+#11 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#13 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#14 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#15 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#16 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#17 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#18 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#19 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#20 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#21 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#22 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#23 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/create
+in C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php (7)
+in C:\xampp\htdocs\mtr\protected\views\request\_form.php (200)
+in C:\xampp\htdocs\mtr\protected\views\request\create.php (11)
+2016/06/03 14:25:05 [error] [exception.CException] exception 'CException' with message 'คุณสมบัติ "RequestStandard.material_id" ยังไม่ถูกกำหนด' in C:\xampp\htdocs\mtr\framework\base\CComponent.php:130
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(145): CComponent->__get('material_id')
+#1 C:\xampp\htdocs\mtr\framework\web\helpers\CHtml.php(2529): CActiveRecord->__get('material_id')
+#2 C:\xampp\htdocs\mtr\framework\web\helpers\CHtml.php(1802): CHtml::resolveValue(Object(RequestStandard), 'material_id')
+#3 C:\xampp\htdocs\mtr\framework\web\widgets\CActiveForm.php(847): CHtml::activeDropDownList(Object(RequestStandard), 'material_id', Array, Array)
+#4 C:\xampp\htdocs\mtr\protected\extensions\bootstrap\widgets\input\TbInputVertical.php(126): CActiveForm->dropDownList(Object(RequestStandard), 'material_id', Array, Array)
+#5 C:\xampp\htdocs\mtr\protected\extensions\bootstrap\widgets\input\TbInput.php(202): TbInputVertical->dropDownList()
+#6 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(173): TbInput->run()
+#7 C:\xampp\htdocs\mtr\protected\extensions\bootstrap\widgets\TbActiveForm.php(548): CBaseController->widget('bootstrap.widge...', Array)
+#8 C:\xampp\htdocs\mtr\protected\extensions\bootstrap\widgets\TbActiveForm.php(160): TbActiveForm->inputRow('dropdownlist', Object(RequestStandard), 'material_id', Array, Array)
+#9 C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php(34): TbActiveForm->dropDownListRow(Object(RequestStandard), 'material_id', Array, Array)
+#10 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#11 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#13 C:\xampp\htdocs\mtr\protected\views\request\_form.php(200): CController->renderPartial('//requeststanda...', Array)
+#14 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#15 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#16 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#17 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): CController->renderPartial('_form', Array)
+#18 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#19 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#20 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#21 C:\xampp\htdocs\mtr\framework\web\CController.php(782): CController->renderPartial('create', Array, true)
+#22 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(182): CController->render('create', Array)
+#23 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#24 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#25 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#26 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#27 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#28 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#29 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#30 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#31 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#32 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('create')
+#33 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/create')
+#34 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#35 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#36 {main}
+REQUEST_URI=/mtr/request/create
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/06/03 15:43:55 [error] [php] Invalid argument supplied for foreach() (C:\xampp\htdocs\mtr\framework\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#1 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#2 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#3 C:\xampp\htdocs\mtr\protected\views\request\_form.php(201): RequestController->renderPartial()
+#4 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#5 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#7 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): RequestController->renderPartial()
+#8 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#9 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(782): RequestController->renderPartial()
+#12 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(182): RequestController->render()
+#13 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#14 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#15 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#16 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#17 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#18 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#19 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#20 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#21 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#22 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#23 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#24 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#25 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/create
+in C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php (31)
+in C:\xampp\htdocs\mtr\protected\views\request\_form.php (201)
+in C:\xampp\htdocs\mtr\protected\views\request\create.php (11)
+2016/06/03 16:04:28 [error] [php] Object of class RequestStandard could not be converted to string (C:\xampp\htdocs\mtr\framework\web\helpers\CHtml.php:2155)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php(41): dropDownList()
+#1 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#4 C:\xampp\htdocs\mtr\protected\views\request\_form.php(201): RequestController->renderPartial()
+#5 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#6 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#8 C:\xampp\htdocs\mtr\protected\views\request\create.php(11): RequestController->renderPartial()
+#9 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#10 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(782): RequestController->renderPartial()
+#13 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(182): RequestController->render()
+#14 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionCreate()
+#15 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#16 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#17 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#18 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#19 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#20 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#21 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#22 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#23 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#24 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#25 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#26 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/create
+in C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php (41)
+in C:\xampp\htdocs\mtr\protected\views\request\_form.php (201)
+in C:\xampp\htdocs\mtr\protected\views\request\create.php (11)

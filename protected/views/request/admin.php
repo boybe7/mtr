@@ -10,20 +10,22 @@ $this->breadcrumbs=array(
 
 
 <?php
-// $this->widget('bootstrap.widgets.TbButton', array(
-//     'buttonType'=>'link',
-    
-//     'type'=>'primary',
-//     'label'=>'template',
-//     'icon'=>'plus-sign',
-//     //'url'=>array('template'),
-//     'htmlOptions'=>array('class'=>'pull-right','style'=>'margin:0px 10px 0px 10px;',
-//     		'onclick'=>'
-//     			console.log($.fn.yiiGridView.getSelection("labtype-grid"))
 
-//     		'
-//     	),
-// )); 
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType'=>'link',
+    
+    'type'=>'warning',
+    'label'=>'ปิดงาน',
+    'icon'=>'ok-sign',
+    //'url'=>array('template'),
+    'htmlOptions'=>array('class'=>'pull-right','style'=>'margin:0px 10px 0px 10px;',
+    		'onclick'=>'
+    			console.log($.fn.yiiGridView.getSelection("labtype-grid"))
+
+    		'
+    	),
+)); 
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'buttonType'=>'link',
@@ -117,24 +119,26 @@ $this->widget('bootstrap.widgets.TbButton', array(
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),
 	  	'sampling'=>array(
-			    'header' => 'หมายเลขตัวอย่าง',
-			     'type'=>'raw',
-			    'value'=>array($this,'getLot'), 
+			    //'header' => 'หมายเลขตัวอย่าง',
+	  		    'name'=>'sampling_no',
+			    'type'=>'raw',
+			    'value'=>array($this,'getSampling'), 
 			    'filter'=>CHtml::activeTextField($model, 'sampling_no',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("sampling_no"))),
-				'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
+				'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),
 		'date'=>array(
 			    'name' => 'date',
 			    //'value'=>'date("dd/mm/yyyy", $data->date)',
 			    'filter'=>CHtml::activeTextField($model, 'date',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("date"))),
-				'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+				'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:center;')
 	  	),
 	  	'job_id'=>array(
 			    'name' => 'job_id',
 			    'value'=>'Job::Model()->FindByPk($data->job_id)->name',
-			    'filter'=>CHtml::activeTextField($model, 'job_id',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("job_id"))),
+			    'filter' => CHtml::listData(Job::model()->findAll(), 'id', 'name'),
+			    //'filter'=>CHtml::activeTextField($model, 'job_id',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("job_id"))),
 				'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),

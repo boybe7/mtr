@@ -44,6 +44,44 @@ class RequestController extends Controller
 		);
 	}
 
+	public function gentRequstNo()
+	{
+			//auto gen running_no
+			 $fiscalyear = date("Y")+543;//date("n")<10 ? date("Y")+543 : date("Y")+544;
+			 $m = Yii::app()->db->createCommand()
+	                    ->select('max(strSplit(request_no,"/", 1)) as max')
+	                    ->from('requests') 
+	                    ->where('strSplit(request_no,"/", 2)='.$fiscalyear)                                    
+	                    ->queryAll();
+
+			
+
+			if(empty($m[0]['max']))
+            {
+                
+                $runNo = "1/".$fiscalyear;  
+            }
+            else
+            {
+               
+                $num = intval($m[0]['max'])+1;
+               /* if(strlen($num)==4)
+                    $num = "0".$num;
+                else if(strlen($num)==3)
+                    $num = "00".$num;
+                else if(strlen($num)==2)
+                    $num = "000".$num;
+                else if(strlen($num)==1)
+                    $num = "0000".$num;*/
+
+                $runNo = $num."/".$fiscalyear;
+            }
+
+
+            return $runNo;               
+            				
+	}
+
 
 	public function getMaterial($data,$row)
 	{
@@ -83,6 +121,24 @@ class RequestController extends Controller
 				return $lot;
 	}
 
+	public function getSampling($data,$row)
+	{
+		
+				$models=RequestStandard::model()->findAll('request_id=:id', array(':id' => $data->id));   
+                
+                $lot = "";
+                foreach ($models as $key => $m) {
+                	
+                	$lot .= $m->sampling_no."<hr>";
+                }
+
+                $lot = substr($lot, 0,strlen($lot)-4);
+			   
+
+				return $lot;
+	}
+
+
 
 
 	/**
@@ -104,9 +160,15 @@ class RequestController extends Controller
 	public function actionCreate()
 	{
 		$model=new Request;
+		$modelReqSD = new RequestStandard;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
+
+		$model->request_no = $this->gentRequstNo();
+
+		$model->date = date("d")."/".date("m")."/".(date("Y")+543);//"11/07/2526";
+      
 
 		if(isset($_POST['Request']))
 		{
@@ -116,7 +178,7 @@ class RequestController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model,'modelReqSD'=>$modelReqSD
 		));
 	}
 

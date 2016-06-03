@@ -27,7 +27,7 @@ class ContractController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','GetContract'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -54,6 +54,27 @@ class ContractController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+
+	public function actionGetContract(){
+            $request=trim($_GET['term']);
+                    
+            $models=Contract::model()->findAll(array("condition"=>"name like '%$request%' ",'order'=>'name'));
+            $data=array();
+            foreach($models as $model){
+                //$data[]["label"]=$get->v_name;
+                //$data[]["id"]=$get->v_id;
+                $data[] = array(
+                        'id'=>$model['id'],
+                        'label'=>$model['name'],
+                        'vid'=>$model['id'],
+                );
+
+            }
+            $this->layout='empty';
+            echo json_encode($data);
+        
+    }
+
 
 	/**
 	 * Creates a new model.
