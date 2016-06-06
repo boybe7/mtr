@@ -27,7 +27,7 @@ class StandardController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','GetStandardByLabtype','getCost'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -42,6 +42,38 @@ class StandardController extends Controller
 				'users'=>array('*'),
 			),
 		);
+	}
+
+	
+	public function actionGetCost()
+	{
+		$labtype = isset($_POST['labtype']) ? $_POST['labtype'] : '';
+		$sampling = isset($_POST['sampling']) ? $_POST['sampling'] : 0;
+		$modelLabtype = Labtype::model()->findByPk($labtype);
+		$cost = !empty($modelLabtype) ? $modelLabtype->cost * $sampling : 0;
+
+		echo number_format($cost,0);
+	}
+
+
+	public function actionGetStandardByLabtype()
+	{
+
+		$labtype = isset($_POST['labtype']) ? $_POST['labtype'] : '';
+
+		$modelLabtype = Labtype::model()->findByPk($labtype);
+
+		$material = !empty($modelLabtype) ? $modelLabtype->material_id : 0;
+ 
+        $data = Standard::model()->findAll('material_id=:id', array(':id' => $material));        
+               
+        $data = CHtml::listData($data, 'id', 'name');
+        
+        echo CHtml::tag('option', array('value' => ''), CHtml::encode("กรุณาเลือกมาตรฐานการทดสอบ"), true);
+  
+        foreach ($data as $value => $name) {            
+            echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+        }
 	}
 
 	/**

@@ -3461,3 +3461,93 @@ REQUEST_URI=/mtr/request/create
 in C:\xampp\htdocs\mtr\protected\views\requeststandard\_form.php (41)
 in C:\xampp\htdocs\mtr\protected\views\request\_form.php (201)
 in C:\xampp\htdocs\mtr\protected\views\request\create.php (11)
+2016/06/06 11:20:54 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'labtype_id' in 'where clause'. The SQL statement executed was: SELECT * FROM `standards` `t` WHERE labtype_id=:id.
+in C:\xampp\htdocs\mtr\protected\controllers\StandardController.php (54)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/06 11:20:54 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'labtype_id' in 'where clause'. The SQL statement executed was: SELECT * FROM `standards` `t` WHERE labtype_id=:id' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 C:\xampp\htdocs\mtr\protected\controllers\StandardController.php(54): CActiveRecord->findAll('labtype_id=:id', Array)
+#4 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): StandardController->actionGetStandardByLabtype()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('getStandardByLa...')
+#14 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('standard/getSta...')
+#15 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/mtr/standard/getStandardByLabtype
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/06 11:23:41 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'labtype_id' in 'where clause'. The SQL statement executed was: SELECT * FROM `standards` `t` WHERE labtype_id=:id.
+in C:\xampp\htdocs\mtr\protected\controllers\StandardController.php (54)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/06 11:23:41 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'labtype_id' in 'where clause'. The SQL statement executed was: SELECT * FROM `standards` `t` WHERE labtype_id=:id' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 C:\xampp\htdocs\mtr\protected\controllers\StandardController.php(54): CActiveRecord->findAll('labtype_id=:id', Array)
+#4 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): StandardController->actionGetStandardByLabtype()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('getStandardByLa...')
+#14 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('standard/getSta...')
+#15 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/mtr/standard/getStandardByLabtype
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/06 15:03:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "javascript/jui/jquery-ui-i18n.min.js".' in C:\xampp\htdocs\mtr\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('javascript/jui/...')
+#1 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/mtr/javascript/jui/jquery-ui-i18n.min.js
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/06 15:07:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "javascript/jquery.tagsinput.css".' in C:\xampp\htdocs\mtr\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('javascript/jque...')
+#1 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/mtr/javascript/jquery.tagsinput.css
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/06 15:07:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "javascript/jquery.tagsinput.js".' in C:\xampp\htdocs\mtr\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('javascript/jque...')
+#1 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/mtr/javascript/jquery.tagsinput.js
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/06 16:58:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "getCost" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('getCost')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('getCost')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('standard/getCos...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/standard/getCost
+HTTP_REFERER=http://localhost/mtr/request/create
+---

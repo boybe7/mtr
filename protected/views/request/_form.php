@@ -129,7 +129,7 @@
 
 	
 	<?php echo $form->textAreaRow($model,'detail',array('class'=>'span8','maxlength'=>500)); ?>
-	<?php echo $form->textAreaRow($model,'note',array('class'=>'span8','maxlength'=>500)); ?>
+	
 
 	<?php 
 						echo $form->hiddenField($model,'contract_id');
@@ -182,6 +182,8 @@
 
 	?>
 
+	<?php echo $form->textAreaRow($model,'note',array('class'=>'span8','maxlength'=>500)); ?>
+
 	
 	<?php
 			if(Yii::app()->user->isExecutive() || Yii::app()->user->isAdmin())
@@ -200,6 +202,10 @@
                   'display' => 'block'
               ));    
     ?>
+
+
+
+
 	<div class="form-actions">
 		<div class="pull-right">
 		<?php

@@ -67,7 +67,7 @@ class RequestStandard extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'material_detail' => 'รายละเอียดวัสดุ',
-			'lot_no' => 'เลข lot',
+			'lot_no' => 'เลข lot (ใส่ "," คั่นระหว่าง lot)',
 			'lot_num' => 'จำนวน lot',
 			'sampling_num' => 'จำนวนตัวอย่าง',
 			'cost' => 'ค่าธรรมเนียมทดสอบ',
