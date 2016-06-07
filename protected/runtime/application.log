@@ -3551,3 +3551,69 @@ Stack trace:
 REQUEST_URI=/mtr/standard/getCost
 HTTP_REFERER=http://localhost/mtr/request/create
 ---
+2016/06/07 09:16:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "mtr" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('mtr')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('mtr')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/mtr/sta...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/request/mtr/standard/getNumberOfLot
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/07 09:17:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "getNumberOfLot" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('getNumberOfLot')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('getNumberOfLot')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/getNumb...')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/request/getNumberOfLot
+HTTP_REFERER=http://localhost/mtr/request/create
+---
+2016/06/07 14:08:36 [error] [php] Undefined index: sampling_no (C:\xampp\htdocs\mtr\protected\controllers\RequestController.php:159)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#1 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#2 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#3 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#4 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/gentSamplingNo
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (159)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/07 18:21:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sampling_no_fix' in 'field list'. The SQL statement executed was: SELECT max(sampling_no_fix) as max
+FROM `temp_sampling_no`
+WHERE sampling_no LIKE "%SP%".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (154)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/07 18:21:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sampling_no_fix' in 'field list'. The SQL statement executed was: SELECT max(sampling_no_fix) as max
+FROM `temp_sampling_no`
+WHERE sampling_no LIKE "%SP%"' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(154): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionGentSamplingNo()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('gentSamplingNo')
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/gentSam...')
+#13 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#14 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/mtr/request/gentSamplingNo
+HTTP_REFERER=http://localhost/mtr/request/create
+---

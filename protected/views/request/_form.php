@@ -15,6 +15,159 @@
 </script>
 
 
+
+<script type="text/javascript">
+     
+    function gentSamplingNo(index) {
+
+    		if($( "#RequestStandard_"+index+"_sampling_num" ).val()!="" && $( "#material_id" ).val()!="")
+		   	{	
+				   	$.ajax({
+				        url: './gentSamplingNo',
+				        type: 'post',
+				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(), 'material':$( "#material_id_"+index ).val()},
+				        success:function(response){
+
+				        		$( "#RequestStandard_"+index+"_sampling_no" ).val(response)
+				        }
+				    });
+			}	   	
+    }
+
+    function gentSamplingNo2(index) {
+
+    		if($( "#RequestStandard_"+index+"_sampling_num" ).val()!="" && $( "#material_id" ).val()!="")
+		   	{	
+				   	$.ajax({
+				        url: './gentSamplingNo',
+				        type: 'post',
+				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(), 'material':$( "#material_id_"+index ).val()},
+				        success:function(response){
+
+				        		$( "#RequestStandard_"+index+"_sampling_no" ).val(response)
+				        }
+				    });
+			}	   	
+    }
+
+    function calCost(index){
+
+    		$.ajax({
+    			url: '../standard/getCost', 
+				type:'POST', //request type
+				data:{'labtype':$('#RequestStandard_'+index+'_labtype_id').val(),'sampling':$('#RequestStandard_'+index+'_sampling_num').val()},
+				success:function(res){
+
+
+					$("#RequestStandard_"+index+"_cost").val(res)
+				}
+			});
+    }
+	
+	$(function(){
+        //autocomplete search on focus    	
+	  // $('#RequestStandard_1_lot_no,#RequestStandard_2_lot_no').tagsInput();
+	   
+	    $( "#RequestStandard_1_lot_no" ).focusout(function() {
+	    	
+		   
+		   	str = $(this).val().split(",");
+		   	lotnum = str.length ;
+		   	if(str[str.length-1]=="")
+               lotnum--;  
+
+		   	$( "#RequestStandard_1_lot_num" ).val(lotnum);
+		
+		});
+
+		$( "#RequestStandard_1_sampling_num" ).focusout(function() {
+	    	
+	    	  gentSamplingNo(1);
+	    	  calCost(1)
+		});	
+
+		$( "#material_id_1" ).change(function() {
+	    	 gentSamplingNo(1);
+	    	 calCost(1);
+
+		});	
+
+		$( "#RequestStandard_1_labtype_id" ).change(function() {
+
+	    	 calCost(1);
+
+		});	
+
+
+
+
+		$( "#RequestStandard_2_lot_no" ).focusout(function() {
+	    	
+		   
+		   	str = $(this).val().split(",");
+		   	lotnum = str.length ;
+		   	if(str[str.length-1]=="")
+               lotnum--;  
+
+		   	$( "#RequestStandard_1_lot_num" ).val(lotnum);
+		
+		});
+
+		$( "#RequestStandard_2_sampling_num" ).focusout(function() {
+
+	    	  gentSamplingNo(2);
+
+	    	  calCost(2)
+		});	
+
+		$( "#material_id_2" ).change(function() {
+	    	 gentSamplingNo(2);
+	    	 calCost(2);
+
+		});	
+
+		$( "#RequestStandard_2_labtype_id" ).change(function() {
+
+	    	 calCost(2);
+
+		});	
+
+
+		$( "#RequestStandard_3_lot_no" ).focusout(function() {
+	    	
+		   
+		   	str = $(this).val().split(",");
+		   	lotnum = str.length ;
+		   	if(str[str.length-1]=="")
+               lotnum--;  
+
+		   	$( "#RequestStandard_3_lot_num" ).val(lotnum);
+		
+		});
+
+		$( "#RequestStandard_3_sampling_num" ).focusout(function() {
+	    	
+	    	  gentSamplingNo(3);
+	    	  calCost(3)
+		});	
+
+		$( "#material_id_3" ).change(function() {
+	    	 gentSamplingNo(3);
+	    	 calCost(3);
+
+		});	
+
+		$( "#RequestStandard_3_labtype_id" ).change(function() {
+
+	    	 calCost(3);
+
+		});	
+  });
+
+
+</script>
+
+
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'request-form',
 	'htmlOptions' => array('class' => 'well'),
@@ -193,14 +346,41 @@
             }   ?>
 
     <hr>          
-    <h5>ตัวอย่างทดสอบ</h5>
+    
+    <h5>ตัวอย่างทดสอบที่ 1</h5>
 	
 	<?php
+	 		
+            
 	 		$this->renderPartial('//requeststandard/_form', array(
                   'model' => $modelReqSD,
                   'index' => 1,
                   'display' => 'block'
-              ));    
+              ));  
+	?>
+	
+     <br>
+	 <h5>ตัวอย่างทดสอบที่ 2</h5>
+	
+	<?php 		
+	 	
+            $this->renderPartial('//requeststandard/_form', array(
+                  'model' => $modelReqSD,
+                  'index' => 2,
+                  'display' => 'block'
+             ));  
+    ?>
+
+    <br>
+	<h5>ตัวอย่างทดสอบที่ 3</h5> 
+    <?php        
+
+            $this->renderPartial('//requeststandard/_form', array(
+                  'model' => $modelReqSD,
+                  'index' => 3,
+                  'display' => 'block'
+            ));  
+          
     ?>
 
 

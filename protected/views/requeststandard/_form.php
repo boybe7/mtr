@@ -1,31 +1,86 @@
 <?php
 
-$baseUrl = Yii::app()->request->baseUrl; 
-$clientScriptUrl = "{$baseUrl}/javascripts/jquery.tagsinput.js"; 
-$clientScript = Yii::app()->clientScript;
-$clientScript->registerScriptFile($clientScriptUrl, CClientScript::POS_HEAD);
-$clientScript->registerCssFile($baseUrl.'/javascripts/jquery.tagsinput.css');
+// $baseUrl = Yii::app()->request->baseUrl; 
+// $clientScriptUrl = "{$baseUrl}/javascripts/jquery.tagsinput.js"; 
+// $clientScript = Yii::app()->clientScript;
+// $clientScript->registerScriptFile($clientScriptUrl, CClientScript::POS_HEAD);
+// $clientScript->registerCssFile($baseUrl.'/javascripts/jquery.tagsinput.css');
 
 ?>
-
+<!-- 
 <script type="text/javascript">
+     
+    function gentSamplingNo(index) {
+    		if($( "#RequestStandard_"+index+"_sampling_num" ).val()!="" && $( "#material_id" ).val()!="")
+		   	{	
+				   	$.ajax({
+				        url: './gentSamplingNo',
+				        type: 'post',
+				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(), 'material':$( "#material_id" ).val()},
+				        success:function(response){
+
+				        		$( "#RequestStandard_"+index+"_sampling_no" ).val(response)
+				        }
+				    });
+			}	   	
+    }
+
+    function calCost(index){
+
+    		$.ajax({
+    			url: '../standard/getCost', 
+				type:'POST', //request type
+				data:{'labtype':$('#RequestStandard_'+index+'_labtype_id').val(),'sampling':$('#RequestStandard_'+index+'_sampling_num').val()},
+				success:function(res){
+
+
+					$("#RequestStandard_"+index+"_cost").val(res)
+				}
+			});
+    }
 	
 	$(function(){
         //autocomplete search on focus    	
 	  // $('#RequestStandard_1_lot_no,#RequestStandard_2_lot_no').tagsInput();
-	    $( "#RequestStandard_1_lot_no" ).focusout(function() {
-	    	console.log("xxx")
-		   	$.ajax({
-		        url: '/getNumberOfLot',
-		        success:function(response){
+	     var index = $("#index").val();
+	    $( "#RequestStandard_"+index+"_lot_no" ).focusout(function() {
+	    	
+		   
+		   	str = $(this).val().split(",");
+		   	lotnum = str.length ;
+		   	if(str[str.length-1]=="")
+               lotnum--;  
 
-		        }
-		    });
+		   	$( "#RequestStandard_"+index+"_lot_num" ).val(lotnum);
+
+		   
+
+
 		});
+
+		$( "#RequestStandard_"+index+"_sampling_num" ).focusout(function() {
+	    	
+	    	  gentSamplingNo(index);
+	    	  calCost(index)
+		});	
+
+		$( "#material_id" ).change(function() {
+	    	 gentSamplingNo(index);
+	    	 calCost(index);
+
+		});	
+
+		$( "#RequestStandard_"+index+"_labtype_id" ).change(function() {
+
+	    	 calCost(index);
+
+		});	
   });
 
 
-</script>
+</script> -->
+
+<input type="hidden" name="index" id="index" value=<?php echo $index;?> >
 
 <div class="row-fluid">
 		<div class="span3">		
@@ -50,14 +105,16 @@ $clientScript->registerCssFile($baseUrl.'/javascripts/jquery.tagsinput.css');
 			        } 
 			        $typelist = CHtml::listData($data,'value','text');
 			        echo CHtml::label('ชนิดวัสดุ','material_id');
-			        echo CHtml::dropDownList('material_id','', $typelist,array('class'=>'span12','empty'=>"",
+			        echo CHtml::dropDownList('material_id_'.$index,'', $typelist,array('class'=>'span12','empty'=>"",
 			        						'ajax' => array(
 												'type'=>'POST', //request type
 												'data'=>array('material'=>'js:this.value'),
 												'url'=>CController::createUrl('./labtype/getLabtypeByMaterial'), 		
 												'update'=>'#RequestStandard_'.$index.'_labtype_id', //selector to update
 										
-											))); 
+											)
+
+											)); 
 			        
 
 			?>

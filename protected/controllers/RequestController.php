@@ -31,7 +31,7 @@ class RequestController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','gentSamplingNo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -138,6 +138,65 @@ class RequestController extends Controller
 				return $lot;
 	}
 
+	public function actionGentSamplingNo()
+	{
+		   
+		   if(isset($_POST["material"]))
+		   {
+		   	    $modelMaterial = Material::model()->findByPk($_POST["material"]); 
+		   	    if(!empty($modelMaterial))
+		   	    {
+		   	    	
+		   	    	$m2 = Yii::app()->db->createCommand()
+	                    ->select('max(sampling_no) as max')
+	                    ->from('temp_sampling_no') 
+	                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%"')                                    
+	                    ->queryAll();
+
+	                if($m2[0]["max"]!=null)
+	                {
+	                	 $num =  explode("-", $m2[0]["max"]);     
+	               		 $max_no = ($m2[0]["max"]==null) ? 0 : intval($num[1]) ;
+	                }    
+	                else{
+	                	$m = Yii::app()->db->createCommand()
+	                    ->select('max(sampling_no_fix) as max')
+	                    ->from('test_results_values') 
+	                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%"')                                    
+	                    ->queryAll();
+
+
+
+		                $num =  explode("-", $m[0]["max"]);     
+		                $max_no = ($m[0]["max"]==null) ? 0 : intval($num[1]) ;
+
+	              
+	                	$sql = "insert into temp_sampling_no (sampling_no) values (:value)";
+	                	$value = $modelMaterial->code."-".($max_no+1+$_POST["sampling_num"]); 
+						$parameters = array(":value"=>$value);
+						Yii::app()->db->createCommand($sql)->execute($parameters);
+	              
+	                }
+
+	                	$m = Yii::app()->db->createCommand()
+	                    ->select('max(sampling_no_fix) as max')
+	                    ->from('test_results_values') 
+	                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%"')                                    
+	                    ->queryAll();
+
+
+
+		                $num =  explode("-", $m[0]["max"]);     
+		                $max_no = ($m[0]["max"]==null) ? 0 : intval($num[1]) ;
+
+
+	                echo $modelMaterial->code.($max_no+1)."-".$modelMaterial->code.($max_no+1+$_POST["sampling_num"]); 
+	                //var_dump($max_no); 
+
+			
+		   	    }
+		   }	   
+	}
 
 
 
