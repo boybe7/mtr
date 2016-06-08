@@ -147,18 +147,82 @@ class RequestController extends Controller
 		   	    if(!empty($modelMaterial))
 		   	    {
 		   	    	
+		   	    	$no = $_POST["index"];
+		   	    	$amount = $_POST["sampling_num"];
+
 		   	    	$m2 = Yii::app()->db->createCommand()
 	                    ->select('max(sampling_no) as max')
 	                    ->from('temp_sampling_no') 
 	                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%"')                                    
 	                    ->queryAll();
 
+	                $return = array();    
+
 	                if($m2[0]["max"]!=null)
 	                {
-	                	 $num =  explode("-", $m2[0]["max"]);     
-	               		 $max_no = ($m2[0]["max"]==null) ? 0 : intval($num[1]) ;
+	                	
+	               		
+	               		$models =  TempSamplingNo::model()->findAll(array("order"=>"id"));
+	               		$codemax = "";
+	               		foreach ($models as $key => $mm) {
+	               		    $code = explode("-", $mm->sampling_no);
+	               		    if($code[0]==$modelMaterial->code)
+	               		    {
+	               		    	if($no==$mm->id)
+	               		    	{
+	               		    	    $max_no = intval($code[1]) + ($amount-$mm->num);
+			                        $mm->sampling_no = $modelMaterial->code."-".($max_no);			          
+			                        $mm->num = $amount;
+			                        $mm->save();
+			                        $codemax = $max_no;
+
+			                       //echo "=".$modelMaterial->code.($max_no-$amount)."-".$modelMaterial->code.($max_no);
+
+			                        $output = array('index' =>$no,'value'=>$modelMaterial->code.($max_no-$amount)."-".$modelMaterial->code.($max_no));
+
+			                        $return[] = $output; 
+			                    }  
+			                    else if($no > $mm->id){
+
+			                    	$mm2 =  TempSamplingNo::model()->findByPk($no);
+			                    	if(empty($mm2))
+			                    	{
+			                    		$r = explode("-", $m2[0]["max"]);
+			                    	    $codemax = $r[1];
+			                    		$max_no = intval($codemax) + $amount;
+			                    		$mm2 = new TempSamplingNo;
+			                    		$mm2->id = $no;
+			                    		$mm2->num = $amount;
+			                    		$mm2->sampling_no = $modelMaterial->code."-".($max_no);
+				                    	$mm2->save();
+
+			                    	}
+			                    	else 
+			                    	{
+			                    		$max_no = intval($codemax) + $mm->num;
+			                    		$mm->sampling_no = $modelMaterial->code."-".($max_no);
+				                    	$mm->save();
+
+
+			                    	}
+
+			                    
+			                        
+			                        $output = array('index' =>$no,'value'=>$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no));
+			                        $codemax = $max_no;	
+			                        $return[] = $output; 
+			                    }  
+
+	               		    }     	
+	               		}
+
+
+	               		
+
+
 	                }    
 	                else{
+
 	                	$m = Yii::app()->db->createCommand()
 	                    ->select('max(sampling_no_fix) as max')
 	                    ->from('test_results_values') 
@@ -170,27 +234,23 @@ class RequestController extends Controller
 		                $num =  explode("-", $m[0]["max"]);     
 		                $max_no = ($m[0]["max"]==null) ? 0 : intval($num[1]) ;
 
+		                $model = new TempSamplingNo;
+                        $model->sampling_no = $modelMaterial->code."-".($max_no+1+$_POST["sampling_num"]);
+                        $model->id = $no;
+                        $model->num = $amount;
+                        $model->save();
 	              
-	                	$sql = "insert into temp_sampling_no (sampling_no) values (:value)";
-	                	$value = $modelMaterial->code."-".($max_no+1+$_POST["sampling_num"]); 
-						$parameters = array(":value"=>$value);
-						Yii::app()->db->createCommand($sql)->execute($parameters);
-	              
+	                	$output = array('index' =>$no , 'value'=>$modelMaterial->code.($max_no+1)."-".$modelMaterial->code.($max_no+1+$_POST["sampling_num"]));
+			            $return[] = $output; 
+	                
+					
 	                }
 
-	                	$m = Yii::app()->db->createCommand()
-	                    ->select('max(sampling_no_fix) as max')
-	                    ->from('test_results_values') 
-	                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%"')                                    
-	                    ->queryAll();
+	                //$output = array('index' =>3 , 'value'=>"SP5-SP10");
 
 
 
-		                $num =  explode("-", $m[0]["max"]);     
-		                $max_no = ($m[0]["max"]==null) ? 0 : intval($num[1]) ;
-
-
-	                echo $modelMaterial->code.($max_no+1)."-".$modelMaterial->code.($max_no+1+$_POST["sampling_num"]); 
+	                echo json_encode($return);
 	                //var_dump($max_no); 
 
 			
@@ -235,6 +295,10 @@ class RequestController extends Controller
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
+
+
+		//clear temp table
+		Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
 
 		$this->render('create',array(
 			'model'=>$model,'modelReqSD'=>$modelReqSD

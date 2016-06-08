@@ -25,30 +25,26 @@
 				   	$.ajax({
 				        url: './gentSamplingNo',
 				        type: 'post',
-				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(), 'material':$( "#material_id_"+index ).val()},
+				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(),
+				                'material':$( "#material_id_"+index ).val(),
+				                'index':index
+
+				            },
 				        success:function(response){
 
-				        		$( "#RequestStandard_"+index+"_sampling_no" ).val(response)
+
+							$.each(JSON.parse(response), function(idx, obj) {
+								//console.log(obj.index+":"+obj.value)
+								$( "#RequestStandard_"+obj.index+"_sampling_no" ).val(obj.value)
+							});
+
+				        		
 				        }
 				    });
 			}	   	
     }
 
-    function gentSamplingNo2(index) {
-
-    		if($( "#RequestStandard_"+index+"_sampling_num" ).val()!="" && $( "#material_id" ).val()!="")
-		   	{	
-				   	$.ajax({
-				        url: './gentSamplingNo',
-				        type: 'post',
-				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(), 'material':$( "#material_id_"+index ).val()},
-				        success:function(response){
-
-				        		$( "#RequestStandard_"+index+"_sampling_no" ).val(response)
-				        }
-				    });
-			}	   	
-    }
+ 
 
     function calCost(index){
 
@@ -345,7 +341,54 @@
     
             }   ?>
 
-    <hr>          
+    <hr> 
+
+
+	 <?php 
+		    $this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'link',
+		    'type'=>'danger',
+		    'label'=>'ลบตัวอย่าง',
+		    'icon'=>'minus-sign',
+		    'htmlOptions'=>array(
+		        'onclick'=>'     
+		             num =  parseInt($("#num_sample").val()) - 1;
+		             if(num>0)
+		             {
+		             	$("#num_sample").val(num+"");
+		             	//console.log(num)
+		             	$("#index"+(num+1)).hide();
+		           	 }
+		                    ',
+		        'class'=>'pull-right','style'=>'margin:0px 0px 0px 10px;'
+		    ),
+		));   
+	?>	    
+   
+    <?php 
+		    $this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'link',
+		    'type'=>'success',
+		    'label'=>'เพิ่มตัวอย่าง',
+		    'icon'=>'plus-sign',
+		    'htmlOptions'=>array(
+		        'onclick'=>'     
+		             num =  parseInt($("#num_sample").val()) + 1;
+		             if(num<4)
+		             {
+		             	$("#num_sample").val(num+"");
+		             	//console.log(num)
+		             	$("#index"+num).show();
+		           	 }
+		                    ',
+		        'class'=>'pull-right'
+		    ),
+		));   
+	?>	  
+
+	<input type="hidden" id="num_sample" name="num_sample" value="1">
+
+	<div style="margin-top:40px;">
     
     <h5>ตัวอย่างทดสอบที่ 1</h5>
 	
@@ -358,8 +401,9 @@
                   'display' => 'block'
               ));  
 	?>
+	</div>
 	
-     <br>
+     <div id="index2" style="display:none">
 	 <h5>ตัวอย่างทดสอบที่ 2</h5>
 	
 	<?php 		
@@ -370,8 +414,9 @@
                   'display' => 'block'
              ));  
     ?>
+    </div>
 
-    <br>
+      <div id="index3" style="display:none">
 	<h5>ตัวอย่างทดสอบที่ 3</h5> 
     <?php        
 
@@ -382,6 +427,7 @@
             ));  
           
     ?>
+    </div>
 
 
 
