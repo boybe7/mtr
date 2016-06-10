@@ -94,3 +94,44 @@ Stack trace:
 REQUEST_URI=/mtr/request/gentSamplingNo
 in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (216)
 in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/09 11:26:19 [error] [php] Array to string conversion (C:\xampp\htdocs\mtr\protected\controllers\RequestController.php:219)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#1 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#2 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#3 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#4 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/gentSamplingNo
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (219)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/09 13:46:03 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `temp_sampling_no` (`sampling_no`, `id`, `num`) VALUES (:yp0, :yp1, :yp2).
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (298)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/06/09 13:46:03 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `temp_sampling_no` (`sampling_no`, `id`, `num`) VALUES (:yp0, :yp1, :yp2)' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 C:\xampp\htdocs\mtr\framework\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(298): CActiveRecord->save()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): RequestController->actionGentSamplingNo()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('gentSamplingNo')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/gentSam...')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/gentSamplingNo
+HTTP_REFERER=http://localhost/mtr/request/create
+---

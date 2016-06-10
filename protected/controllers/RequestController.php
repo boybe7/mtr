@@ -162,7 +162,79 @@ class RequestController extends Controller
 	                {
 	                	
 	               		
-	               		$models =  TempSamplingNo::model()->findAll(array("order"=>"id"));
+	               		$mm = TempSamplingNo::model()->findByPk($no);
+	               		if(empty($mm))
+	               		{
+	               						$r = explode("-", $m2[0]["max"]);
+			                    	    $codemax = $r[1];
+			                    		$max_no = intval($codemax) + $amount;
+			                    		$mm2 = new TempSamplingNo;
+			                    		$mm2->id = $no;
+			                    		$mm2->num = $amount;
+			                    		$mm2->sampling_no = $modelMaterial->code."-".($max_no);
+				                    	$mm2->save();
+
+				                    	$output = array('index' =>$no,'value'=>$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no));
+				                    	$return[] = $output; 
+	               		}
+	               		else{
+	               			 $code = explode("-", $mm->sampling_no);
+
+	               			 $max_no = intval($code[1]) + ($amount-$mm->num);
+			                 $mm->sampling_no = $modelMaterial->code."-".($max_no);			          
+			                 $mm->num = $amount;
+			                 $mm->save();
+			                 $codemax = $max_no;
+
+			                 $output = array('index' =>$no,'value'=>$modelMaterial->code.($max_no-$amount+1)."-".$modelMaterial->code.($max_no));
+			                 $return[] = $output; 
+			                      
+
+			                 $models =  TempSamplingNo::model()->findAll(array("condition"=>"","order"=>"id"));
+			                 //print_r($models);
+			                 foreach ($models as $key => $m) {
+			                 	if($m->id > $no )
+			                 	{
+			                 		  $mcode = explode("-", $m->sampling_no);
+			                 		  if($mcode[0]!=$code)
+			                 		  {
+			                 		  	$m3 = Yii::app()->db->createCommand()
+							                    ->select('max(sampling_no) as max')
+							                    ->from('temp_sampling_no') 
+							                    ->where('sampling_no LIKE "%'.$mcode[0].'%"')                                    
+							                    ->queryAll();
+							             
+							            $max_no = intval($m2[0]["max"]) + $m->num;
+			                    		$m->sampling_no = $mcode[0]."-".($max_no);
+				                    	$m->save();
+
+				                    	 $output = array('index' =>$m->id ,'value'=>$modelMaterial->code.(intval($m2[0]["max"])+1)."-".$modelMaterial->code.($max_no));
+			                 			$return[] = $output;    
+
+			                 		  }
+			                 		  else
+			                 		  {
+
+
+			                 		    $max_no = intval($codemax) + $m->num;
+			                    		$m->sampling_no = $modelMaterial->code."-".($max_no);
+				                    	$m->save();
+
+				                    	 $output = array('index' =>$m->id ,'value'=>$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no));
+			                 			$return[] = $output; 
+
+
+				                    	$codemax = $max_no;
+				                      } 	
+			                 	}
+			                 }
+			               
+	               		}
+
+
+
+
+	               		/*$models =  TempSamplingNo::model()->findAll(array("order"=>"id"));
 	               		$codemax = "";
 	               		foreach ($models as $key => $mm) {
 	               		    $code = explode("-", $mm->sampling_no);
@@ -179,10 +251,10 @@ class RequestController extends Controller
 			                       //echo "=".$modelMaterial->code.($max_no-$amount)."-".$modelMaterial->code.($max_no);
 
 			                        $output = array('index' =>$no,'value'=>$modelMaterial->code.($max_no-$amount)."-".$modelMaterial->code.($max_no));
-
+			                       // echo $mm->id."----1:".$modelMaterial->code.($max_no-$amount)."-".$modelMaterial->code.($max_no)."|";
 			                        $return[] = $output; 
 			                    }  
-			                    else if($no > $mm->id){
+			                    else{
 
 			                    	$mm2 =  TempSamplingNo::model()->findByPk($no);
 			                    	if(empty($mm2))
@@ -199,6 +271,12 @@ class RequestController extends Controller
 			                    	}
 			                    	else 
 			                    	{
+			                    		if($codemax=="")
+			                    		{	
+			                    			$str = explode("-", $mm->sampling_no);
+			                    			$codemax = intval($str[1])+1;
+			                    			//echo $codemax;
+			                    		}	
 			                    		$max_no = intval($codemax) + $mm->num;
 			                    		$mm->sampling_no = $modelMaterial->code."-".($max_no);
 				                    	$mm->save();
@@ -210,11 +288,12 @@ class RequestController extends Controller
 			                        
 			                        $output = array('index' =>$no,'value'=>$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no));
 			                        $codemax = $max_no;	
+			                        //echo $mm->id."---2:".$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no)."|";
 			                        $return[] = $output; 
 			                    }  
 
 	               		    }     	
-	               		}
+	               		}*/
 
 
 	               		
@@ -234,13 +313,24 @@ class RequestController extends Controller
 		                $num =  explode("-", $m[0]["max"]);     
 		                $max_no = ($m[0]["max"]==null) ? 0 : intval($num[1]) ;
 
-		                $model = new TempSamplingNo;
-                        $model->sampling_no = $modelMaterial->code."-".($max_no+1+$_POST["sampling_num"]);
-                        $model->id = $no;
-                        $model->num = $amount;
-                        $model->save();
+		                $model = TempSamplingNo::model()->findByPk($no);
+		                if(empty($model))
+		                {
+		                	$model = new TempSamplingNo;
+	                        $model->sampling_no = $modelMaterial->code."-".($max_no+$_POST["sampling_num"]);
+	                        $model->id = $no;
+	                        $model->num = $amount;
+	                        $model->save();
+		                }
+		                else{
+		                	$model->sampling_no = $modelMaterial->code."-".($max_no+$_POST["sampling_num"]);
+	                        $model->id = $no;
+	                        $model->num = $amount;
+	                        $model->save();
+		                }
+			               
 	              
-	                	$output = array('index' =>$no , 'value'=>$modelMaterial->code.($max_no+1)."-".$modelMaterial->code.($max_no+1+$_POST["sampling_num"]));
+	                	$output = array('index' =>$no , 'value'=>$modelMaterial->code.($max_no+1)."-".$modelMaterial->code.($max_no+$_POST["sampling_num"]));
 			            $return[] = $output; 
 	                
 					
