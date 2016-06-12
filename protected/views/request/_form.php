@@ -59,20 +59,29 @@
 				}
 			});
     }
+
+    function getNumLot(index)
+    {
+
+		   	val = $("#RequestStandard_1_lot_no").val();
+		   	str = val.split(",");
+		    lotnum = str.length ;
+            //console.log(str.length) 
+		   	if(str.length!=0 && str[str.length-1]=="")
+               lotnum--;  
+            if(str.length==0 && val!="")
+            	lotnum = 1;
+
+		   	$("#RequestStandard_"+index+"_lot_num").val(lotnum);
+		
+    }
 	
 	$(function(){
         //autocomplete search on focus    	
 	  // $('#RequestStandard_1_lot_no,#RequestStandard_2_lot_no').tagsInput();
 	   
 	    $( "#RequestStandard_1_lot_no" ).focusout(function() {
-	    	
-		   
-		   	str = $(this).val().split(",");
-		   	lotnum = str.length ;
-		   	if(str[str.length-1]=="")
-               lotnum--;  
-
-		   	$( "#RequestStandard_1_lot_num" ).val(lotnum);
+	    	 getNumLot(1);
 		
 		});
 
