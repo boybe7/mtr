@@ -27,7 +27,8 @@
 				        type: 'post',
 				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(),
 				                'material':$( "#material_id_"+index ).val(),
-				                'index':index
+				                'index':index,
+				                'labtype': $( "#RequestStandard_"+index+"_labtype_id" ).val(),
 
 				            },
 				        success:function(response){
@@ -63,7 +64,7 @@
     function getNumLot(index)
     {
 
-		   	val = $("#RequestStandard_1_lot_no").val();
+		   	val = $("#RequestStandard_"+index+"_lot_no").val();
 		   	str = val.split(",");
 		    lotnum = str.length ;
             //console.log(str.length) 
@@ -91,6 +92,7 @@
 	    	  calCost(1)
 		});	
 
+	
 		$( "#material_id_1" ).change(function() {
 	    	 gentSamplingNo(1);
 	    	 calCost(1);
@@ -98,7 +100,7 @@
 		});	
 
 		$( "#RequestStandard_1_labtype_id" ).change(function() {
-
+             gentSamplingNo(1);
 	    	 calCost(1);
 
 		});	
@@ -109,19 +111,13 @@
 		$( "#RequestStandard_2_lot_no" ).focusout(function() {
 	    	
 		   
-		   	str = $(this).val().split(",");
-		   	lotnum = str.length ;
-		   	if(str[str.length-1]=="")
-               lotnum--;  
-
-		   	$( "#RequestStandard_1_lot_num" ).val(lotnum);
+		   	 getNumLot(2);
 		
 		});
 
 		$( "#RequestStandard_2_sampling_num" ).focusout(function() {
 
 	    	  gentSamplingNo(2);
-
 	    	  calCost(2)
 		});	
 
@@ -132,7 +128,7 @@
 		});	
 
 		$( "#RequestStandard_2_labtype_id" ).change(function() {
-
+             gentSamplingNo(2);  
 	    	 calCost(2);
 
 		});	
@@ -141,12 +137,7 @@
 		$( "#RequestStandard_3_lot_no" ).focusout(function() {
 	    	
 		   
-		   	str = $(this).val().split(",");
-		   	lotnum = str.length ;
-		   	if(str[str.length-1]=="")
-               lotnum--;  
-
-		   	$( "#RequestStandard_3_lot_num" ).val(lotnum);
+		   	 getNumLot(3);
 		
 		});
 
@@ -163,7 +154,7 @@
 		});	
 
 		$( "#RequestStandard_3_labtype_id" ).change(function() {
-
+             gentSamplingNo(3);
 	    	 calCost(3);
 
 		});	
@@ -405,7 +396,7 @@
 	 		
             
 	 		$this->renderPartial('//requeststandard/_form', array(
-                  'model' => $modelReqSD,
+                  'model' => $modelReqSD1,
                   'index' => 1,
                   'display' => 'block'
               ));  
@@ -413,12 +404,13 @@
 	</div>
 	
      <div id="index2" style="display:none">
+     <hr>
 	 <h5>ตัวอย่างทดสอบที่ 2</h5>
 	
 	<?php 		
 	 	
             $this->renderPartial('//requeststandard/_form', array(
-                  'model' => $modelReqSD,
+                  'model' => $modelReqSD2,
                   'index' => 2,
                   'display' => 'block'
              ));  
@@ -426,11 +418,12 @@
     </div>
 
       <div id="index3" style="display:none">
+      <hr>
 	<h5>ตัวอย่างทดสอบที่ 3</h5> 
     <?php        
 
             $this->renderPartial('//requeststandard/_form', array(
-                  'model' => $modelReqSD,
+                  'model' => $modelReqSD3,
                   'index' => 3,
                   'display' => 'block'
             ));  

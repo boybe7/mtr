@@ -8,4 +8,4 @@ $this->breadcrumbs=array(
 ?>
 
 
-<?php echo $this->renderPartial('_form', array('model'=>$model,'modelReqSD'=>$modelReqSD,'title'=>'เพิ่มลงทะเบียนรับตัวอย่าง')); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3,'title'=>'เพิ่มลงทะเบียนรับตัวอย่าง')); ?>

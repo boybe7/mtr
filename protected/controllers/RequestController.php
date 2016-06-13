@@ -144,6 +144,11 @@ class RequestController extends Controller
 		   if(isset($_POST["material"]))
 		   {
 		   	    $modelMaterial = Material::model()->findByPk($_POST["material"]); 
+
+		   	    $mLabtype = Labtype::model()->findByPk($_POST["labtype"]);
+		   	    $sampling_code = (!empty($mLabtype) && $mLabtype->is_chemical_test==1) ? 'C' : $modelMaterial->code;
+
+
 		   	    if(!empty($modelMaterial))
 		   	    {
 		   	    	
@@ -153,7 +158,7 @@ class RequestController extends Controller
 		   	    	$m2 = Yii::app()->db->createCommand()
 	                    ->select('max(sampling_no) as max')
 	                    ->from('temp_sampling_no') 
-	                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%" AND id<'.$no)                                    
+	                    ->where('sampling_no LIKE "%'.$sampling_code.'%" AND id<'.$no)                                    
 	                    ->queryAll();
 
 	                $return = array();    
@@ -172,18 +177,24 @@ class RequestController extends Controller
 			                    		$mm2 = new TempSamplingNo;
 			                    		$mm2->id = $no;
 			                    		$mm2->num = $amount;
-			                    		$mm2->sampling_no = $modelMaterial->code."-".($max_no);
+			                    		$mm2->sampling_no = $sampling_code."-".($max_no);
 				                    	$mm2->save();
 
-				                    	$output = array('index' =>$no,'value'=>$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no));
+				                    	if($amount==1)
+				                    		 $output = array('index' =>$no,'value'=>$sampling_code.($codemax+1));
+				                    	else	
+				                    	    $output = array('index' =>$no,'value'=>$sampling_code.($codemax+1)."-".$sampling_code.($max_no));
 				                    	$return[] = $output; 
 	               		}
 	               		else{
 
-	               			$mm->sampling_no = 	$modelMaterial->code."-".($max_no);
+	               			$mm->sampling_no = 	$sampling_code."-".($max_no);
 	               			$mm->num = $amount;
 	               			$mm->save();
-	               			$output = array('index' =>$no,'value'=>$modelMaterial->code.($codemax+1)."-".$modelMaterial->code.($max_no));
+	               			if($amount==1)
+				                $output = array('index' =>$no,'value'=>$sampling_code.($codemax+1));
+				            else
+	               				$output = array('index' =>$no,'value'=>$sampling_code.($codemax+1)."-".$sampling_code.($max_no));
 				            
 				            $return[] = $output;
 
@@ -199,7 +210,7 @@ class RequestController extends Controller
 	                	$m = Yii::app()->db->createCommand()
 		                    ->select('max(sampling_no_fix) as max')
 		                    ->from('test_results_values') 
-		                    ->where('sampling_no LIKE "%'.$modelMaterial->code.'%"')                                    
+		                    ->where('sampling_no LIKE "%'.$sampling_code.'%"')                                    
 		                    ->queryAll();
 
 		                $num =  explode("-", $m[0]["max"]);     
@@ -209,20 +220,22 @@ class RequestController extends Controller
 		                if(empty($model))
 		                {
 		                	$model = new TempSamplingNo;
-	                        $model->sampling_no = $modelMaterial->code."-".($max_no+$_POST["sampling_num"]);
+	                        $model->sampling_no = $sampling_code."-".($max_no+$_POST["sampling_num"]);
 	                        $model->id = $no;
 	                        $model->num = $amount;
 	                        $model->save();
 		                }
 		                else{
-		                	$model->sampling_no = $modelMaterial->code."-".($max_no+$_POST["sampling_num"]);
+		                	$model->sampling_no = $sampling_code."-".($max_no+$_POST["sampling_num"]);
 	                        $model->id = $no;
 	                        $model->num = $amount;
 	                        $model->save();
 		                }
 			               
-	              
-	                	$output = array('index' =>$no , 'value'=>$modelMaterial->code.($max_no+1)."-".$modelMaterial->code.($max_no+$_POST["sampling_num"]));
+	              		if($amount==1)
+				            $output = array('index' =>$no,'value'=>$sampling_code.($max_no+1));
+				        else
+	                		$output = array('index' =>$no , 'value'=>$sampling_code.($max_no+1)."-".$sampling_code.($max_no+$_POST["sampling_num"]));
 			            $return[] = $output; 
 
 			            
@@ -236,6 +249,7 @@ class RequestController extends Controller
 			                 foreach ($models as $key => $m) {
 			                 	
 			                 		  $mcode = explode("-", $m->sampling_no);
+			                 		  $mcode[0] = (!empty($mLabtype) && $mLabtype->is_chemical_test==1) ? 'C' : $mcode[0];
 			                 		  //if($mcode[0]!=$code)
 			                 		  //{
 			                 		  	$m3 = Yii::app()->db->createCommand()
@@ -248,8 +262,10 @@ class RequestController extends Controller
 
 			                    		$m->sampling_no = $mcode[0]."-".($max+ $m->num);
 				                    	$m->save();
-
-				                    	$output = array('index' =>$m->id ,'value'=>$mcode[0].(intval($max)+1)."-".$mcode[0].($max + $m->num));
+				                    	if($m->num==1)
+								            $output = array('index' =>$no,'value'=>$sampling_code.(intval($max)+1));
+								        else
+				                    		$output = array('index' =>$m->id ,'value'=>$mcode[0].(intval($max)+1)."-".$mcode[0].($max + $m->num));
 			                 			$return[] = $output;    
  	
 			                 }
@@ -282,7 +298,9 @@ class RequestController extends Controller
 	public function actionCreate()
 	{
 		$model=new Request;
-		$modelReqSD = new RequestStandard;
+		$modelReqSD1 = new RequestStandard;
+		$modelReqSD2 = new RequestStandard;
+		$modelReqSD3 = new RequestStandard;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -295,8 +313,45 @@ class RequestController extends Controller
 		if(isset($_POST['Request']))
 		{
 			$model->attributes=$_POST['Request'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+
+			$num_sample = $_POST["num_sample"];
+
+            $transaction=Yii::app()->db->beginTransaction();
+		    try {
+
+		    	if($model->save())
+				{
+					$modelRequests = $_POST['RequestStandard'];    
+					header('Content-type: text/plain');
+					$i = 0;
+					foreach ($modelRequests as $key => $mr) {
+						
+              		  if($i<$num_sample)	
+              			print_r($mr);                    
+              			
+						/*if($mr->save())
+						{
+
+						}*/
+					   $i++;	
+					}
+
+					exit;
+				}
+
+		    }
+		    catch(Exception $e)
+	 		{
+	 				$transaction->rollBack();	
+	 				$model->addError('request', 'Error occured while saving requests.');
+	 				Yii::trace(CVarDumper::dumpAsString($e->getMessage()));
+	 	        	//you should do sth with this exception (at least log it or show on page)
+	 	        	Yii::log( 'Exception when saving data: ' . $e->getMessage(), CLogger::LEVEL_ERROR );
+	 
+	 		}                         
+
+
+			
 		}
 
 
@@ -304,7 +359,7 @@ class RequestController extends Controller
 		Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
 
 		$this->render('create',array(
-			'model'=>$model,'modelReqSD'=>$modelReqSD
+			'model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3
 		));
 	}
 
