@@ -168,7 +168,7 @@
 <div class="row-fluid">
 			<div class="span3">	
 			    <?php echo CHtml::activeLabelEx($model, '[' . $index . ']lot_num'); ?>
-			    <?php echo CHtml::activeTextField($model, '[' . $index . ']lot_num', array('size' => 20,'style'=>'text-align:right',  'maxlength' => 255,'class'=>'span12','disabled'=>true)); ?>
+			    <?php echo CHtml::activeTextField($model, '[' . $index . ']lot_num', array('size' => 20,'style'=>'text-align:right',  'maxlength' => 255,'class'=>'span12','readonly'=>true)); ?>
 			    <?php echo CHtml::error($model, '[' . $index . ']lot_num',array('class'=>'help-block error')); ?>
             </div>  
         	<div class="span3">		  
@@ -186,7 +186,7 @@
 <div class="row-fluid">
 			<div class="span3">	
 			    <?php echo CHtml::activeLabelEx($model, '[' . $index . ']cost'); ?>
-			    <?php echo CHtml::activeTextField($model, '[' . $index . ']cost', array('size' => 20, 'style'=>'text-align:right', 'maxlength' => 255,'class'=>'span12','disabled'=>true)); ?>
+			    <?php echo CHtml::activeTextField($model, '[' . $index . ']cost', array('size' => 20, 'style'=>'text-align:right', 'maxlength' => 255,'class'=>'span12','readonly'=>true)); ?>
 			    <?php echo CHtml::error($model, '[' . $index . ']cost',array('class'=>'help-block error')); ?>
             </div>  
             <div class="span3">	

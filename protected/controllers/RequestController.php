@@ -290,6 +290,18 @@ class RequestController extends Controller
 		));
 	}
 
+	public function get_numerics ($str) {
+	    $matches = preg_replace("/[^0-9]/", '', $str);
+	    return $matches;
+	}
+
+	public function get_string($str)
+	{
+		 $matches = preg_replace("/[^A-Z]/", '', $str);
+    	 return ($matches);
+	}
+
+
 	
 	/**
 	 * Creates a new model.
@@ -313,31 +325,145 @@ class RequestController extends Controller
 		if(isset($_POST['Request']))
 		{
 			$model->attributes=$_POST['Request'];
-
 			$num_sample = $_POST["num_sample"];
 
+			$i=1;
+			foreach ($_POST['RequestStandard'] as $key => $mr) 
+			{
+				switch ($i) {
+					case 1:
+						$modelReqSD1->attributes = $mr;
+						break;
+					case 2:
+						$modelReqSD2->attributes = $mr;
+						break;
+					case 3:
+						$modelReqSD3->attributes = $mr;
+						break;		
+					
+					default:
+						$modelReqSD1->attributes = $mr;
+						break;
+				}
+				   
+				$i++;
+			}	
+
+			//header('Content-type: text/plain');
+			//print_r($modelReqSD1);
+			//exit;
+
+			$saveOK = true;
             $transaction=Yii::app()->db->beginTransaction();
 		    try {
 
 		    	if($model->save())
 				{
 					$modelRequests = $_POST['RequestStandard'];    
-					header('Content-type: text/plain');
+
+
+					
+					//header('Content-type: text/plain');
 					$i = 0;
-					foreach ($modelRequests as $key => $mr) {
+					foreach ($modelRequests as $key => $attributes) {
 						
               		  if($i<$num_sample)	
-              			print_r($mr);                    
-              			
-						/*if($mr->save())
-						{
+              		  {
+              		  	  $mr = new RequestStandard;
+              		  	  $mr->attributes = $attributes;
+              		  	  $mr->request_id = $model->id;
+              		  	  if($mr->save())
+              		  	  {
+              		  	  	  //get lot_no
+              		  	  	  $modelInputs = LabtypeInput::model()->findAll( array("condition"=>"labtype_id=".$mr->labtype_id));
+              		  	  	  $lots = explode(",", $mr->lot_no);
+              		  	  	  $sample_per_lot = $mr->sampling_num / $mr->lot_num;
 
-						}*/
+              		  	  	  //get id of specimen mark
+              		  	  	  $m3 = Yii::app()->db->createCommand()
+							                    ->select('min(id) as min')
+							                    ->from('labtype_inputs') 
+							                    ->where('type="header" AND labtype_id='.$mr->labtype_id)                             
+							                    ->queryAll();
+							   $minID = $m3[0]["min"];        
+
+							  //get id of remark
+							   $m3 = Yii::app()->db->createCommand()
+							                    ->select('max(id) as max')
+							                    ->from('labtype_inputs') 
+							                    ->where('type="header" AND labtype_id='.$mr->labtype_id)                             
+							                    ->queryAll();
+							   $maxID = $m3[0]["max"];  
+
+
+              		  	  	  $samplings = explode("-", $mr->sampling_no);
+              		  	  	  $no_start = $this->get_numerics($samplings[0]);
+              		  	  	  $code = $this->get_string($samplings[0]);
+            
+
+              		  	  	  foreach ($lots as $key => $lot) {
+              		  	  	  	  if($lot!="")
+              		  	  	  	  {
+              		  	  	  	  	  for ($j=0; $j < $sample_per_lot ; $j++) { 
+              		  	  	  	  	  	
+
+              		  	  	  	  	  	 foreach ($modelInputs as $key => $input) {
+              		  	  	  	  	  	 	 $modelResult = new TestResultsValue;
+	              		  	  	  	  	  	 $modelResult->lot_no = $lot;
+	              		  	  	  	  	  	 $modelResult->sampling_no = $code."-".($no_start);
+	              		  	  	  	  	  	 $modelResult->sampling_no_fix = $code."-".($no_start);
+	              		  	  	  	  	  	 $modelResult->request_standard_id = $mr->id;
+	              		  	  	  	  	  	 $modelResult->labtype_input_id = $input->id;
+	              		  	  	  	  	  	 $modelResult->value = "0";
+
+	              		  	  	  	  	  	 if($input->id==$minID)
+	              		  	  	  	  	  	 	$modelResult->value = $code."-".($no_start);
+
+	              		  	  	  	  	  	 if($input->id==$maxID)
+	              		  	  	  	  	  	 	$modelResult->value = $lot;
+
+	              		  	  	  	  	  	 
+
+
+	              		  	  	  	  	  	 if(!$modelResult->save())
+	              		  	  	  	  	  	 	$saveOK = false;
+
+	  //             		  	  	  	  	  	   		          	  	  header('Content-type: text/plain');
+			// print_r($modelResult);
+			// exit;
+
+
+              		  	  	  	  	  	 }
+
+              		  	  	  	  	  	  $no_start++;
+
+              		  	  	  	  	  }
+              		  	  	  	  }
+
+              		  	  	  }
+
+
+
+              		  	  }
+              		  	  else{
+              		  	  	$saveOK = false;
+              		  	  }
+              		  }
 					   $i++;	
 					}
 
-					exit;
+
+					//exit;
+					if($saveOK)
+					{	
+				     	$transaction->commit();
+				     	$this->redirect(array('index'));	
+
+				    } 	
 				}
+
+				 
+
 
 		    }
 		    catch(Exception $e)
@@ -415,6 +541,15 @@ class RequestController extends Controller
             foreach($autoIdAll as $autoId)
             {
                 $this->loadModel($autoId)->delete();
+
+                //delete related in request_standards and test_result_values
+                $modelRequestSDs = RequestStandard::model()->findAll( array("condition"=>"request_id=".$autoId));
+                foreach ($modelRequestSDs as $key => $m) {
+
+                	Yii::app()->db->createCommand('DELETE FROM test_results_values WHERE request_standard_id='.$m->id)->execute();
+                	$m->delete();
+                }
+                 
             }
         }    
     }
