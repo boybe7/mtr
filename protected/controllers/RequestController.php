@@ -31,7 +31,7 @@ class RequestController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','gentSamplingNo'),
+				'actions'=>array('create','update','gentSamplingNo','getLot'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -43,6 +43,8 @@ class RequestController extends Controller
 			),
 		);
 	}
+
+
 
 	public function gentRequstNo()
 	{
@@ -138,6 +140,32 @@ class RequestController extends Controller
 				return $lot;
 	}
 
+	public function actionGetLot()
+	{
+		$id = $_POST["index"];
+		$lots = array();
+		$model = RequestStandard::model()->findByPk($id);
+
+	
+		$lots = explode(",", $model->lot_no);
+
+		$data = array();
+		foreach ($lots as $key => $value) {
+				$data[] = array(
+                          'id'=> $value,
+                          'name'=>$value,
+                       );
+		}
+
+		 $data = CHtml::listData($data, 'id', 'name');
+        
+        echo CHtml::tag('option', array('value' => ''), CHtml::encode("กรุณาเลือกวิธีการทดสอบ"), true);
+  
+        foreach ($data as $value => $name) {            
+            echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+        }
+	}
+
 	public function actionGentSamplingNo()
 	{
 		   
@@ -146,12 +174,12 @@ class RequestController extends Controller
 		   	    $modelMaterial = Material::model()->findByPk($_POST["material"]); 
 
 		   	    $mLabtype = Labtype::model()->findByPk($_POST["labtype"]);
-		   	    $sampling_code = (!empty($mLabtype) && $mLabtype->is_chemical_test==1) ? 'C' : $modelMaterial->code;
+		   	   
 
 
 		   	    if(!empty($modelMaterial))
 		   	    {
-		   	    	
+		   	    	 $sampling_code = (!empty($mLabtype) && $mLabtype->is_chemical_test==1) ? 'C' : $modelMaterial->code;
 		   	    	$no = $_POST["index"];
 		   	    	$amount = $_POST["sampling_num"];
 
@@ -257,8 +285,13 @@ class RequestController extends Controller
 							                    ->from('temp_sampling_no') 
 							                    ->where('sampling_no LIKE "%'.$mcode[0].'%" AND id<'.$m->id)                                    
 							                    ->queryAll();
-										$str = explode("-", $m3[0]["max"]);        
-							            $max = empty($str) ? 0 : intval($str[1]);
+							              
+										$str = !empty($m3) ? explode("-", $m3[0]["max"]) : 0;  
+										//header('Content-type: text/plain');
+										//print_r($str.);
+										//exit;
+
+							            $max = empty($str) || $str[0]==0 ? 0 : intval($str[1]);
 
 			                    		$m->sampling_no = $mcode[0]."-".($max+ $m->num);
 				                    	$m->save();
@@ -324,6 +357,223 @@ class RequestController extends Controller
 
 		if(isset($_POST['Request']))
 		{
+			$model->attributes=$_POST['Request'];
+			$num_sample = $_POST["num_sample"];
+
+			$i=1;
+			foreach ($_POST['RequestStandard'] as $key => $mr) 
+			{
+				switch ($i) {
+					case 1:
+						$modelReqSD1->attributes = $mr;
+						break;
+					case 2:
+						$modelReqSD2->attributes = $mr;
+						break;
+					case 3:
+						$modelReqSD3->attributes = $mr;
+						break;		
+					
+					default:
+						$modelReqSD1->attributes = $mr;
+						break;
+				}
+				   
+				$i++;
+			}	
+
+			//header('Content-type: text/plain');
+			//print_r($modelReqSD1);
+			//exit;
+
+			$saveOK = true;
+            $transaction=Yii::app()->db->beginTransaction();
+		    try {
+
+		    	if($model->save())
+				{
+					$modelRequests = $_POST['RequestStandard'];    
+
+					$costSum = 0;
+					
+					//header('Content-type: text/plain');
+					$i = 0;
+					//save request standard
+					foreach ($modelRequests as $key => $attributes) {
+						
+              		  if($i<$num_sample)	
+              		  {
+              		  	  $mr = new RequestStandard;
+              		  	  $mr->attributes = $attributes;
+              		  	  $mr->request_id = $model->id;
+              		  	  if($mr->save())
+              		  	  {
+              		  	  	  
+              		  	  	  //sum cost
+              		  	  	  $costSum += $mr->cost;
+
+
+              		  	  	  //get lot_no
+              		  	  	  $modelInputs = LabtypeInput::model()->findAll( array("condition"=>"labtype_id=".$mr->labtype_id));
+              		  	  	  $lots = explode(",", $mr->lot_no);
+              		  	  	  $sample_per_lot = $mr->sampling_num / $mr->lot_num;
+
+              		  	  	  //get id of specimen mark
+              		  	  	  $m3 = Yii::app()->db->createCommand()
+							                    ->select('min(id) as min')
+							                    ->from('labtype_inputs') 
+							                    ->where('type="header" AND labtype_id='.$mr->labtype_id)                             
+							                    ->queryAll();
+							   $minID = $m3[0]["min"];        
+
+							  //get id of remark
+							   $m3 = Yii::app()->db->createCommand()
+							                    ->select('max(id) as max')
+							                    ->from('labtype_inputs') 
+							                    ->where('type="header" AND labtype_id='.$mr->labtype_id)                             
+							                    ->queryAll();
+							   $maxID = $m3[0]["max"];  
+
+
+              		  	  	  $samplings = explode("-", $mr->sampling_no);
+              		  	  	  $no_start = $this->get_numerics($samplings[0]);
+              		  	  	  $code = $this->get_string($samplings[0]);
+            
+
+              		  	  	  foreach ($lots as $key => $lot) {
+              		  	  	  	  if($lot!="")
+              		  	  	  	  {
+              		  	  	  	  	  for ($j=0; $j < $sample_per_lot ; $j++) { 
+              		  	  	  	  	  	
+
+              		  	  	  	  	  	 foreach ($modelInputs as $key => $input) {
+              		  	  	  	  	  	 	 $modelResult = new TestResultsValue;
+	              		  	  	  	  	  	 $modelResult->lot_no = $lot;
+	              		  	  	  	  	  	 $modelResult->sampling_no = $code."-".($no_start);
+	              		  	  	  	  	  	 $modelResult->sampling_no_fix = $code."-".($no_start);
+	              		  	  	  	  	  	 $modelResult->request_standard_id = $mr->id;
+	              		  	  	  	  	  	 $modelResult->labtype_input_id = $input->id;
+	              		  	  	  	  	  	 $modelResult->value = "0";
+
+	              		  	  	  	  	  	 if($input->id==$minID)
+	              		  	  	  	  	  	 	$modelResult->value = $code."-".($no_start);
+
+	              		  	  	  	  	  	 if($input->id==$maxID)
+	              		  	  	  	  	  	 	$modelResult->value = $lot;
+
+	              		  	  	  	  	  	 if(!$modelResult->save())
+	              		  	  	  	  	  	 	$saveOK = false;
+
+	  //             		  	  	  	  	  	   		          	  	  header('Content-type: text/plain');
+			// print_r($modelResult);
+			// exit;
+
+
+              		  	  	  	  	  	 }
+
+              		  	  	  	  	  	  $no_start++;
+
+              		  	  	  	  	  }
+              		  	  	  	  }
+
+              		  	  	  }
+
+
+
+              		  	  }
+              		  	  else{
+              		  	  	$saveOK = false;
+              		  	  }
+              		  }
+					   $i++;	
+					}
+
+
+					//save invoices
+					$modelInvoice = new Invoices;
+					$modelInvoice->cost = $costSum;
+					$modelInvoice->request_id = $model->id;
+					$modelInvoice->invoice_no = $model->request_no;
+					if(!$modelInvoice->save())
+						$saveOK = false;
+
+
+					//exit;
+					if($saveOK)
+					{	
+				     	
+				     	
+				     	$transaction->commit();
+				     	$this->redirect(array('index'));	
+
+				    } 	
+				}
+
+				 
+
+
+		    }
+		    catch(Exception $e)
+	 		{
+	 				$transaction->rollBack();	
+	 				$model->addError('request', 'Error occured while saving requests.');
+	 				Yii::trace(CVarDumper::dumpAsString($e->getMessage()));
+	 	        	//you should do sth with this exception (at least log it or show on page)
+	 	        	Yii::log( 'Exception when saving data: ' . $e->getMessage(), CLogger::LEVEL_ERROR );
+	 
+	 		}                         
+
+
+			
+		}
+
+
+		//clear temp table
+		Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
+
+		$this->render('create',array(
+			'model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3
+		));
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$model=$this->loadModel($id);
+		$modelReqSD1 = new RequestStandard;
+		$modelReqSD2 = new RequestStandard;
+		$modelReqSD3 = new RequestStandard;
+
+		$modelReqSDs = RequestStandard::model()->findAll( array("condition"=>"request_id=".$id));
+		$i = 1;
+		foreach ($modelReqSDs as $key => $m) {
+			switch ($i) {
+				case 1:
+					$modelReqSD1 = $m;
+					break;
+				
+				case 2:
+					$modelReqSD2 = $m;
+					break;
+
+				case 3:
+					$modelReqSD3 = $m;
+					break;		
+			}
+
+
+			$i++;
+		}
+
+
+
+		if(isset($_POST['Request']))
+		{
+			
 			$model->attributes=$_POST['Request'];
 			$num_sample = $_POST["num_sample"];
 
@@ -483,33 +733,10 @@ class RequestController extends Controller
 
 		//clear temp table
 		Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
-
-		$this->render('create',array(
-			'model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3
-		));
-	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Request']))
-		{
-			$model->attributes=$_POST['Request'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+		Yii::app()->db->createCommand('DELETE FROM temp_retests')->execute();
 
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3,'num'=>($i-1)
 		));
 	}
 

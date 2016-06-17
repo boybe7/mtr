@@ -231,7 +231,7 @@
 				  <?php 
 
 				  	// echo CHtml::ajaxButton(
-					  //   $label = 'คำนวณค่าธรรมเนียมทดสอบ', 
+					  //   $label = 'ทดสอบเพิ่ม', 
 					  //   $url = CController::createUrl('./standard/getCost'), 
 					  //   $ajaxOptions=array (
 					  //     						'type'=>'POST', //request type
@@ -244,9 +244,11 @@
 							// 					//'update'=>'#RequestStandard_'.$index.'_standard_id', //selector to update
 					  //       ), 
 					  //   $htmlOptions=array ('class'=>'btn btn-warning')
-				    //);
+				   //  );
 
 			    ?>
             </div>  
         	
-</div>      
+</div>    
+
+

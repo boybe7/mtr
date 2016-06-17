@@ -20,10 +20,10 @@
      
     function gentSamplingNo(index) {
 
-    		if($( "#RequestStandard_"+index+"_sampling_num" ).val()!="" && $( "#material_id" ).val()!="")
+    		if($( "#RequestStandard_"+index+"_sampling_num" ).val()!="" && $( "#material_id_"+index ).val()!="")
 		   	{	
 				   	$.ajax({
-				        url: './gentSamplingNo',
+				        url: '../../request/gentSamplingNo',
 				        type: 'post',
 				        data : {'sampling_num':$( "#RequestStandard_"+index+"_sampling_num" ).val(),
 				                'material':$( "#material_id_"+index ).val(),
@@ -50,7 +50,7 @@
     function calCost(index){
 
     		$.ajax({
-    			url: '../standard/getCost', 
+    			url: '../../standard/getCost', 
 				type:'POST', //request type
 				data:{'labtype':$('#RequestStandard_'+index+'_labtype_id').val(),'sampling':$('#RequestStandard_'+index+'_sampling_num').val()},
 				success:function(res){
@@ -80,7 +80,6 @@
 	$(function(){
         //autocomplete search on focus    	
 	  // $('#RequestStandard_1_lot_no,#RequestStandard_2_lot_no').tagsInput();
-	   
 	   
 	    $( "#RequestStandard_1_lot_no" ).focusout(function() {
 	    	 getNumLot(1);
@@ -395,7 +394,7 @@
 		));   
 	?>	  
 
-	<input type="hidden" id="num_sample" name="num_sample" value="1">
+	<input type="hidden" id="num_sample" name="num_sample" value="<?php echo $num;?>">
 
 	<div style="margin-top:40px;">
     
@@ -404,7 +403,7 @@
 	<?php
 	 		
             
-	 		$this->renderPartial('//requeststandard/_form', array(
+	 		$this->renderPartial('//requeststandard/_formUpdate', array(
                   'model' => $modelReqSD1,
                   'index' => 1,
                   'display' => 'block'
@@ -412,13 +411,22 @@
 	?>
 	</div>
 	
-     <div id="index2" style="display:none">
+    
+    <?php 
+    	if(!empty($modelReqSD2->id))
+    		echo '<div id="index2" style="">';
+    	else
+        	echo '<div id="index2" style="display:none">';
+
+       // print_r($modelReqSD2);
+    ?>
+
      <hr>
 	 <h5>ตัวอย่างทดสอบที่ 2</h5>
 	
 	<?php 		
 	 	
-            $this->renderPartial('//requeststandard/_form', array(
+            $this->renderPartial('//requeststandard/_formUpdate', array(
                   'model' => $modelReqSD2,
                   'index' => 2,
                   'display' => 'block'
@@ -426,12 +434,17 @@
     ?>
     </div>
 
-      <div id="index3" style="display:none">
+     <?php 
+    	if(!empty($modelReqSD23->id))
+    		echo '<div id="index3" style="">';
+    	else
+        	echo '<div id="index3" style="display:none">';
+    ?>
       <hr>
 	<h5>ตัวอย่างทดสอบที่ 3</h5> 
     <?php        
 
-            $this->renderPartial('//requeststandard/_form', array(
+            $this->renderPartial('//requeststandard/_formUpdate', array(
                   'model' => $modelReqSD3,
                   'index' => 3,
                   'display' => 'block'
@@ -440,7 +453,157 @@
     ?>
     </div>
 
+      <hr>
+      <h5>รายการทดสอบเพิ่มเติม</h5> 
+      <div class="row-fluid">
+ 	<div class="span3">
+		<?php 
+	
+		$data = array();
+		for ($i=0; $i < $num ; $i++) { 
+			$id = 0;
+			switch ($i) {
+				case 0:
+				    $id = $modelReqSD1->id;  
+					break;
+				case 1:
+				    $id = $modelReqSD2->id;  
+					break;
+				case 2:
+				    $id = $modelReqSD3->id;  
+					break;		
+			
+			}
 
+			$data[] = array(
+                          'value'=> $id,
+                          'text'=>"ตัวอย่างทดสอบที่ ".($i+1),
+                       );
+		}
+
+
+        $typelist = CHtml::listData($data,'value','text');
+
+		echo CHtml::dropDownList('sampling_no','',$typelist, array('class'=>'span12','empty'=>'เลือกตัวอย่างทดสอบ',
+								'ajax' => array(
+									'type'=>'POST', //request type
+									'data'=>array('index'=>'js:this.value'),
+									'url'=>CController::createUrl('./request/getLot'), 		
+									'update'=>'#lot', //selector to update
+							
+								)
+
+			));
+
+		   ?>
+	</div>
+	<div class="span4">
+		<?php 
+		
+		echo CHtml::dropDownList('lot','', array('empty'=>'เลือก lot'),array('class'=>'span12','onchange' => ''));
+
+		 ?>
+	</div>
+	<div class="span2">
+		<?php echo CHtml::textField('value', '',array('class'=>'span12','placeholder'=>'ค่า')); ?>
+	</div>
+	
+	<div class="span2">
+		<?php
+		$this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'ajaxLink',
+		    
+		    'type'=>'warning',
+		    'label'=>'ทดสอบเพิ่ม',
+		    'icon'=>'plus-sign',
+		    'url'=>array('createParameter'),
+		    'htmlOptions'=>array('class'=>'span12','style'=>''),
+		    'ajaxOptions'=>array(
+		    	    
+		     	    'type' => 'POST',
+                	'data' => array('standard' => $model->id,'parameter' => 'js:$("#parameter").val()','value' => 'js:$("#value").val()'),
+                	'success' => 'function(msg){  
+                		
+                		console.log(msg)
+
+						if(msg!="")
+                             $("#errorHeader").addClass( "alert alert-block alert-error" );
+						else	
+							 $("#errorHeader").removeClass( "alert alert-block alert-error" );
+						                		 
+                		$("#errorHeader").html(msg); 
+                		
+                		$("#value").val("");
+                		
+                		$.fn.yiiGridView.update("parameter-grid"); 
+                	}',
+                	'error'=>'function(html){  console.log("fail");  }'
+                ) 
+		)); 
+
+
+
+
+		?>
+	</div>	
+	
+</div>
+
+      <?php
+			$this->widget('bootstrap.widgets.TbGridView',array(
+					'id'=>'retest-grid',
+					'type'=>'bordered condensed',
+					'selectableRows' =>2,
+					'htmlOptions'=>array('style'=>'padding-top:5px'),
+				    'enablePagination' => true,
+				    'summaryText'=>'แสดงผล {start} ถึง {end} จากทั้งหมด {count} ข้อมูล',
+				    'template'=>"{items}<div class='row-fluid'><div class='span6'>{pager}</div><div class='span6'>{summary}</div></div>",
+					'dataProvider'=>TempRetest::model()->search(),
+					
+					'columns'=>array(
+						
+						'lot_no'=>array(
+							    'name' => 'lot_no',										   
+								'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:center'),
+								
+			  			),
+			  			'sampling_no'=>array(
+							    'name' => 'sampling_no',										   
+								'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:center'),
+								
+			  			),
+			  			'sampling_num'=>array(
+							    'name' => 'sampling_num',										   
+								'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:center'),
+								
+			  			),
+			  			'labtype'=>array(
+							    'name' => 'labtype',		
+							    'value'=>'Labtype::Model()->FindByPk(  RequestStandard::model()->findByPk($data->request_standard_id)->labtype_id  )->name',								   
+								'headerHtmlOptions' => array('style' => 'width:30%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:left'),
+								
+			  			),
+			  			'cost'=>array(
+							    'name' => 'cost',										   
+								'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:right'),
+								
+			  			),
+			  			
+			
+					
+						array(
+							'class'=>'bootstrap.widgets.TbButtonColumn',
+							'template' => '{delete}'
+						),
+					),
+				)); 
+
+	?>  
 
 
 	<div class="form-actions">

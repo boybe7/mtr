@@ -56,6 +56,7 @@ class RequestStandard extends CActiveRecord
 		return array(
 			'request'=>array(self::BELONGS_TO, 'Request', 'request_id'),
 			'labtype'=>array(self::BELONGS_TO, 'Labtype', 'labtype_id'),
+			'temp_retest'=>array(self::HAS_MANY, 'TempRequest', 'request_standard_id'),
 		);
 	}
 
