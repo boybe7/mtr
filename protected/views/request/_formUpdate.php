@@ -80,6 +80,16 @@
 	$(function(){
         //autocomplete search on focus    	
 	  // $('#RequestStandard_1_lot_no,#RequestStandard_2_lot_no').tagsInput();
+
+	  	$( "#req_id" ).change(function() {
+	    	 $( "#lot" ).val("");
+	    	 $( "#lot" ).empty();   
+	    	 $( "#sampling_no" ).val("");
+	    	 $( "#sampling_no" ).empty();    	 	
+		});	
+
+
+
 	   
 	    $( "#RequestStandard_1_lot_no" ).focusout(function() {
 	    	 getNumLot(1);
@@ -456,7 +466,7 @@
       <hr>
       <h5>รายการทดสอบเพิ่มเติม</h5> 
       <div class="row-fluid">
- 	<div class="span3">
+ 	<div class="span2">
 		<?php 
 	
 		$data = array();
@@ -477,14 +487,14 @@
 
 			$data[] = array(
                           'value'=> $id,
-                          'text'=>"ตัวอย่างทดสอบที่ ".($i+1),
+                          'text'=>"ตัวอย่างที่ ".($i+1),
                        );
 		}
 
 
         $typelist = CHtml::listData($data,'value','text');
-
-		echo CHtml::dropDownList('sampling_no','',$typelist, array('class'=>'span12','empty'=>'เลือกตัวอย่างทดสอบ',
+        echo CHtml::label('ตัวอย่างทดสอบ','req_id');
+		echo CHtml::dropDownList('req_id','',$typelist, array('class'=>'span12','empty'=>'เลือกตัวอย่างทดสอบ',
 								'ajax' => array(
 									'type'=>'POST', //request type
 									'data'=>array('index'=>'js:this.value'),
@@ -497,51 +507,79 @@
 
 		   ?>
 	</div>
-	<div class="span4">
+	<div class="span2">
 		<?php 
-		
-		echo CHtml::dropDownList('lot','', array('empty'=>'เลือก lot'),array('class'=>'span12','onchange' => ''));
+		echo CHtml::label('หมายเลข lot','lot');
+		$data = array();
+		$typelist = CHtml::listData($data,'value','text');
+		echo CHtml::dropDownList('lot','',$typelist, array('class'=>'span12','empty'=>'เลือก lot',
+								'ajax' => array(
+									'type'=>'POST', //request type
+									'data'=>array('index'=>'js:$("#req_id").val()'),
+									'url'=>CController::createUrl('./request/getSamplingNo'), 		
+									'update'=>'#sampling_no', //selector to update
+							
+								)
+		));
 
 		 ?>
 	</div>
 	<div class="span2">
-		<?php echo CHtml::textField('value', '',array('class'=>'span12','placeholder'=>'ค่า')); ?>
+		<?php 
+		echo CHtml::label('หมายเลขตัวอย่าง','sampling_no');
+		echo CHtml::dropDownList('sampling_no','', array('empty'=>'เลือกหมายเลขตัวอย่าง'),array('class'=>'span12','onchange' => ''));
+		 ?>
+	</div>
+	<div class="span2">
+		<?php 
+		echo CHtml::label('จำนวนตัวอย่าง','sampling_num');
+		echo CHtml::textField('sampling_num', '',array('class'=>'span12','placeholder'=>'')); ?>
 	</div>
 	
-	<div class="span2">
+	<div class="span4">
 		<?php
+		
 		$this->widget('bootstrap.widgets.TbButton', array(
 		    'buttonType'=>'ajaxLink',
-		    
+		    'id'=>'addButton',
 		    'type'=>'warning',
 		    'label'=>'ทดสอบเพิ่ม',
 		    'icon'=>'plus-sign',
-		    'url'=>array('createParameter'),
-		    'htmlOptions'=>array('class'=>'span12','style'=>''),
+		    'url'=>array('createTempRetest'),
+		    'htmlOptions'=>array('class'=>'span6','style'=>'margin-top:23px;'),
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
-                	'data' => array('standard' => $model->id,'parameter' => 'js:$("#parameter").val()','value' => 'js:$("#value").val()'),
+                	'data' => array('req_id' => 'js:$("#req_id").val()','sampling_no' => 'js:$("#sampling_no").val()','lot' => 'js:$("#lot").val()','num' => 'js:$("#sampling_num").val()'),
                 	'success' => 'function(msg){  
-                		
-                		console.log(msg)
-
-						if(msg!="")
-                             $("#errorHeader").addClass( "alert alert-block alert-error" );
-						else	
-							 $("#errorHeader").removeClass( "alert alert-block alert-error" );
-						                		 
-                		$("#errorHeader").html(msg); 
-                		
-                		$("#value").val("");
-                		
-                		$.fn.yiiGridView.update("parameter-grid"); 
+                		            		               		
+                		$("#value").val("");              		
+                		$.fn.yiiGridView.update("retest-grid"); 
                 	}',
                 	'error'=>'function(html){  console.log("fail");  }'
                 ) 
 		)); 
 
-
+		$this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'ajaxLink',
+		    'id'=>'addButton',
+		    'type'=>'info',
+		    'label'=>'ออกใบแจ้งหนี้',
+		    'icon'=>'plus-sign',
+		    'url'=>array('createInvoice'),
+		    'htmlOptions'=>array('class'=>'span6','style'=>'margin-top:23px;'),
+		    'ajaxOptions'=>array(
+		    	    
+		     	    'type' => 'POST',
+                	'data' => array('req_id' => 'js:$("#req_id").val()','sampling_no' => 'js:$("#sampling_no").val()','lot' => 'js:$("#lot").val()','num' => 'js:$("#sampling_num").val()'),
+                	'success' => 'function(msg){  
+                		            		               		
+                		$("#value").val("");              		
+                		$.fn.yiiGridView.update("retest-grid"); 
+                	}',
+                	'error'=>'function(html){  console.log("fail");  }'
+                ) 
+		)); 
 
 
 		?>
@@ -576,7 +614,7 @@
 			  			),
 			  			'sampling_num'=>array(
 							    'name' => 'sampling_num',										   
-								'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
+								'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
 								'htmlOptions'=>array('style'=>'text-align:center'),
 								
 			  			),
@@ -589,7 +627,7 @@
 			  			),
 			  			'cost'=>array(
 							    'name' => 'cost',										   
-								'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+								'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
 								'htmlOptions'=>array('style'=>'text-align:right'),
 								
 			  			),

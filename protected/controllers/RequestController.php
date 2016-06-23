@@ -31,7 +31,7 @@ class RequestController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','gentSamplingNo','getLot'),
+				'actions'=>array('create','update','gentSamplingNo','getLot','getSamplingNo','createTempRetest'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -140,6 +140,8 @@ class RequestController extends Controller
 				return $lot;
 	}
 
+
+
 	public function actionGetLot()
 	{
 		$id = $_POST["index"];
@@ -159,7 +161,38 @@ class RequestController extends Controller
 
 		 $data = CHtml::listData($data, 'id', 'name');
         
-        echo CHtml::tag('option', array('value' => ''), CHtml::encode("กรุณาเลือกวิธีการทดสอบ"), true);
+        echo CHtml::tag('option', array('value' => ''), CHtml::encode("เลือก lot"), true);
+  
+        foreach ($data as $value => $name) {            
+            echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+        }
+	}
+
+	public function actionGetSamplingNo()
+	{
+		$id = $_POST["index"];
+		$samplings = array();
+		$model = RequestStandard::model()->findByPk($id);
+
+	
+		$samplings = explode("-", $model->sampling_no);
+		$no_start = $this->get_numerics($samplings[0]);
+        $code = $this->get_string($samplings[0]);
+
+		$data = array();
+
+		for ($i=0; $i < $model->sampling_num ; $i++) { 
+					$data[] = array(
+                          'id'=> $code.$no_start,
+                          'name'=>$code.$no_start,
+                      );
+
+			$no_start++;		
+		}
+		
+
+		$data = CHtml::listData($data, 'id', 'name');    
+        echo CHtml::tag('option', array('value' => ''), CHtml::encode("เลือกหมายเลขตัวอย่าง"), true);
   
         foreach ($data as $value => $name) {            
             echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
@@ -332,6 +365,30 @@ class RequestController extends Controller
 	{
 		 $matches = preg_replace("/[^A-Z]/", '', $str);
     	 return ($matches);
+	}
+
+	public function actionCreateTempRetest()
+	{
+		$model = new TempRetest;
+	
+
+		if(isset($_POST['req_id']) && isset($_POST['lot']) && isset($_POST['sampling_no']) && isset($_POST['num']))
+		{
+			
+			$modelReqSD = RequestStandard::model()->findByPk($_POST['req_id']);
+			$cost = Labtype::model()->findByPk($modelReqSD->labtype_id)->cost * intval($_POST['num']);
+
+			$model->cost = $cost;
+			$model->sampling_num = intval($_POST['num']);
+			$model->sampling_no = $_POST['sampling_no'];
+			$model->lot_no = $_POST['lot'];
+			$model->request_standard_id = $_POST['req_id'];
+
+			$model->save();
+			
+
+		
+		}
 	}
 
 
@@ -529,7 +586,8 @@ class RequestController extends Controller
 
 
 		//clear temp table
-		Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
+		if (!Yii::app()->request->isAjaxRequest)	
+			Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
 
 		$this->render('create',array(
 			'model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3
@@ -732,8 +790,12 @@ class RequestController extends Controller
 
 
 		//clear temp table
-		Yii::app()->db->createCommand('DELETE FROM temp_sampling_no')->execute();
-		Yii::app()->db->createCommand('DELETE FROM temp_retests')->execute();
+		if (!Yii::app()->request->isAjaxRequest)
+		{
+			Yii::app()->db->createCommand('Truncate table temp_sampling_no')->execute();
+			Yii::app()->db->createCommand('Truncate table temp_retests')->execute();
+		}	
+		
 
 		$this->render('update',array(
 			'model'=>$model,'modelReqSD1'=>$modelReqSD1,'modelReqSD2'=>$modelReqSD2,'modelReqSD3'=>$modelReqSD3,'num'=>($i-1)
@@ -750,7 +812,14 @@ class RequestController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			if(isset($_GET['ajax']) && $_GET['ajax']=="retest-grid")
+			{
+				Yii::app()->db->createCommand('DELETE FROM temp_retests WHERE id='.$id)->execute();
+			}	
+			else
+			{
+				$this->loadModel($id)->delete();
+			}
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
