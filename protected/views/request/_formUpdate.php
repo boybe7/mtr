@@ -571,7 +571,7 @@
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
-                	'data' => array('req_id' => 'js:$("#req_id").val()','sampling_no' => 'js:$("#sampling_no").val()','lot' => 'js:$("#lot").val()','num' => 'js:$("#sampling_num").val()'),
+                	'data' => array('req_id' => $model->id),
                 	'success' => 'function(msg){  
                 		            		               		
                 		$("#value").val("");              		

@@ -1,24 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "invoices".
+ * This is the model class for table "retests".
  *
- * The followings are the available columns in table 'invoices':
+ * The followings are the available columns in table 'retests':
  * @property integer $id
- * @property string $invoice_no
+ * @property string $lot_no
+ * @property string $sampling_no
+ * @property integer $sampling_num
  * @property string $cost
- * @property string $bill_no
- * @property string $bill_date
- * @property integer $request_id
+ * @property string $invoice_no
+ * @property integer $request_standard_id
  */
-class Invoices extends CActiveRecord
+class Retest extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'invoices';
+		return 'retests';
 	}
 
 	/**
@@ -29,15 +30,13 @@ class Invoices extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('invoice_no, cost, request_id', 'required'),
-			array('request_id', 'numerical', 'integerOnly'=>true),
-			array('invoice_no, bill_no', 'length', 'max'=>200),
+			array('lot_no, sampling_no, sampling_num, cost, request_standard_id', 'required'),
+			array('sampling_num, request_standard_id', 'numerical', 'integerOnly'=>true),
+			array('lot_no, sampling_no, invoice_no', 'length', 'max'=>200),
 			array('cost', 'length', 'max'=>10),
-			array('invoice_no', 'unique'),
-			array('bill_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, invoice_no, cost, bill_no, bill_date, request_id', 'safe', 'on'=>'search'),
+			array('id, lot_no, sampling_no, sampling_num, cost, invoice_no, request_standard_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -49,7 +48,6 @@ class Invoices extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'request'=>array(self::BELONGS_TO, 'Request', 'request_id'),
 		);
 	}
 
@@ -60,11 +58,12 @@ class Invoices extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'invoice_no' => 'เลขที่ใบแจ้งชำระเงิน',
+			'lot_no' => 'เลข lot',
+			'sampling_no' => 'เลขตัวอย่าง',
+			'sampling_num' => 'จำนวนตัวอย่าง',
 			'cost' => 'ค่าธรรมเนียมทดสอบ',
-			'bill_no' => 'เลขที่ใบเสร็จรับเงิน',
-			'bill_date' => 'วันที่ชำระเงิน',
-			'request_id' => 'Request',
+			'invoice_no' => 'เลขที่ใบแจ้งชำระเงิน',
+			'request_standard_id' => 'Request Standard',
 		);
 	}
 
@@ -87,11 +86,12 @@ class Invoices extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('invoice_no',$this->invoice_no,true);
+		$criteria->compare('lot_no',$this->lot_no,true);
+		$criteria->compare('sampling_no',$this->sampling_no,true);
+		$criteria->compare('sampling_num',$this->sampling_num);
 		$criteria->compare('cost',$this->cost,true);
-		$criteria->compare('bill_no',$this->bill_no,true);
-		$criteria->compare('bill_date',$this->bill_date,true);
-		$criteria->compare('request_id',$this->request_id);
+		$criteria->compare('invoice_no',$this->invoice_no,true);
+		$criteria->compare('request_standard_id',$this->request_standard_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -102,7 +102,7 @@ class Invoices extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Invoices the static model class
+	 * @return Retest the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

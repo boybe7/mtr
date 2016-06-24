@@ -31,7 +31,7 @@ class RequestController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','gentSamplingNo','getLot','getSamplingNo','createTempRetest'),
+				'actions'=>array('create','update','gentSamplingNo','getLot','getSamplingNo','createTempRetest','createInvoice'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -138,6 +138,90 @@ class RequestController extends Controller
 			   
 
 				return $lot;
+	}
+
+	public function actionCreateInvoice()
+	{
+		$req_id = $_POST["req_id"];
+
+		$modelInvoice = new Invoices;
+		# find max invoice_no in table invoices
+		$m = Yii::app()->db->createCommand()
+	                    ->select('max(invoice_no) as max')
+	                    ->from('invoices') 
+	                    ->where('request_id='.$req_id)                                    
+	                    ->queryAll();
+
+	    $str =  explode("-" ,$m[0]["max"]);
+	 
+
+	    if(count($str)>1)
+	    {
+	    	$modelInvoice->invoice_no = $str[0]."-".(intval($str[1])+1);
+	    }   
+	    else{
+	    	$modelInvoice->invoice_no = $str[0]."-1";
+	    }
+
+	    #get sum cost in table temp_retests
+	    $m = Yii::app()->db->createCommand()
+	                    ->select('sum(cost) as sum')
+	                    ->from('temp_retests')                                    
+	                    ->queryAll();          
+	    
+	    $modelInvoice->cost = $m[0]["sum"];
+	    
+	    #save invoice
+	    $modelInvoice->request_id = $req_id;
+	    $modelInvoice->save();
+
+	    	
+
+	    #save retest
+	    $modelTemps  = TempRetest::model()->findAll();
+	    foreach ($modelTemps as $key => $m) {
+	    	$modelRetest = new Retest;
+	    	$modelRetest->lot_no = $m->lot_no;
+	    	$modelRetest->sampling_no = $m->sampling_no;
+	    	$modelRetest->sampling_num = $m->sampling_num;
+	    	$modelRetest->cost = $m->cost;
+	    	$modelRetest->request_standard_id = $m->request_standard_id;
+	    	$modelRetest->invoice_no = $modelInvoice->invoice_no;
+	    	$modelRetest->save();
+
+	    	$m->sampling_no = "C-7";
+
+	    	#update and insert result value
+	    	$modelResults = TestResultsValue::model()->findAll('sampling_no=:no', array(':no' => $m->sampling_no));
+	    	
+	    	foreach ($modelResults as $key => $mr) {
+	    		$mr->sampling_no = $mr->sampling_no."-1";
+	    		if($mr->value==$m->sampling_no)
+	    			$mr->value = $mr->sampling_no."-1";
+	    		$mr->save();   	
+
+	    		for ($i=1; $i <= $m->sampling_num ; $i++) { 
+	    			#insert
+	    			$modelResult = new TestResultsValue;
+	    			$modelResult = $mr;
+	    			$modelResult->sampling_no = $mr->sampling_no."-".($i);
+
+	    			if($mr->value==$m->sampling_no)
+	    				$modelResult->value = $$mr->sampling_no."-".($i);
+
+	    			$modelResult->save();
+
+	    		}
+	    		
+	    	}   
+
+	    }
+
+	    
+
+
+
+
 	}
 
 
