@@ -404,7 +404,7 @@
 	<?php
 	 		
             
-	 		$this->renderPartial('//requeststandard/_form', array(
+	 		$this->renderPartial('//requestStandard/_form', array(
                   'model' => $modelReqSD1,
                   'index' => 1,
                   'display' => 'block'
@@ -418,7 +418,7 @@
 	
 	<?php 		
 	 	
-            $this->renderPartial('//requeststandard/_form', array(
+            $this->renderPartial('//requestStandard/_form', array(
                   'model' => $modelReqSD2,
                   'index' => 2,
                   'display' => 'block'
@@ -431,7 +431,7 @@
 	<h5>ตัวอย่างทดสอบที่ 3</h5> 
     <?php        
 
-            $this->renderPartial('//requeststandard/_form', array(
+            $this->renderPartial('//requestStandard/_form', array(
                   'model' => $modelReqSD3,
                   'index' => 3,
                   'display' => 'block'

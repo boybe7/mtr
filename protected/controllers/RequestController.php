@@ -170,54 +170,111 @@ class RequestController extends Controller
 	                    ->queryAll();          
 	    
 	    $modelInvoice->cost = $m[0]["sum"];
+
 	    
-	    #save invoice
-	    $modelInvoice->request_id = $req_id;
-	    $modelInvoice->save();
+        $transaction=Yii::app()->db->beginTransaction();
+		try {
+	    
+			    #save invoice
+			    $modelInvoice->request_id = $req_id;
 
-	    	
+			 	
 
-	    #save retest
-	    $modelTemps  = TempRetest::model()->findAll();
-	    foreach ($modelTemps as $key => $m) {
-	    	$modelRetest = new Retest;
-	    	$modelRetest->lot_no = $m->lot_no;
-	    	$modelRetest->sampling_no = $m->sampling_no;
-	    	$modelRetest->sampling_num = $m->sampling_num;
-	    	$modelRetest->cost = $m->cost;
-	    	$modelRetest->request_standard_id = $m->request_standard_id;
-	    	$modelRetest->invoice_no = $modelInvoice->invoice_no;
-	    	$modelRetest->save();
+			    $sampling_no_list = "";	
 
-	    	$m->sampling_no = "C-7";
+			    #save retest
+			    $modelTemps  = TempRetest::model()->findAll();
+			    foreach ($modelTemps as $key => $m) {
+			    	$modelRetest = new Retest;
+			    	$modelRetest->lot_no = $m->lot_no;
+			    	$modelRetest->sampling_no = $m->sampling_no;
+			    	$modelRetest->sampling_num = $m->sampling_num;
+			    	$modelRetest->cost = $m->cost;
+			    	$modelRetest->request_standard_id = $m->request_standard_id;
+			    	$modelRetest->invoice_no = $modelInvoice->invoice_no;
+			    	$modelRetest->save();
 
-	    	#update and insert result value
-	    	$modelResults = TestResultsValue::model()->findAll('sampling_no=:no', array(':no' => $m->sampling_no));
-	    	
-	    	foreach ($modelResults as $key => $mr) {
-	    		$mr->sampling_no = $mr->sampling_no."-1";
-	    		if($mr->value==$m->sampling_no)
-	    			$mr->value = $mr->sampling_no."-1";
-	    		$mr->save();   	
+			    	$no_start = $this->get_numerics($m->sampling_no);
+		            $code = $this->get_string($m->sampling_no);
+		            //header('Content-type: text/plain');
+			    	$m->sampling_no = $code."-".$no_start;
+			    	
+			    	#update and insert result value
+			    	$modelResults = TestResultsValue::model()->findAll('sampling_no_fix=:no', array(':no' => $m->sampling_no));
 
-	    		for ($i=1; $i <= $m->sampling_num ; $i++) { 
-	    			#insert
-	    			$modelResult = new TestResultsValue;
-	    			$modelResult = $mr;
-	    			$modelResult->sampling_no = $mr->sampling_no."-".($i);
+			    	//get max retest no.
+			    	$mrmax = Yii::app()->db->createCommand()
+			                    ->select('max(sampling_no) as max')
+			                    ->from('test_results_values') 
+			                    ->where('sampling_no_fix="'.$m->sampling_no.'"')                                    
+			                    ->queryAll();
 
-	    			if($mr->value==$m->sampling_no)
-	    				$modelResult->value = $$mr->sampling_no."-".($i);
+			    	$rep = str_replace($m->sampling_no, "", $mrmax[0]["max"]);
+			    	$max_retest = empty($rep) ? 1 : $this->get_numerics($rep);
+			    	
+			    	$specimen_col = 1;
+			    	
+			    	foreach ($modelResults as $key => $mr) {
 
-	    			$modelResult->save();
+			    		$value_old = $mr->value;
+			    		if($mr->sampling_no == $mr->sampling_no_fix)
+			    		{
+			    			$mr->sampling_no = $code."-".$no_start."-1";
+			    			
+				    		if($specimen_col==1)
+				    			$mr->value = $code."-".$no_start."-1";
+				    		$mr->save();   	
+				
+			    		}
+			    		
+										
 
-	    		}
-	    		
-	    	}   
+			    		for ($i=1; $i <= $m->sampling_num ; $i++) { 
+			    			#insert
+			    			$modelResult = new TestResultsValue;
+			    			$modelResult->attributes = $mr->attributes;
+			    			$modelResult->sampling_no = $code."-".$no_start."-".($max_retest+$i);
+
+			    			if($specimen_col==1)
+			    			{
+			    				$modelResult->value = $code."-".$no_start."-".($max_retest+$i);
+			    				$sampling_no_list .= $modelResult->value.",";
+			    			}	
+
+			    			//print_r($value_old);
+							//echo " | ";
+
+			    			$modelResult->save();
+
+			    		}
+
+			    		$specimen_col++;
+			    		
+			    	}
+
+			    	//exit;   
+
+			    }
+
+
+			    $modelInvoice->sampling_no = $sampling_no_list;
+			    $modelInvoice->save();
+
+			    //clear temp table				
+				Yii::app()->db->createCommand('Truncate table temp_retests')->execute();
+	
+				
 
 	    }
-
-	    
+	    catch(Exception $e)
+	 	{
+	 				$transaction->rollBack();	
+	 				$model->addError('request', 'Error occured while saving requests.');
+	 				Yii::trace(CVarDumper::dumpAsString($e->getMessage()));
+	 	        	//you should do sth with this exception (at least log it or show on page)
+	 	        	Yii::log( 'Exception when saving data: ' . $e->getMessage(), CLogger::LEVEL_ERROR );
+	 
+	 	}           
 
 
 
@@ -896,9 +953,26 @@ class RequestController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			if(isset($_GET['ajax']) && $_GET['ajax']=="retest-grid")
+			if(isset($_GET['ajax']))
 			{
-				Yii::app()->db->createCommand('DELETE FROM temp_retests WHERE id='.$id)->execute();
+				if($_GET['ajax']=="retest-grid")
+				     Yii::app()->db->createCommand('DELETE FROM temp_retests WHERE id='.$id)->execute();
+
+				if($_GET['ajax']=="invoice-grid")
+				{
+
+					$model = Invoices::model()->findByPk($id);
+
+
+					//delete cascade table
+					Yii::app()->db->createCommand('DELETE FROM retests WHERE invoice_no="'.$model->invoice_no.'"')->execute(); 
+					Yii::app()->db->createCommand('DELETE FROM test_results_values WHERE id='.$id)->execute(); 
+
+					//delete invoice
+					Yii::app()->db->createCommand('DELETE FROM invoices WHERE id='.$id)->execute(); 
+
+				}
+				     
 			}	
 			else
 			{

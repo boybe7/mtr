@@ -436,7 +436,7 @@
 	
 	<?php 		
 	 	
-            $this->renderPartial('//requeststandard/_formUpdate', array(
+            $this->renderPartial('//requestStandard/_formUpdate', array(
                   'model' => $modelReqSD2,
                   'index' => 2,
                   'display' => 'block'
@@ -454,7 +454,7 @@
 	<h5>ตัวอย่างทดสอบที่ 3</h5> 
     <?php        
 
-            $this->renderPartial('//requeststandard/_formUpdate', array(
+            $this->renderPartial('//requestStandard/_formUpdate', array(
                   'model' => $modelReqSD3,
                   'index' => 3,
                   'display' => 'block'
@@ -637,6 +637,46 @@
 						array(
 							'class'=>'bootstrap.widgets.TbButtonColumn',
 							'template' => '{delete}'
+						),
+					),
+				)); 
+
+	?>  
+
+	 <h5>รายการใบแจ้งหนี้</h5> 
+	      <?php
+			$this->widget('bootstrap.widgets.TbGridView',array(
+					'id'=>'invoice-grid',
+					'type'=>'bordered condensed',
+					'selectableRows' =>2,
+					'htmlOptions'=>array('style'=>'padding-top:5px'),
+				    'enablePagination' => true,
+				    'summaryText'=>'แสดงผล {start} ถึง {end} จากทั้งหมด {count} ข้อมูล',
+				    'template'=>"{items}<div class='row-fluid'><div class='span6'>{pager}</div><div class='span6'>{summary}</div></div>",
+					'dataProvider'=>Invoices::model()->searchByRequest($model->id),
+					
+					'columns'=>array(
+						
+						'invoice_no'=>array(
+							    'name' => 'invoice_no',										   
+								'headerHtmlOptions' => array('style' => 'width:65%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:center'),
+								
+			  			),
+			  			'cost'=>array(
+							    'name' => 'cost',										   
+								'headerHtmlOptions' => array('style' => 'width:25%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:right'),
+								
+			  			),
+						array(
+							'class'=>'bootstrap.widgets.TbButtonColumn',
+							'template' => '{delete}',
+							'buttons'=>array(
+				                'delete' => array(
+				                    'visible'  => 'Invoices::canDelete($data->invoice_no)',
+				                )
+				            ),
 						),
 					),
 				)); 

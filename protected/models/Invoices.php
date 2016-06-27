@@ -37,7 +37,7 @@ class Invoices extends CActiveRecord
 			array('bill_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, invoice_no, cost, bill_no, bill_date, request_id', 'safe', 'on'=>'search'),
+			array('id, invoice_no, cost, bill_no, bill_date, request_id,sampling_no', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +65,7 @@ class Invoices extends CActiveRecord
 			'bill_no' => 'เลขที่ใบเสร็จรับเงิน',
 			'bill_date' => 'วันที่ชำระเงิน',
 			'request_id' => 'Request',
+			'sampling_no'=>'sampling_no'
 		);
 	}
 
@@ -96,6 +97,31 @@ class Invoices extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	public function searchByRequest($id)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('invoice_no',$this->invoice_no,true);
+		$criteria->compare('cost',$this->cost,true);
+		$criteria->compare('bill_no',$this->bill_no,true);
+		$criteria->compare('bill_date',$this->bill_date,true);
+		$criteria->compare('request_id',$id);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	public function canDelete($no)
+	{
+
+		$can = strpos($no, "-");
+		return $can;
 	}
 
 	/**
