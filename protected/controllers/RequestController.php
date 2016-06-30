@@ -104,6 +104,16 @@ class RequestController extends Controller
 				return $mat;
 	}
 
+	public function getReqNo($data,$row)
+	{
+		
+				$models=Invoices::model()->findAll('request_id=:id', array(':id' => $data->id));  
+				if(count($models)>1)
+					return $data->request_no."  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
+				else
+					return $data->request_no;
+	}
+
 	
 
 	public function getLot($data,$row)
@@ -358,7 +368,7 @@ class RequestController extends Controller
 		   	    	$amount = $_POST["sampling_num"];
 
 		   	    	$m2 = Yii::app()->db->createCommand()
-	                    ->select('max(sampling_no) as max')
+	                    ->select('MAX( CONVERT(SUBSTRING(sampling_no, LOCATE('-', sampling_no) + 1), SIGNED INTEGER)) as max')
 	                    ->from('temp_sampling_no') 
 	                    ->where('sampling_no LIKE "%'.$sampling_code.'%" AND id<'.$no)                                    
 	                    ->queryAll();
@@ -410,7 +420,7 @@ class RequestController extends Controller
 	                {
 
 	                	$m = Yii::app()->db->createCommand()
-		                    ->select('max(sampling_no_fix) as max')
+		                    ->select('MAX(CAST(SUBSTRING_INDEX(sampling_no_fix, '-', -1) AS UNSIGNED)) as max')
 		                    ->from('test_results_values') 
 		                    ->where('sampling_no LIKE "%'.$sampling_code.'%"')                                    
 		                    ->queryAll();
@@ -455,7 +465,7 @@ class RequestController extends Controller
 			                 		  //if($mcode[0]!=$code)
 			                 		  //{
 			                 		  	$m3 = Yii::app()->db->createCommand()
-							                    ->select('max(sampling_no) as max')
+							                    ->select('MAX(CAST(SUBSTRING_INDEX(sampling_no, '-', -1) AS UNSIGNED)) as max')
 							                    ->from('temp_sampling_no') 
 							                    ->where('sampling_no LIKE "%'.$mcode[0].'%" AND id<'.$m->id)                                    
 							                    ->queryAll();
@@ -662,9 +672,9 @@ class RequestController extends Controller
 	              		  	  	  	  	  	 if(!$modelResult->save())
 	              		  	  	  	  	  	 	$saveOK = false;
 
-	  //             		  	  	  	  	  	   		          	  	  header('Content-type: text/plain');
-			// print_r($modelResult);
-			// exit;
+	          //     		  	  	  	  	  	   		          	  	  header('Content-type: text/plain');
+			 //print_r($modelResult);
+			 //exit;
 
 
               		  	  	  	  	  	 }
@@ -696,15 +706,21 @@ class RequestController extends Controller
 						$saveOK = false;
 
 
-					//exit;
-					if($saveOK)
-					{	
+					//save reslut header
+					$modelHeader = new TestResultsHeaders;
+					$modelHeader->request_id = $model->id;
+					if(!$modelHeader->save())
+						$saveOK = false;
+
+
 				     	
-				     	
+			// 	     	header('Content-type: text/plain');
+			// print_r($modelHeader);
+			// exit;
 				     	$transaction->commit();
 				     	$this->redirect(array('index'));	
 
-				    } 	
+				 
 				}
 
 				 
@@ -747,12 +763,20 @@ class RequestController extends Controller
 		$modelReqSD2 = new RequestStandard;
 		$modelReqSD3 = new RequestStandard;
 
+		$min = "";
+		$max1 = "";
+		$max2 = "";
+		$max3 = "";
+
 		$modelReqSDs = RequestStandard::model()->findAll( array("condition"=>"request_id=".$id));
 		$i = 1;
 		foreach ($modelReqSDs as $key => $m) {
 			switch ($i) {
 				case 1:
 					$modelReqSD1 = $m;
+					$ss = explode("-",$modelReqSD1->sampling_no);
+					$max1 = count($ss)==1 ? $ss[0] : $ss[1];
+					$min = $ss[0];
 					break;
 				
 				case 2:
@@ -806,11 +830,13 @@ class RequestController extends Controller
             $transaction=Yii::app()->db->beginTransaction();
 		    try {
 
+		    	$costSum = 0;
+
 		    	if($model->save())
 				{
 					$modelRequests = $_POST['RequestStandard'];    
 
-
+					
 					
 					//header('Content-type: text/plain');
 					$i = 0;
@@ -823,6 +849,9 @@ class RequestController extends Controller
               		  	  $mr->request_id = $model->id;
               		  	  if($mr->save())
               		  	  {
+              		  	  	  //sum cost
+              		  	  	  $costSum += $mr->cost;
+
               		  	  	  //get lot_no
               		  	  	  $modelInputs = LabtypeInput::model()->findAll( array("condition"=>"labtype_id=".$mr->labtype_id));
               		  	  	  $lots = explode(",", $mr->lot_no);
@@ -901,14 +930,26 @@ class RequestController extends Controller
 					   $i++;	
 					}
 
+					//save invoices
+					
+
+					$modelInvoice =	Invoices::model()->findAll( array("condition"=>"request_id=".$id));            
+		
+					$modelInvoice[0]->cost += $costSum;
+   
+
+
+					if(!$modelInvoice[0]->save())
+						$saveOK = false;
+
 
 					//exit;
-					if($saveOK)
-					{	
+					//if($saveOK)
+					//{	
 				     	$transaction->commit();
 				     	$this->redirect(array('index'));	
 
-				    } 	
+				    //} 	
 				}
 
 				 
@@ -935,7 +976,9 @@ class RequestController extends Controller
 		{
 			Yii::app()->db->createCommand('Truncate table temp_sampling_no')->execute();
 			Yii::app()->db->createCommand('Truncate table temp_retests')->execute();
-		}	
+		}
+
+
 		
 
 		$this->render('update',array(
@@ -966,8 +1009,20 @@ class RequestController extends Controller
 
 					//delete cascade table
 					Yii::app()->db->createCommand('DELETE FROM retests WHERE invoice_no="'.$model->invoice_no.'"')->execute(); 
-					Yii::app()->db->createCommand('DELETE FROM test_results_values WHERE id='.$id)->execute(); 
+					//header('Content-type: text/plain');
+					$sampling_no = explode(",", $model->sampling_no);
+					//print_r($model);
+					foreach ($sampling_no as $key => $value) {
+						if($value!="")
+						{
+							//echo $value;
+							Yii::app()->db->createCommand('DELETE FROM test_results_values WHERE sampling_no="'.$value.'"')->execute(); 
+						}
+						//
 
+					}
+					//exit;
+					
 					//delete invoice
 					Yii::app()->db->createCommand('DELETE FROM invoices WHERE id='.$id)->execute(); 
 

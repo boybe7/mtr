@@ -116,7 +116,7 @@
 												'url'=>CController::createUrl('./labtype/getLabtypeByMaterial'), 		
 												'update'=>'#RequestStandard_'.$index.'_labtype_id', //selector to update
 										
-											)
+											),'disabled'=>true
 
 											)); 
 			        
@@ -155,7 +155,7 @@
 												'url'=>CController::createUrl('./standard/getStandardByLabtype'), 
 												'update'=>'#RequestStandard_'.$index.'_standard_id', //selector to update
 										
-											))); 
+											),'disabled'=>true)); 
 			        echo CHtml::error($model, '[' . $index . ']labtype_id',array('class'=>'help-block error')); 
 			 ?>
 		</div>
@@ -178,7 +178,7 @@
 			    } 
 
 			    $typelist = CHtml::listData($data,'value','text');
-              	 echo CHtml::activeDropDownList($model, '[' . $index . ']standard_id',$typelist, array('class'=>'span12','empty'=>''));
+              	 echo CHtml::activeDropDownList($model, '[' . $index . ']standard_id',$typelist, array('class'=>'span12','empty'=>'','disabled'=>true));
               ?>
               <?php echo CHtml::error($model, '[' . $index . ']standard_id',array('class'=>'help-block error')); ?>
         </div>  
@@ -196,7 +196,7 @@
 <div class="row-fluid">
         	<div class="span12">		  
         	  <?php echo CHtml::activeLabelEx($model, '[' . $index . ']lot_no'); ?>
-              <?php echo CHtml::activeTextArea($model, '[' . $index . ']lot_no', array('rows'=>2, 'class'=>'span12')); ?>
+              <?php echo CHtml::activeTextArea($model, '[' . $index . ']lot_no', array('rows'=>2, 'class'=>'span12','readonly'=>true)); ?>
               <?php echo CHtml::error($model, '[' . $index . ']lot_no',array('class'=>'help-block error')); ?>
             </div>  
             
@@ -210,12 +210,12 @@
             </div>  
         	<div class="span3">		  
         	  <?php echo CHtml::activeLabelEx($model, '[' . $index . ']sampling_num'); ?>
-              <?php echo CHtml::activeTextField($model, '[' . $index . ']sampling_num', array( 'style'=>'text-align:right', 'class'=>'span12')); ?>
+              <?php echo CHtml::activeTextField($model, '[' . $index . ']sampling_num', array( 'style'=>'text-align:right', 'class'=>'span12','readonly'=>true)); ?>
               <?php echo CHtml::error($model, '[' . $index . ']sampling_num',array('class'=>'help-block error')); ?>
             </div>  
             <div class="span6">	
 			   <?php echo CHtml::activeLabelEx($model, '[' . $index . ']sampling_no'); ?>
-			   <?php echo CHtml::activeTextField($model, '[' . $index . ']sampling_no', array('size' => 20, 'maxlength' => 255,'class'=>'span12')); ?>
+			   <?php echo CHtml::activeTextField($model, '[' . $index . ']sampling_no', array('size' => 20, 'maxlength' => 255,'class'=>'span12','readonly'=>true)); ?>
 			   <?php echo CHtml::error($model, '[' . $index . ']sampling_no',array('class'=>'help-block error')); ?>
             </div>  
 </div>     

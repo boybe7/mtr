@@ -349,7 +349,7 @@ if(!Yii::app()->user->isGuest)
             'type'=>'inverse', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
             'buttons'=>array(
                     //array('label'=>Yii::app()->user->title.Yii::app()->user->firstname." ".Yii::app()->user->lastname,'icon'=>Yii::app()->user->usertype, 'url'=>'#'),
-                    array('label'=>Yii::app()->user->name,'icon'=>Yii::app()->user->usertype, 'url'=>'#'),
+                    array('label'=>Yii::app()->user->name,'icon'=>"icon-white icon-user", 'url'=>'#'),
                     //array('label'=>Yii::app()->user->username,'icon'=>Yii::app()->user->usertype, 'url'=>'#'),
                     array('items'=>array(
                         array('label'=>'เปลี่ยนรหัสผ่าน','icon'=>'cog', 'url'=>array('/user/password/'.Yii::app()->user->ID), 'visible'=>!Yii::app()->user->isGuest()),

@@ -371,7 +371,9 @@
 		    'htmlOptions'=>array(
 		        'onclick'=>'     
 		             num =  parseInt($("#num_sample").val()) - 1;
-		             if(num>0)
+		             //console.log(num);
+		             //console.log(parseInt($("#num_sample").val()));
+		             if(num >= parseInt($("#num_sample_old").val()) && num>0)
 		             {
 		             	$("#num_sample").val(num+"");
 		             	//console.log(num)
@@ -392,11 +394,12 @@
 		    'htmlOptions'=>array(
 		        'onclick'=>'     
 		             num =  parseInt($("#num_sample").val()) + 1;
-		             if(num<4)
+		             if( num<4)
 		             {
 		             	$("#num_sample").val(num+"");
 		             	//console.log(num)
 		             	$("#index"+num).show();
+		             	//console.log(parseInt($("#num_sample").val()));
 		           	 }
 		                    ',
 		        'class'=>'pull-right'
@@ -405,6 +408,7 @@
 	?>	  
 
 	<input type="hidden" id="num_sample" name="num_sample" value="<?php echo $num;?>">
+	<input type="hidden" id="num_sample_old" name="num_sample_old" value="<?php echo $num;?>">
 
 	<div style="margin-top:40px;">
     
@@ -413,7 +417,7 @@
 	<?php
 	 		
             
-	 		$this->renderPartial('//requeststandard/_formUpdate', array(
+	 		$this->renderPartial('//requestStandard/_formUpdate', array(
                   'model' => $modelReqSD1,
                   'index' => 1,
                   'display' => 'block'
@@ -435,7 +439,13 @@
 	 <h5>ตัวอย่างทดสอบที่ 2</h5>
 	
 	<?php 		
-	 	
+	 	if(2>$num)
+	 		$this->renderPartial('//requestStandard/_form', array(
+                  'model' => $modelReqSD2,
+                  'index' => 2,
+                  'display' => 'block'
+             ));  
+	 	else	
             $this->renderPartial('//requestStandard/_formUpdate', array(
                   'model' => $modelReqSD2,
                   'index' => 2,
@@ -453,7 +463,13 @@
       <hr>
 	<h5>ตัวอย่างทดสอบที่ 3</h5> 
     <?php        
-
+    	if(3>$num)
+	 		$this->renderPartial('//requestStandard/_form', array(
+                  'model' => $modelReqSD3,
+                  'index' => 3,
+                  'display' => 'block'
+             ));  
+	 	else	
             $this->renderPartial('//requestStandard/_formUpdate', array(
                   'model' => $modelReqSD3,
                   'index' => 3,
@@ -576,6 +592,7 @@
                 		            		               		
                 		$("#value").val("");              		
                 		$.fn.yiiGridView.update("retest-grid"); 
+                		$.fn.yiiGridView.update("invoice-grid"); 
                 	}',
                 	'error'=>'function(html){  console.log("fail");  }'
                 ) 

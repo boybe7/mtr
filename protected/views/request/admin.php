@@ -10,6 +10,39 @@ $this->breadcrumbs=array(
 
 
 <?php
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType'=>'link',
+    
+    'type'=>'info',
+    'label'=>'ยกเลิก',
+    'icon'=>'off',
+    //'url'=>array('delAll'),
+    //'htmlOptions'=>array('id'=>"buttonDel2",'class'=>'pull-right'),
+    'htmlOptions'=>array(
+        'style'=>'margin:0px 0px 0px 0px;',
+        'onclick'=>'      
+                       //console.log($.fn.yiiGridView.getSelection("labtype-grid").length);
+                       if($.fn.yiiGridView.getSelection("labtype-grid").length==0)
+                       		js:bootbox.alert("กรุณาเลือกแถวข้อมูลที่ต้องการลบ?","ตกลง");
+                       else  
+                          js:bootbox.confirm("คุณต้องการจะลบข้อมูล?","ยกเลิก","ตกลง",
+			                   function(confirmed){
+			                   	 	
+			                   	 //console.log("Confirmed: "+confirmed);
+			                   	 //console.log($.fn.yiiGridView.getSelection("user-grid"));
+                                if(confirmed)
+			                   	 $.ajax({
+										type: "POST",
+										url: "deleteSelected",
+										data: { selectedID: $.fn.yiiGridView.getSelection("labtype-grid")}
+										})
+										.done(function( msg ) {
+											$("#labtype-grid").yiiGridView("update",{});
+										});
+			                  })',
+        'class'=>'pull-right'
+    ),
+)); 
 
 
 $this->widget('bootstrap.widgets.TbButton', array(
@@ -17,7 +50,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
     
     'type'=>'warning',
     'label'=>'ปิดงาน',
-    'icon'=>'ok-sign',
+    'icon'=>'ban-circle',
     //'url'=>array('template'),
     'htmlOptions'=>array('class'=>'pull-right','style'=>'margin:0px 10px 0px 10px;',
     		'onclick'=>'
@@ -75,6 +108,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
 
 
+
  $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'labtype-grid',
 	'dataProvider'=>$model->search(),
@@ -98,6 +132,8 @@ $this->widget('bootstrap.widgets.TbButton', array(
         ),
         'request_no'=>array(
 			    'name' => 'request_no',
+			    'type'=>"raw",
+			    'value'=>array($this,'getReqNo'), 
 			    'filter'=>CHtml::activeTextField($model, 'request_no',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("request_no"))),
 				'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:center;')
@@ -152,4 +188,8 @@ $this->widget('bootstrap.widgets.TbButton', array(
 			
 		),
 	),
-)); ?>
+)); 
+
+
+echo "หมายเหตุ :  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>  มีการทดสอบเพิ่ม";
+?>
