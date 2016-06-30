@@ -368,7 +368,7 @@ class RequestController extends Controller
 		   	    	$amount = $_POST["sampling_num"];
 
 		   	    	$m2 = Yii::app()->db->createCommand()
-	                    ->select('MAX( CONVERT(SUBSTRING(sampling_no, LOCATE('-', sampling_no) + 1), SIGNED INTEGER)) as max')
+	                    ->select('MAX(CONVERT(SUBSTRING_INDEX(sampling_no,"-",-1),UNSIGNED INTEGER)) as max')
 	                    ->from('temp_sampling_no') 
 	                    ->where('sampling_no LIKE "%'.$sampling_code.'%" AND id<'.$no)                                    
 	                    ->queryAll();
@@ -379,8 +379,8 @@ class RequestController extends Controller
 	                {
 	               		
 	               		$mm = TempSamplingNo::model()->findByPk($no);
-	               		$r = explode("-", $m2[0]["max"]);
-			            $codemax = $r[1];
+	               		//$r = explode("-", $m2[0]["max"]);
+			            $codemax = $m2[0]["max"];
 			            $max_no = intval($codemax) + $amount;
 	               		
 	               		if(empty($mm))
@@ -420,13 +420,15 @@ class RequestController extends Controller
 	                {
 
 	                	$m = Yii::app()->db->createCommand()
-		                    ->select('MAX(CAST(SUBSTRING_INDEX(sampling_no_fix, '-', -1) AS UNSIGNED)) as max')
+		                    ->select('MAX(CONVERT(SUBSTRING_INDEX(sampling_no_fix,"-",-1),UNSIGNED INTEGER)) as max')
 		                    ->from('test_results_values') 
 		                    ->where('sampling_no LIKE "%'.$sampling_code.'%"')                                    
 		                    ->queryAll();
-
-		                $num =  explode("-", $m[0]["max"]);     
-		                $max_no = ($m[0]["max"]==null) ? 0 : intval($num[1]) ;
+		                //header('Content-type: text/plain');
+						//				print_r($m);
+						//				exit;    
+		                //$num =  explode("-", $m[0]["max"]);     
+		                $max_no = intval($m[0]["max"]) ;
 
 		                $model = TempSamplingNo::model()->findByPk($no);
 		                if(empty($model))
@@ -465,7 +467,7 @@ class RequestController extends Controller
 			                 		  //if($mcode[0]!=$code)
 			                 		  //{
 			                 		  	$m3 = Yii::app()->db->createCommand()
-							                    ->select('MAX(CAST(SUBSTRING_INDEX(sampling_no, '-', -1) AS UNSIGNED)) as max')
+							                    ->select('MAX(CONVERT(SUBSTRING_INDEX(sampling_no,"-",-1),UNSIGNED INTEGER)) as max')
 							                    ->from('temp_sampling_no') 
 							                    ->where('sampling_no LIKE "%'.$mcode[0].'%" AND id<'.$m->id)                                    
 							                    ->queryAll();
@@ -475,7 +477,8 @@ class RequestController extends Controller
 										//print_r($str.);
 										//exit;
 
-							            $max = empty($str) || $str[0]==0 ? 0 : intval($str[1]);
+							            //$max = empty($str) || $str[0]==0 ? 0 : intval($str[1]);
+										$max = intval($m3[0]["max"]);
 
 			                    		$m->sampling_no = $mcode[0]."-".($max+ $m->num);
 				                    	$m->save();
