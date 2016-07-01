@@ -31,7 +31,7 @@ class RequestController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','gentSamplingNo','getLot','getSamplingNo','createTempRetest','createInvoice'),
+				'actions'=>array('create','update','gentSamplingNo','getLot','getSamplingNo','createTempRetest','createInvoice','close','cancel'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -108,10 +108,43 @@ class RequestController extends Controller
 	{
 		
 				$models=Invoices::model()->findAll('request_id=:id', array(':id' => $data->id));  
+				$mm = new Invoices;
+				$i = 0;
+				foreach ($models as $key => $value) {
+					if($i==0)
+					{
+						$mm = $value;
+						
+					}
+				}
+
+
 				if(count($models)>1)
-					return $data->request_no."  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
+					return "<a href='../invoices/print/".$mm->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
 				else
-					return $data->request_no;
+					return "<a href='../invoices/print/".$mm->id."'>".$data->request_no."</a>";
+	}
+
+	public function getStatus($data,$row)
+	{
+		
+			switch ($data->status) {
+				case 1:
+					return "เปิด";
+					break;
+
+				case 2:
+					return "ปิด";
+					break;
+
+				case 3:
+					return "ยกเลิก";
+					break;		
+				
+				default:
+					# code...
+					break;
+			}
 	}
 
 	
@@ -717,7 +750,7 @@ class RequestController extends Controller
 
 
 				     	
-			// 	     	header('Content-type: text/plain');
+			 	     	//header('Content-type: text/plain');
 			// print_r($modelHeader);
 			// exit;
 				     	$transaction->commit();
@@ -847,9 +880,13 @@ class RequestController extends Controller
 						
               		  if($i<$num_sample)	
               		  {
-              		  	  $mr = new RequestStandard;
-              		  	  $mr->attributes = $attributes;
-              		  	  $mr->request_id = $model->id;
+              		  	  
+              		  	  	$mr = new RequestStandard;
+              		  	 	$mr->attributes = $attributes;
+              		  	  	$mr->request_id = $model->id;
+
+
+
               		  	  if($mr->save())
               		  	  {
               		  	  	  //sum cost
@@ -1065,6 +1102,42 @@ class RequestController extends Controller
             }
         }    
     }
+
+    public function actionClose()
+    {
+    	$autoIdAll = $_POST['selectedID'];
+        if(count($autoIdAll)>0)
+        {
+            foreach($autoIdAll as $autoId)
+            {
+                $model = $this->loadModel($autoId);
+                $model->status = 2;
+                $model->save();
+                
+                 
+            }
+        }    
+    }
+
+    public function actionCancel()
+    {
+    	$autoIdAll = $_POST['selectedID'];
+    	$comment = str_replace("comment=&comment=", "", urldecode($_POST['data']));
+        if(count($autoIdAll)>0)
+        {
+            foreach($autoIdAll as $autoId)
+            {
+                $model = $this->loadModel($autoId);
+                $model->status = 3;
+                $model->note .= "(ยกเลิก '".$comment."')";
+                $model->save();
+                
+                 
+            }
+        }    
+    }
+
+   
 
 	/**
 	 * Lists all models.

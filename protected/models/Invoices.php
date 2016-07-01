@@ -117,7 +117,7 @@ class Invoices extends CActiveRecord
 		));
 	}
 
-	public function canDelete($no)
+	public static function canDelete($no)
 	{
 
 		$can = strpos($no, "-");

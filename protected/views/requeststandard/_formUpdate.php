@@ -86,7 +86,9 @@
 		<div class="span3">		
 			<?php
 
-				 	//echo $form->textFieldRow($model,'material_id',array('class'=>'span5')); 
+				 	echo CHtml::activeHiddenField($model,'[' . $index . ']id', array("value" => $model->id));
+
+
 
 				  	$materialModels = Yii::app()->db->createCommand()
 			                        ->select('id,name')

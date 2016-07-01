@@ -23,23 +23,31 @@ $this->widget('bootstrap.widgets.TbButton', array(
         'onclick'=>'      
                        //console.log($.fn.yiiGridView.getSelection("labtype-grid").length);
                        if($.fn.yiiGridView.getSelection("labtype-grid").length==0)
-                       		js:bootbox.alert("กรุณาเลือกแถวข้อมูลที่ต้องการลบ?","ตกลง");
+                       		js:bootbox.alert("กรุณาเลือกแถวข้อมูลที่ต้องการยกเลิก?","ตกลง");
                        else  
-                          js:bootbox.confirm("คุณต้องการจะลบข้อมูล?","ยกเลิก","ตกลง",
-			                   function(confirmed){
-			                   	 	
-			                   	 //console.log("Confirmed: "+confirmed);
-			                   	 //console.log($.fn.yiiGridView.getSelection("user-grid"));
-                                if(confirmed)
-			                   	 $.ajax({
-										type: "POST",
-										url: "deleteSelected",
-										data: { selectedID: $.fn.yiiGridView.getSelection("labtype-grid")}
-										})
-										.done(function( msg ) {
-											$("#labtype-grid").yiiGridView("update",{});
-										});
-			                  })',
+                       {
+
+                       		 	js:bootbox.confirm($("#modal-body2").html(),"ยกเลิก","ตกลง",
+                                       
+
+                                        function(confirmed){
+                                        	if(confirmed)
+                                        	{
+                                        		    
+				                               	 	$.ajax({
+														 type: "POST",
+														 url: "cancel",
+														 data: { selectedID: $.fn.yiiGridView.getSelection("labtype-grid"),data:$(".modal-body #note-form").serialize()}
+													 })
+													 .done(function( msg ) {
+														 	$("#labtype-grid").yiiGridView("update",{});
+													});
+
+                                        	}	
+                                        }
+                                    );  
+
+                       }',
         'class'=>'pull-right'
     ),
 )); 
@@ -54,8 +62,21 @@ $this->widget('bootstrap.widgets.TbButton', array(
     //'url'=>array('template'),
     'htmlOptions'=>array('class'=>'pull-right','style'=>'margin:0px 10px 0px 10px;',
     		'onclick'=>'
-    			console.log($.fn.yiiGridView.getSelection("labtype-grid"))
+    			//console.log($.fn.yiiGridView.getSelection("labtype-grid"))
+    			  		if($.fn.yiiGridView.getSelection("labtype-grid").length==0)
+                       	  js:bootbox.alert("กรุณาเลือกรายการที่ต้องการปิดงาน?","ตกลง");	
+                       else 
+                       {  
+                       		$.ajax({
+								type: "POST",
+								url: "close",
+								data: { selectedID: $.fn.yiiGridView.getSelection("labtype-grid")}
+							})
+							.done(function( msg ) {
+								$("#labtype-grid").yiiGridView("update",{});
+							});
 
+                       }
     		'
     	),
 )); 
@@ -71,7 +92,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
 )); 
 
-$this->widget('bootstrap.widgets.TbButton', array(
+/*$this->widget('bootstrap.widgets.TbButton', array(
     'buttonType'=>'link',
     
     'type'=>'danger',
@@ -104,7 +125,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 			                  })',
         'class'=>'pull-right'
     ),
-)); 
+)); */
 
 
 
@@ -178,7 +199,14 @@ $this->widget('bootstrap.widgets.TbButton', array(
 				'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),
-		
+		'status'=>array(
+			    'name' => 'status',
+			    
+			    'value'=>array($this,'getStatus'), 
+			    'filter' => CHtml::dropDownList('Request[status]', '',array("1"=>"เปิด","2"=>"ปิด","3"=>"ยกเลิก"),array('empty' => '  ')),
+				'headerHtmlOptions' => array('style' => 'width:5%;text-align:center;'),  	            	  	
+				'htmlOptions'=>array('style'=>'text-align:center;')
+	  	),
 		
 		
 		array(
@@ -193,3 +221,16 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
 echo "หมายเหตุ :  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>  มีการทดสอบเพิ่ม";
 ?>
+<div id="modal-content" class="modal hide">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  
+    <div id="modal-body2" class='modal-body'>
+         <div>หมายเหตุ :</div> 
+         <form id="note-form" accept-charset="UTF-8">
+         	
+         <textarea class='span5' rows=4 cols=4 name='comment' id='comment'></textarea>
+        </form>
+    </div>
+  
+</div>
