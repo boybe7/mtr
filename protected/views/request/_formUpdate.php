@@ -675,7 +675,9 @@
 					'columns'=>array(
 						
 						'invoice_no'=>array(
-							    'name' => 'invoice_no',										   
+							    'name' => 'invoice_no',		
+							    'type'=>"raw",
+			    				'value'=>'CHtml::link($data->invoice_no,array("invoices/print","id"=>$data->id))', 								   
 								'headerHtmlOptions' => array('style' => 'width:65%;text-align:center;'),  	            	  	
 								'htmlOptions'=>array('style'=>'text-align:center'),
 								

@@ -32,8 +32,6 @@ $formula_str = $output->formula;
 
 function avg()
 {
-    //print_r(func_get_args());
-
     echo $result = array_sum(func_get_args())/count(func_get_args());
 }
 

@@ -29,7 +29,7 @@ class LabtypeInput extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, col_index, type, labtype_id', 'required'),
+			array('name, col_index, type, labtype_id,self_header,decimal_display', 'required'),
 			array('labtype_id', 'numerical', 'integerOnly'=>true),
 			array('name, formula', 'length', 'max'=>200),
 			array('col_index', 'length', 'max'=>2),
@@ -37,7 +37,7 @@ class LabtypeInput extends CActiveRecord
 			array('col_index+labtype_id', 'application.extensions.uniqueMultiColumnValidator'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, col_index, formula, type, labtype_id', 'safe', 'on'=>'search'),
+			array('id, name, col_index, formula, type, labtype_id,self_header,decimal_display', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +64,8 @@ class LabtypeInput extends CActiveRecord
 			'formula' => 'สูตรคำนวณ',
 			'type' => 'ประเภท (header,raw)',
 			'labtype_id' => 'วิธีการทดสอบ',
+			'self_header'=>'self_header',
+			'decimal_display'=>'ทศนิยม'
 		);
 	}
 
@@ -91,6 +93,8 @@ class LabtypeInput extends CActiveRecord
 		$criteria->compare('formula',$this->formula,true);
 		$criteria->compare('type',$this->type,true);
 		$criteria->compare('labtype_id',$this->labtype_id);
+		$criteria->compare('self_header',$this->self_header);
+		$criteria->compare('decimal_display',$this->decimal_display);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -109,6 +113,8 @@ class LabtypeInput extends CActiveRecord
 		$criteria->compare('formula',$this->formula,true);
 		$criteria->compare('type',$typeID,true);
 		$criteria->compare('labtype_id',$id);
+		$criteria->compare('self_header',$this->self_header);
+		$criteria->compare('decimal_display',$this->decimal_display);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -31,7 +31,7 @@ class RequestController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','gentSamplingNo','getLot','getSamplingNo','createTempRetest','createInvoice','close','cancel'),
+				'actions'=>array('create','update','gentSamplingNo','getInvoiceNo','getLot','getSamplingNo','createTempRetest','createInvoice','close','cancel'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -124,6 +124,7 @@ class RequestController extends Controller
 				else
 					return "<a href='../invoices/print/".$mm->id."'>".$data->request_no."</a>";
 	}
+
 
 	public function getStatus($data,$row)
 	{

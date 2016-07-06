@@ -67,18 +67,24 @@
 <h5>Raw</h5>
 <div id="errorRaw" name="errorRaw" class=""></div>
 <div class="row-fluid">
- 	<div class="span5">
+ 	<div class="span4">
 		<?php 
 		        echo CHtml::textField('nameRaw', '',array('class'=>'span12','placeholder'=>'ชื่อ'));
 
         ?>
 	</div>
-	<div class="span2">
+	<div class="span1">
 		<?php echo CHtml::textField('columnRaw', '',array('class'=>'span12','placeholder'=>'คอลัมภ์')); ?>
 	</div>
 	
 	<div class="span3">
 		<?php echo CHtml::textField('formula', '',array('class'=>'span12','placeholder'=>'สูตรคำนวณ')); ?>
+	</div>
+	<div class="span1">
+		<input type="checkbox" name="selfheader" id="selfheader" >with header
+	</div>
+	<div class="span1">
+		<?php echo CHtml::textField('decimal', '',array('class'=>'span12','placeholder'=>'ทศนิยม')); ?>
 	</div>
 	<div class="span2">
 		<?php
@@ -146,7 +152,7 @@
 					    'name' => 'name',
 					    'class' => 'editable.EditableColumn',
 					    // 'filter'=>CHtml::activeTextField($model, 'name',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("name"))),
-						'headerHtmlOptions' => array('style' => 'width:40%;text-align:center;'),  	            	  	
+						'headerHtmlOptions' => array('style' => 'width:35%;text-align:center;'),  	            	  	
 						'htmlOptions'=>array('style'=>'text-align:left'),
 						'editable' => array( //editable section
 							//'apply' => '$data->user_status != 4', //can't edit deleted users
@@ -174,7 +180,7 @@
 					    'name' => 'col_index',
 					    'class' => 'editable.EditableColumn',
 					    // 'filter'=>CHtml::activeTextField($model, 'col_index',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("col_index"))),
-						'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
 						'htmlOptions'=>array('style'=>'text-align:center'),
 						'editable' => array( //editable section
 							//'apply' => '$data->user_status != 4', //can't edit deleted users
@@ -226,6 +232,60 @@
 							}'
 						)
 	  			),
+	  			'selfheader'=>array(
+					    'name' => 'self_header',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-raw-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+				'decimal'=>array(
+					    'name' => 'decimal_display',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-raw-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
 				
 				array(
 					'class'=>'bootstrap.widgets.TbButtonColumn',
@@ -242,17 +302,23 @@
 <h5>Header</h5>
 <div id="errorHeader" name="errorHeader" class=""></div>
 <div class="row-fluid">
- 	<div class="span5">
+ 	<div class="span4">
 		<?php 
 		        echo CHtml::textField('name', '',array('class'=>'span12','placeholder'=>'ชื่อ'));
 
         ?>
 	</div>
-	<div class="span2">
+	<div class="span1">
 		<?php echo CHtml::textField('column', '',array('class'=>'span12','placeholder'=>'คอลัมภ์')); ?>
 	</div>
 	<div class="span3">
 		<?php echo CHtml::textField('formula', '',array('class'=>'span12','placeholder'=>'สูตรคำนวณ')); ?>
+	</div>
+	<div class="span1">
+		<input type="checkbox" name="selfheader" id="selfheader" >with header
+	</div>
+	<div class="span1">
+		<?php echo CHtml::textField('decimal', '',array('class'=>'span12','placeholder'=>'ทศนิยม')); ?>
 	</div>
 	
 	<div class="span2">
@@ -320,7 +386,7 @@
 					    'name' => 'name',
 					    'class' => 'editable.EditableColumn',
 					    // 'filter'=>CHtml::activeTextField($model, 'name',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("name"))),
-						'headerHtmlOptions' => array('style' => 'width:40%;text-align:center;'),  	            	  	
+						'headerHtmlOptions' => array('style' => 'width:35%;text-align:center;'),  	            	  	
 						'htmlOptions'=>array('style'=>'text-align:left'),
 						'editable' => array( //editable section
 							//'apply' => '$data->user_status != 4', //can't edit deleted users
@@ -348,7 +414,7 @@
 					    'name' => 'col_index',
 					    'class' => 'editable.EditableColumn',
 					    // 'filter'=>CHtml::activeTextField($model, 'col_index',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("col_index"))),
-						'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
 						'htmlOptions'=>array('style'=>'text-align:center'),
 						'editable' => array( //editable section
 							//'apply' => '$data->user_status != 4', //can't edit deleted users
@@ -400,7 +466,60 @@
 							}'
 						)
 	  			),
-				
+	  			'selfheader'=>array(
+					    'name' => 'self_header',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-header-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+				'decimal'=>array(
+					    'name' => 'decimal_display',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-header-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
 				array(
 					'class'=>'bootstrap.widgets.TbButtonColumn',
 					'template' => '{delete}',

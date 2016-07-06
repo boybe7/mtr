@@ -107,6 +107,73 @@ class TestResultsHeaders extends CActiveRecord
 		));
 	}
 
+	public function beforeSave()
+    {
+      
+
+        $str_date = explode("/", $this->test_date);
+        if(count($str_date)>1)
+        	$this->test_date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+        $str_date = explode("/", $this->signed_date);
+        if(count($str_date)>1)
+        	$this->signed_date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+
+        
+        return parent::beforeSave();
+   }
+
+	protected function afterSave(){
+            parent::afterSave();
+            $str_date = explode("-", $this->test_date);
+            if(count($str_date)>1)
+            	$this->test_date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+            
+            $str_date = explode("-", $this->signed_date);
+            if(count($str_date)>1)
+            	$this->signed_date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+
+       
+    }
+
+	public function beforeFind()
+    {
+          
+
+        $str_date = explode("/", $this->test_date);
+        if(count($str_date)>1)
+        	$this->test_date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+        $str_date = explode("/", $this->signed_date);
+        if(count($str_date)>1)
+        	$this->signed_date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+      
+
+        return parent::beforeSave();
+   }
+
+	protected function afterFind(){
+            parent::afterFind();
+    
+
+            $str_date = explode("-", $this->test_date);
+            if($this->test_date=='0000-00-00')
+            	$this->test_date = '';
+            else if(count($str_date)>1)
+            	$this->test_date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+            
+            $str_date = explode("-", $this->signed_date);
+            if($this->signed_date=='0000-00-00')
+            	$this->signed_date = '';
+            else if(count($str_date)>1)
+            	$this->signed_date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+
+           
+
+           
+     }
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

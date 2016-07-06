@@ -31,6 +31,52 @@
 		 }		
 	}
 
+	function bahtTranslate($value)
+	{
+		
+			$str = strval($value);
+			//$str = "1219";
+			$k = strlen($str);
+
+			$priceStr = '';
+			for ($i=0;$i<strlen($str);$i++) {
+			    //echo $str[$i]."<br>";
+			    $n='';
+			    $b='';
+			    switch (intval($str[$i])){
+			        case 1: $n="หนึ่ง"; break;
+			        case 2: $n="สอง"; break;
+			        case 3: $n="สาม"; break;
+			        case 4: $n="สี่"; break;
+			        case 5: $n="ห้า"; break;
+			        case 6: $n="หก"; break;
+			        case 7: $n="เจ็ด"; break;
+			        case 8: $n="แปด"; break;
+			        case 9: $n="เก้า"; break;
+			    }
+			   if(intval($str[$i])!=0) 
+			    switch ($k){
+			        
+			        case 2: $b="สิบ"; break;
+			        case 3: $b="ร้อย"; break;
+			        case 4: $b="พัน"; break;
+			        case 5: $b="หมื่น"; break;
+			        case 6: $b="แสน"; break;
+			        case 7: $b="ล้าน"; break;
+			        
+			    }
+			    if($k==2 && intval($str[$i])==2)
+			        $n = "ยี่";
+			    if($k==2 && intval($str[$i])==1)
+			        $n = "";
+			    
+			    $priceStr .=$n.$b;
+			    $k--;
+			}
+
+			return $priceStr."บาทถ้วน";
+	}
+
 	//--- create new PDF document ---//
 	$pdf = new my_pdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -98,7 +144,7 @@
 	$html .= "<tbody>";
 	$html .= "<tr>";
 	$html .= '<td style="width:18%;"><b>อันดับการทดสอบที่</b></td>';
-	$html .= '<td style="width:34%;border-bottom:1px solid black;text-align:center;">' . $invoice->request->request_no . '</td>';
+	$html .= '<td style="width:34%;border-bottom:1px solid black;text-align:center;">' . $invoice->invoice_no . '</td>';
 	$html .= '<td style="width:5%;">วันที่</td>';
 	$html .= '<td style="width:43%;border-bottom:1px solid black;text-align:center;">' . $invoice->request->date . '</td>';
 	$html .= "</tr>";
@@ -139,16 +185,16 @@
 	$html .= '<tr>';
 	$html .= '<td style="width:14%"></td>';
 	$html .= '<td style="width:86%">';
-	$html .= 'ค่าทดสอบ .......................' . $invoice->cost . '........................... บาท<br/>';
-	$html .= 'ค่าภาษีมูลค่าเพิ่ม .....................' . ($invoice->cost*7)/100 . '........................... บาท<br/>';
-	$html .= 'รวมเป็นเงินทั้งสิ้น ....................' . ($invoice->cost + ($invoice->cost*7)/100) . '.................................... บาท<br/>';
-	$html .= '(.................................................................................................................)';
+	$html .= 'ค่าทดสอบ .......................' . number_format($invoice->cost,2) . '........................... บาท<br/>';
+	$html .= 'ค่าภาษีมูลค่าเพิ่ม .....................' . number_format(($invoice->cost*7)/100,2) . '........................... บาท<br/>';
+	$html .= 'รวมเป็นเงินทั้งสิ้น ....................' . number_format($invoice->cost + ($invoice->cost*7)/100,2) . '............................ บาท<br/>';
+	$html .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(............'.bahtTranslate($invoice->cost + ($invoice->cost*7)/100).'..............)';
 	$html .= '</td>';
 	$html .= '</tr>';
 	$html .= '</table>';
 
 	// ขอความกรุณา....
-	$html .= '<table border="0">';
+	$html .= '<br><br><table border="0">';
 	$html .= '<tr>';
 	$html .= '<td style="width:40%;text-align:center;border: solid 1px black;">';
 	$html .= 'ขอความกรุณา<br/>โปรดแยกใบเสร็จรับเงิน<br/>1 ฉบับต่อใบแจ้งชำระค่าธรรมเนียม 1 ใบ';
@@ -157,7 +203,29 @@
 	$html .= '<br/><br/><br/>(นายฐิติศักดิ์ ยุทธนาเสวิน)<br/>หน.สทว.กมว.';
 	$html .= '</td>';
 	$html .= '</tr>';
-	$html .= '</table>';
+	$html .= '</table><br><br>';
+
+	// ตอบกลับ
+	$html .= '<br><b>เรียน หน.สทว.</b>';
+	$html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กกง. ได้รับเงินค่าทดสอบดังกล่าวข้างต้นไว้แล้ว โดยออกหลักฐานดังนี้ ';
+	$html .= '<br>ใบเสร็จรับเงินเล่มที่................................................เลขที่..................................................ลงวันที่.................................';
+	$html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดทราบ';
+
+	$html .= '<br><table border="0">';
+	$html .= '<tr>';
+	$html .= '<td style="width:40%;">';
+	$html .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	$html .= '</td>';
+	$html .= '<td style="width:60%;text-align:center;">';
+	$html .= '<br/><br/><br/>(................................................)<br/>................................................';
+	$html .= '</td></tr>';
+	$html .= '<tr><td>&nbsp;&nbsp;&nbsp;</td><td style="width:60%;text-align:center;">ผู้รับเงิน</td>';
+	$html .= '</tr>';
+	$html .= '</table><br><br>';
+	
+	$html .= '<br><b><u>หมายเหตุ</u></b>';
+	$html .= '<br><b>1.สทว.กมว. สงวนสิทธิ์ที่จะไม่ทำการทดสอบ จนกว่าผู้ส่งตัวอย่างจะชำระค่าธรรมเนียมการทดสอบวัสดุ<br>เป็นที่เรียบร้อยแล้ว</b>';
+
 	$pdf->writeHTML($html, false, false, false, false, '');
 
 	// Close and output PDF document

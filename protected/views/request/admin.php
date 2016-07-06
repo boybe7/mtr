@@ -196,7 +196,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 			    'value'=>'Job::Model()->FindByPk($data->job_id)->name',
 			    'filter' => CHtml::listData(Job::model()->findAll(), 'id', 'name'),
 			    //'filter'=>CHtml::activeTextField($model, 'job_id',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("job_id"))),
-				'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
+				'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left;padding-left:10px;')
 	  	),
 		'status'=>array(
@@ -211,8 +211,20 @@ $this->widget('bootstrap.widgets.TbButton', array(
 		
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),
-			'template' => '{update}',
+			'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),
+			'template' => '{update}{template}',
+			'buttons'=>array
+            (
+                'template' => array
+                (
+                    'label'=>'บันทึกผล',
+                    'icon'=>'file',
+                    'url'=>'Yii::app()->createUrl("requestStandard/index/", array("id"=>$data->id))',
+                    'options'=>array(
+                        'class'=>'',
+                    ),
+                ),
+            )    
 			
 		),
 	),

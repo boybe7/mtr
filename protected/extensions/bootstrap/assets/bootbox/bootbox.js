@@ -364,7 +364,7 @@ var bootbox = window.bootbox || (function(document, $) {
         // @see https://github.com/twitter/bootstrap/issues/4854
         // for an explanation of tabIndex=-1
 
-        var parts = ["<div class='bootbox modal' tabindex='-1' style='overflow:hidden;'>"];
+        var parts = ["<div class='bootbox modal modal-lg' tabindex='-1' style='overflow:hidden;'>"];
 
         if (options['header']) {
             var closeButton = '';

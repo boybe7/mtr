@@ -46,6 +46,8 @@ class InvoicesController extends Controller
 		);
 	}
 
+	
+
 	public function actionPrint($id){
 		// Query test
 		$invoice = $this->loadModel($id);
