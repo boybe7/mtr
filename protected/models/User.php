@@ -52,7 +52,7 @@ class User extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'positionsId1' => array(self::BELONGS_TO, 'Positions', 'positions_id_1'),
+			'positionsId1' => array(self::BELONGS_TO, 'Position', 'positions_id_1'),
 			'userGroup' => array(self::BELONGS_TO, 'UserGroups', 'user_group_id'),
 		);
 	}
@@ -155,7 +155,7 @@ class User extends CActiveRecord
          // header('Content-type: text/plain');
          // print_r($model);                    
          // exit;
-        $position = !empty($model) ? $model->posi_name: "";
+        $position = !empty($model) ? $model->name: "";
         return $position;
     }
 
@@ -166,7 +166,7 @@ class User extends CActiveRecord
          // header('Content-type: text/plain');
          // print_r($model);                    
          // exit;
-        $position = !empty($model) ? $model->posi_name: "";
+        $position = !empty($model) ? $model->name: "";
         return $position;
     }
 

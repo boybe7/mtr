@@ -124,6 +124,10 @@ class LabtypeController extends Controller
 			$model->col_index = $_POST['column'];
 			$model->formula = $formula;
 			$model->labtype_id = $_POST['labtype'];
+			$model->self_header = $_POST['selfheader']=="true" ?1 : 0;
+			$model->decimal_display = isset($_POST['decimal']) && !empty($_POST['decimal'])?$_POST['decimal'] : 0;
+
+			
 
 			$model->save();
 
@@ -147,6 +151,8 @@ class LabtypeController extends Controller
 			$model->col_index = $_POST['column'];
 			$model->formula = $formula;
 			$model->labtype_id = $_POST['labtype'];
+			$model->self_header = $_POST['selfheader']=="true" ?1 : 0;
+			$model->decimal_display = isset($_POST['decimal']) && !empty($_POST['decimal'])?$_POST['decimal'] : 0;
 
 			$model->save();
 			echo CActiveForm::validate($model);

@@ -78,13 +78,13 @@
 	</div>
 	
 	<div class="span3">
-		<?php echo CHtml::textField('formula', '',array('class'=>'span12','placeholder'=>'สูตรคำนวณ')); ?>
+		<?php echo CHtml::textField('formulaRaw', '',array('class'=>'span12','placeholder'=>'สูตรคำนวณ')); ?>
 	</div>
 	<div class="span1">
-		<input type="checkbox" name="selfheader" id="selfheader" >with header
+		<input type="checkbox" name="selfheaderRaw" id="selfheaderRaw" >with header
 	</div>
 	<div class="span1">
-		<?php echo CHtml::textField('decimal', '',array('class'=>'span12','placeholder'=>'ทศนิยม')); ?>
+		<?php echo CHtml::textField('decimalRaw', '',array('class'=>'span12','placeholder'=>'ทศนิยม')); ?>
 	</div>
 	<div class="span2">
 		<?php
@@ -99,7 +99,7 @@
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
-                	'data' => array('labtype'=>$id,'name' => 'js:$("#nameRaw").val()','column' => 'js:$("#columnRaw").val()','formula' => 'js:$("#formula").val()'),
+                	'data' => array('labtype'=>$id,'name' => 'js:$("#nameRaw").val()','column' => 'js:$("#columnRaw").val()','formula' => 'js:$("#formulaRaw").val()','selfheader'=>'js:$("#selfheaderRaw").is(":checked")','decimal'=>'js:$("#decimalRaw").val()'),
                 	'success' => 'function(msg){ 
 
                 		error = "";
@@ -334,7 +334,7 @@
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
-                	'data' => array('labtype'=>$id,'name' => 'js:$("#name").val()','column' => 'js:$("#column").val()','formula' => 'js:$("#formula").val()'),
+                	'data' => array('labtype'=>$id,'name' => 'js:$("#name").val()','column' => 'js:$("#column").val()','formula' => 'js:$("#formula").val()','selfheader'=>'js:$("#selfheader").is(":checked")','decimal'=>'js:$("#decimal").val()'),
                 	'success' => 'function(msg){  
                 		
                 		

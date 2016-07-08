@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2016 at 11:47 AM
+-- Generation Time: Jul 08, 2016 at 11:47 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -45,12 +45,21 @@ CREATE TABLE `authens` (
 --
 
 INSERT INTO `authens` (`id`, `user_group_id`, `menu_id`) VALUES
-(16, 1, 1),
-(17, 1, 3),
-(18, 1, 4),
-(19, 1, 5),
-(20, 1, 6),
-(21, 1, 7);
+(22, 1, 1),
+(23, 1, 3),
+(24, 1, 8),
+(25, 1, 4),
+(26, 1, 5),
+(27, 1, 6),
+(28, 1, 7),
+(29, 2, 1),
+(30, 2, 3),
+(31, 2, 8),
+(32, 2, 4),
+(33, 2, 5),
+(34, 2, 6),
+(35, 2, 7),
+(36, 3, 7);
 
 -- --------------------------------------------------------
 
@@ -99,7 +108,9 @@ INSERT INTO `invoices` (`id`, `invoice_no`, `cost`, `bill_no`, `bill_date`, `req
 (5, '4/2559', '600.00', NULL, NULL, 38, ''),
 (6, '5/2559', '400.00', NULL, NULL, 48, ''),
 (7, '6/2559', '200.00', NULL, NULL, 49, ''),
-(8, '7/2559', '0.00', NULL, NULL, 50, '');
+(8, '7/2559', '0.00', NULL, NULL, 50, ''),
+(9, '8/2559', '400.00', NULL, NULL, 51, ''),
+(10, '9/2559', '400.00', NULL, NULL, 52, '');
 
 -- --------------------------------------------------------
 
@@ -144,7 +155,8 @@ INSERT INTO `labtypes` (`id`, `name`, `name_report`, `cost`, `is_chemical_test`,
 (2, 'ความถ่วงจำเพาะ', 'SPECIFIC GRAVITY OF FLOAT VALVE', '200.00', 1, 14),
 (3, 'Gradation', 'Gradation', '400.00', 0, 16),
 (4, 'Absortion', 'Absortion', '100.00', 0, 16),
-(5, 'Gradation', 'Gradation', '400.00', 0, 2);
+(5, 'Gradation', 'Gradation', '400.00', 0, 2),
+(6, 'ความถ่วงจำเพาะ', 'SPECIFIC GRAVITY OF PVC.PIPE AND FITTING', '200.00', 0, 4);
 
 -- --------------------------------------------------------
 
@@ -183,7 +195,14 @@ INSERT INTO `labtype_inputs` (`id`, `name`, `col_index`, `formula`, `type`, `lab
 (20, 'WEIGHT (GM.)', 'G', '', 'header', 2, 0, 2),
 (21, 'SPECIFIC GRAVITY', 'H', '$G/$F', 'header', 2, 1, 2),
 (22, 'REMARK', 'I', '', 'header', 2, 0, 0),
-(23, 'SPECIMEN MARK', 'A', '', 'header', 3, 0, 0);
+(23, 'SPECIMEN MARK', 'A', '', 'header', 3, 0, 0),
+(24, 'SPECIMEN MARK', 'A', '', 'header', 6, 0, 0),
+(25, 'KIND', 'D', '', 'header', 6, 0, 0),
+(26, 'PIPE SIZE &(Thickness) (MM.)', 'E', '', 'header', 6, 0, 0),
+(27, 'WEIGHT IN THE AIR (GM.)', 'F', '', 'header', 6, 0, 4),
+(28, 'WEIGHT IN THE WATER (GM.)', 'G', '', 'header', 6, 0, 4),
+(29, 'SPECIFIC GRAVITY', 'H', '($F*0.99651)/($F-$G)', 'header', 6, 1, 3),
+(30, 'REMARK', 'I', '', 'header', 6, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -239,7 +258,8 @@ INSERT INTO `menus` (`id`, `name`, `url`, `menu_group_id`) VALUES
 (4, 'ชนิดวัสดุ', 'material/index', 2),
 (5, 'วิธีการทดสอบ', 'labtype/index', 2),
 (6, 'มาตรฐาน', 'standard/index', 2),
-(7, 'ลงทะเบียนรับตัวอย่าง', 'request/index', 3);
+(7, 'ลงทะเบียนรับตัวอย่าง', 'request/index', 3),
+(8, 'ผู้ใช้งาน', 'user/index', 1);
 
 -- --------------------------------------------------------
 
@@ -274,6 +294,19 @@ CREATE TABLE `positions` (
   `level` int(11) NOT NULL COMMENT 'ระดับ (1=ระดับปฏิบัติการ, 2=หัวหน้าส่วน,3=ผู้อำนวยการกอง)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `positions`
+--
+
+INSERT INTO `positions` (`id`, `name`, `level`) VALUES
+(1, 'หัวหน้าส่วน', 2),
+(2, 'วิศวกร 5', 1),
+(3, 'วิศวกร 4', 1),
+(4, 'วิศวกร 3', 1),
+(5, 'ช่าง 2', 1),
+(6, 'adminit', 0),
+(7, 'ผู้อำนวยการกองมาตรฐานวิศวกรรม', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -303,7 +336,9 @@ INSERT INTO `requests` (`id`, `request_no`, `date`, `vendor_id`, `owner_id`, `jo
 (37, '3/2559', '2016-06-17', NULL, 1, 3, NULL, '', 1, ''),
 (48, '5/2559', '2016-06-30', NULL, 1, 3, NULL, '', 3, '(ยกเลิก ''xxxxx'')'),
 (49, '6/2559', '2016-07-01', NULL, 1, 1, NULL, '', 1, ''),
-(50, '7/2559', '2016-07-01', NULL, 1, 1, NULL, '', 1, '');
+(50, '7/2559', '2016-07-01', NULL, 1, 1, NULL, '', 1, ''),
+(51, '8/2559', '2016-07-07', NULL, 1, 1, NULL, '', 1, ''),
+(52, '9/2559', '2016-07-07', NULL, 1, 1, NULL, '', 1, '');
 
 -- --------------------------------------------------------
 
@@ -336,7 +371,9 @@ INSERT INTO `request_standards` (`id`, `material_detail`, `lot_no`, `lot_num`, `
 (31, '', 'lot-1', 1, 2, '400.00', 2, 37, 3, NULL, NULL, 'C7-C8'),
 (32, '', 'lot-2', 1, 1, '400.00', 3, 37, 4, NULL, NULL, 'C9'),
 (53, '', 'ffff', 1, 2, '400.00', 2, 48, 3, NULL, NULL, 'C10-C11'),
-(54, '', 'xs', 1, 1, '200.00', 2, 49, 3, '', NULL, 'C12');
+(54, '', 'xs', 1, 1, '200.00', 2, 49, 3, '', NULL, 'C12'),
+(55, '', 'LOT-1,LOT-2', 2, 2, '400.00', 6, 51, 5, NULL, NULL, 'SP1-SP2'),
+(56, '', 'LOT-1,LOT-2', 2, 2, '400.00', 6, 52, 5, '', NULL, 'SP3-SP4');
 
 -- --------------------------------------------------------
 
@@ -380,7 +417,8 @@ CREATE TABLE `standards` (
 
 INSERT INTO `standards` (`id`, `name`, `description`, `material_id`) VALUES
 (3, 'รายละเอียดที่ 33-016-1 ของ กปน.', 'ขนาด 25-150 mm.', 14),
-(4, 'xxxxxxxxxxxx', '', 16);
+(4, 'xxxxxxxxxxxx', '', 16),
+(5, 'มาตรฐานการประปานครหลวงที่ 39-018-0 SPE.  ( MAX.)', '', 4);
 
 -- --------------------------------------------------------
 
@@ -400,7 +438,8 @@ CREATE TABLE `standard_parameters` (
 --
 
 INSERT INTO `standard_parameters` (`id`, `value`, `labtype_input_id`, `standard_id`) VALUES
-(15, '0.75-0.80', 21, 3);
+(15, '0.75-0.80', 21, 3),
+(19, '1.425', 29, 5);
 
 -- --------------------------------------------------------
 
@@ -428,6 +467,13 @@ CREATE TABLE `temp_sampling_no` (
   `sampling_no` varchar(100) NOT NULL,
   `num` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `temp_sampling_no`
+--
+
+INSERT INTO `temp_sampling_no` (`id`, `sampling_no`, `num`) VALUES
+(1, 'SP-4', 2);
 
 -- --------------------------------------------------------
 
@@ -468,8 +514,10 @@ CREATE TABLE `test_results_headers` (
 INSERT INTO `test_results_headers` (`id`, `test_date`, `tester_1`, `tester_2`, `approver`, `reporter`, `signer`, `signed_date`, `comment`, `request_id`) VALUES
 (8, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 45),
 (9, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 48),
-(10, '2016-07-04', 'xxxx', 'zzzz', '', '', '', '2016-07-04', '', 49),
-(11, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 50);
+(10, '2016-07-04', 'นายบรรลือ รดาการ', 'นายสมนึก ศรีขวัญ', 'นายฐิติศักดิ์ ยุทธนาเสวิน', 'นายธีระพงษ์ แก้วศรี', 'นายวิสันต์ มิตรภานนท์', '2016-07-04', '', 49),
+(11, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 50),
+(12, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 51),
+(13, '0000-00-00', '', '', 'นายฐิติศักดิ์ ยุทธนาเสวิน', '', 'นายวิสันต์ มิตรภานนท์', '0000-00-00', '', 52);
 
 -- --------------------------------------------------------
 
@@ -639,16 +687,42 @@ INSERT INTO `test_results_values` (`id`, `value`, `sampling_no`, `lot_no`, `samp
 (662, 'ffff', 'C-11', 'ffff', 'C-11', 22, 53),
 (663, 'C-12', 'C-12', 'xs', 'C-12', 11, 54),
 (664, '0', 'C-12', 'xs', 'C-12', 12, 54),
-(665, '10', 'C-12', 'xs', 'C-12', 13, 54),
-(666, '10', 'C-12', 'xs', 'C-12', 14, 54),
+(665, '12', 'C-12', 'xs', 'C-12', 13, 54),
+(666, '20', 'C-12', 'xs', 'C-12', 14, 54),
 (667, '10', 'C-12', 'xs', 'C-12', 15, 54),
 (668, '10', 'C-12', 'xs', 'C-12', 16, 54),
 (669, '10', 'C-12', 'xs', 'C-12', 17, 54),
 (670, '10', 'C-12', 'xs', 'C-12', 18, 54),
-(671, '523.5987755983', 'C-12', 'xs', 'C-12', 19, 54),
-(672, '0', 'C-12', 'xs', 'C-12', 20, 54),
-(673, '0', 'C-12', 'xs', 'C-12', 21, 54),
-(674, 'xs', 'C-12', 'xs', 'C-12', 22, 54);
+(671, '904.77868423386', 'C-12', 'xs', 'C-12', 19, 54),
+(672, '200.00', 'C-12', 'xs', 'C-12', 20, 54),
+(673, '0.22104853207208', 'C-12', 'xs', 'C-12', 21, 54),
+(674, 'xs', 'C-12', 'xs', 'C-12', 22, 54),
+(675, 'SP-1', 'SP-1', 'LOT-1', 'SP-1', 24, 55),
+(676, '0', 'SP-1', 'LOT-1', 'SP-1', 25, 55),
+(677, '0', 'SP-1', 'LOT-1', 'SP-1', 26, 55),
+(678, '0', 'SP-1', 'LOT-1', 'SP-1', 27, 55),
+(679, '0', 'SP-1', 'LOT-1', 'SP-1', 28, 55),
+(680, 'LOT-1', 'SP-1', 'LOT-1', 'SP-1', 29, 55),
+(681, 'SP-2', 'SP-2', 'LOT-2', 'SP-2', 24, 55),
+(682, '0', 'SP-2', 'LOT-2', 'SP-2', 25, 55),
+(683, '0', 'SP-2', 'LOT-2', 'SP-2', 26, 55),
+(684, '0', 'SP-2', 'LOT-2', 'SP-2', 27, 55),
+(685, '0', 'SP-2', 'LOT-2', 'SP-2', 28, 55),
+(686, 'LOT-2', 'SP-2', 'LOT-2', 'SP-2', 29, 55),
+(687, 'SP-3', 'SP-3', 'LOT-1', 'SP-3', 24, 56),
+(688, 'XX', 'SP-3', 'LOT-1', 'SP-3', 25, 56),
+(689, '20', 'SP-3', 'LOT-1', 'SP-3', 26, 56),
+(690, '0.0000', 'SP-3', 'LOT-1', 'SP-3', 27, 56),
+(691, '0.0000', 'SP-3', 'LOT-1', 'SP-3', 28, 56),
+(692, '0.000', 'SP-3', 'LOT-1', 'SP-3', 29, 56),
+(693, 'LOT-1', 'SP-3', 'LOT-1', 'SP-3', 30, 56),
+(694, 'SP-4', 'SP-4', 'LOT-2', 'SP-4', 24, 56),
+(695, 'XX', 'SP-4', 'LOT-2', 'SP-4', 25, 56),
+(696, '10', 'SP-4', 'LOT-2', 'SP-4', 26, 56),
+(697, '0.0000', 'SP-4', 'LOT-2', 'SP-4', 27, 56),
+(698, '0.0000', 'SP-4', 'LOT-2', 'SP-4', 28, 56),
+(699, '0.000', 'SP-4', 'LOT-2', 'SP-4', 29, 56),
+(700, 'LOT-2', 'SP-4', 'LOT-2', 'SP-4', 30, 56);
 
 -- --------------------------------------------------------
 
@@ -671,7 +745,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `user_group_id`, `positions_id_1`, `positions_id_2`) VALUES
-(1, 'admin', '356a192b7913b04c54574d18c28d46e6395428ab', 'it admin', 1, 1, NULL);
+(1, 'admin', '356a192b7913b04c54574d18c28d46e6395428ab', 'it admin', 1, 6, NULL),
+(2, 'mm', '8cb2237d0679ca88db6464eac60da96345513964', 'นายฐิติศักดิ์ ยุทธนาเสวิน', 2, 1, NULL),
+(3, 'admin1', '8cb2237d0679ca88db6464eac60da96345513964', 'นายบรรลือ รดาการ', 2, 2, NULL),
+(4, 'admin2', '8cb2237d0679ca88db6464eac60da96345513964', 'นายธีระพงษ์ แก้วศรี', 2, 3, NULL),
+(5, 'user1', '8cb2237d0679ca88db6464eac60da96345513964', 'นายสมนึก ศรีขวัญ', 3, 5, NULL),
+(6, 'mm2', '8cb2237d0679ca88db6464eac60da96345513964', 'นายวิสันต์ มิตรภานนท์', 3, 7, NULL);
 
 -- --------------------------------------------------------
 
@@ -689,7 +768,9 @@ CREATE TABLE `user_groups` (
 --
 
 INSERT INTO `user_groups` (`id`, `name`) VALUES
-(1, 'it');
+(1, 'it'),
+(2, 'admin'),
+(3, 'operator');
 
 -- --------------------------------------------------------
 
@@ -892,7 +973,7 @@ ALTER TABLE `vendors`
 -- AUTO_INCREMENT for table `authens`
 --
 ALTER TABLE `authens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `contracts`
 --
@@ -902,7 +983,7 @@ ALTER TABLE `contracts`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `jobs`
 --
@@ -912,12 +993,12 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `labtypes`
 --
 ALTER TABLE `labtypes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `labtype_inputs`
 --
 ALTER TABLE `labtype_inputs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `materials`
 --
@@ -927,7 +1008,7 @@ ALTER TABLE `materials`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `menu_groups`
 --
@@ -937,17 +1018,17 @@ ALTER TABLE `menu_groups`
 -- AUTO_INCREMENT for table `positions`
 --
 ALTER TABLE `positions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `request_standards`
 --
 ALTER TABLE `request_standards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 --
 -- AUTO_INCREMENT for table `retests`
 --
@@ -957,12 +1038,12 @@ ALTER TABLE `retests`
 -- AUTO_INCREMENT for table `standards`
 --
 ALTER TABLE `standards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `standard_parameters`
 --
 ALTER TABLE `standard_parameters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `temp_retests`
 --
@@ -972,7 +1053,7 @@ ALTER TABLE `temp_retests`
 -- AUTO_INCREMENT for table `temp_sampling_no`
 --
 ALTER TABLE `temp_sampling_no`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `temp_standard_parameters`
 --
@@ -982,22 +1063,22 @@ ALTER TABLE `temp_standard_parameters`
 -- AUTO_INCREMENT for table `test_results_headers`
 --
 ALTER TABLE `test_results_headers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `test_results_values`
 --
 ALTER TABLE `test_results_values`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=675;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=701;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user_groups`
 --
 ALTER TABLE `user_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `vendors`
 --

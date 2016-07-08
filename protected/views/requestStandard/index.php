@@ -1,8 +1,20 @@
 <div class="main_title">บันทึกผลทดสอบ</div>
 <div style="padding-bottom: 20px"></div>
-<div style="padding-top:10px" class="grid-view">
+<div style="padding-top:10px" class="grid-view well span10">
+<style type="text/css">
+	input[type="text"] {
+		margin-bottom: 0px;
+	}
+</style>
 
-<?php echo CHtml::beginForm(); ?>
+<?php //echo CHtml::beginForm(); ?>
+
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'request-form',
+	'htmlOptions' => array('class' => ''),
+	'enableAjaxValidation'=>false,
+)); 
+?>
 
 <?php
 	// Request
@@ -12,6 +24,33 @@
 	$job_name = $request['job_name'];
 	$owner_name = $request['owner_name'];
 	$vendor_name = $request['vendor_name'];
+
+	$models = User::model()->with(array('positionsId1' => array('condition' => "level = 1")
+                                    ))->findAll(array('order'=>'', 'condition'=>'', 'params'=>array()));
+	
+    $list = array();
+    foreach ($models as $key => $value) {
+        $list[$value['name']] = $value['name'];        
+    }    
+
+    $models = User::model()->with(array('positionsId1' => array('condition' => "level = 2")
+                                    ))->findAll(array('order'=>'', 'condition'=>'', 'params'=>array()));
+
+	
+    $list2 = array();
+    foreach ($models as $key => $value) {
+        $list2[$value['name']] = $value['name'];        
+    }
+
+    $models = User::model()->with(array('positionsId1' => array('condition' => "level = 3")
+                                    ))->findAll(array('order'=>'', 'condition'=>'', 'params'=>array()));
+
+	
+    $list3 = array();
+    foreach ($models as $key => $value) {
+        $list3[$value['name']] = $value['name'];        
+    }    
+    
 
 	echo "<div class='row'>";
 	echo "<div class='span3'>";
@@ -63,26 +102,36 @@
 	        'style'=>'height:20px;'
 	    ),
 	));
+
+
+
+    //echo CHtml::dropDownList('categories', '', $list,array('empty' => '(Select a category)'));
+
+
 	echo '<span class="add-on"><i class="icon-calendar"></i></span>';
 	echo "</div>";
 	echo "<div class='span3'>";
 	echo CHtml::label("เจ้าหน้าที่ทดสอบ 1", "");
-	echo CHtml::textField("result_header[tester_1]", $tester_1);
+	echo CHtml::dropDownList('result_header[tester_1]', $tester_1, $list,array('empty' => '----เลือกเจ้าหน้าที่ทดสอบ---------'));
+	//echo CHtml::textField("result_header[tester_1]", $tester_1);
 	echo "</div>";
 	echo "<div class='span3'>";
 	echo CHtml::label("เจ้าหน้าที่ทดสอบ 2", "");
-	echo CHtml::textField("result_header[tester_2]", $tester_2);
+	//echo CHtml::textField("result_header[tester_2]", $tester_2);
+	echo CHtml::dropDownList('result_header[tester_2]', $tester_2, $list,array('empty' => '----เลือกเจ้าหน้าที่ทดสอบ---------'));
 	echo "</div>";
 	echo "</div>";
 
 	echo "<div class='row'>";
 	echo "<div class='span3'>";
 	echo CHtml::label("ผู้ตรวจ", "");
-	echo CHtml::textField("result_header[approver]", $approver);
+	//echo CHtml::textField("result_header[approver]", $approver);
+	echo CHtml::dropDownList('result_header[approver]', $approver, $list2);
 	echo "</div>";
 	echo "<div class='span3'>";
 	echo CHtml::label("ผู้รายงานผล", "");
-	echo CHtml::textField("result_header[reporter]", $reporter);
+	//echo CHtml::textField("result_header[reporter]", $reporter);
+	echo CHtml::dropDownList('result_header[reporter]', $reporter, $list,array('empty' => '----เลือกผู้รายงานผล---------'));
 	echo "</div>";
 	echo "</div>";
 	
@@ -106,7 +155,8 @@
 	echo "</div>";
 	echo "<div class='span3'>";
 	echo CHtml::label("ผู้รับรอง", "");
-	echo CHtml::textField("result_header[signer]", $signer);
+	//echo CHtml::textField("result_header[signer]", $signer);
+	echo CHtml::dropDownList('result_header[signer]', $signer, $list3);
 	echo "</div>";
 	echo "</div>";
 	echo "<hr/>";
@@ -122,21 +172,77 @@
 		$sample_list = $request_standard['sample_list'];
 		$result_list = $request_standard['result_list'];
 
+		$modelSTDParam = Yii::app()->db->createCommand()
+				->select('value,labtype_input_id')
+				->from('standard_parameters') 
+				->where('standard_id='.$request_standard['standard_id'])                             
+				->queryAll();
+		
+		//print_r($modelSTDParam);
+
+		$modelLabtype = LabtypeInput::model()->findAll(array("condition"=>"labtype_id=".$request_standard['labtype_id']));
+		$index = 1;
+		$std_val = array();
+		$std_col = array();
+
+		$max_col = count($modelLabtype);
+		foreach ($modelLabtype as $key => $value) {
+			
+			foreach ($modelSTDParam as $key => $sd) {
+				if($sd['labtype_input_id']==$value->id)
+				{
+					$std_val[] = $sd['value'];
+					$std_col[] = $index;
+					
+				}	
+			}
+				
+			
+			$index++;	
+		}	
+
+		//print_r($std_col);
+
+		//echo count($std_val);
+
+
 		echo "<div class='main_title'>$labtype_name</div>";
 		echo "ชนิดวัสดุ: " . CHtml::textField("", $material_name, array('readonly'=>true));
 		$this->widget('bootstrap.widgets.TbButton', array(
 		  'buttonType'=>'link',
 		  'type'=>'success',
-		  'label'=>'Add Raw',
+		  'label'=>'บันทึกข้อมูลที่ใช้คำนวณ',
 		  'icon'=>'plus-sign',
 		  'htmlOptions'=>array(
 		    'class'=>'pull-right',
-		    'style'=>'margin:-20px 10px 10px 10px;',
+		    'style'=>'margin:0px 10px 10px 10px;',
 		     'onclick'=>'addRaw(' . $reqstd_id . ')'
-		   ),
+		   )
 		));
 
-		echo "<table border='1' class='items table table-bordered table-condensed'>";
+		$this->widget('bootstrap.widgets.TbButton', array(
+		  'buttonType'=>'ajaxLink',
+		  'type'=>'info',
+		  'label'=>'คำนวณ',
+		  'icon'=>'repeat',
+		  'url'=>array('requestStandard/index/'.$id),
+		  'htmlOptions'=>array(
+		    'class'=>'pull-right',
+		    'style'=>'margin:0px 0px 10px 10px;',
+		     
+		   ),
+		  'ajaxOptions'=>array(
+		    	    
+		     	    'type' => 'POST',
+                	'data' =>  'js:$("#request-form").serialize()',
+                	'success' => 'function(msg){ 
+
+         			}'
+                ) 
+
+		));
+		//echo "<form name='req".$reqstd_id."' action='/mtr/requestStandard/index/52'>";
+		echo "<table style='margin-top:10px' border='1' class='items table table-bordered table-condensed'>";
 		// Columns
 		echo "<thead>";
 		echo "<tr>";
@@ -161,27 +267,71 @@
 				$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
 				$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
 				echo "<td style='text-align:center;'>";
-				if($decimal==0)
-					echo CHtml::textField("result[$result_id]", $result_value, array('style'=>'width:100px;'));
+
+				if($decimal==0 && !is_numeric($result_value))
+					echo CHtml::textField("result[$result_id]", $result_value, array('style'=>'width:100px;text-align:center'));
 				else
-					echo CHtml::textField("result[$result_id]", number_format($result_value,$decimal), array('style'=>'width:100px;'));
+					echo CHtml::textField("result[$result_id]", number_format($result_value,$decimal), array('style'=>'width:100px;text-align:right'));
 				echo "</td>";
 			}
 			echo "</tr>";
 		}
+
+		//get standard value
+		if(count($std_col)>0)
+		{
+			echo "<tr>";
+				echo "<td colspan=".($std_col[0]-1).">";
+					echo "<b>" . $standard_name."</b>";
+				echo "</td>";
+
+				
+						for ($i=$std_col[0]; $i < $std_col[count($std_col)-1]+1; $i++) { 
+							//echo $i."|";
+							$found = 0;
+							$value;
+							for($j=0;$j<count($std_col) && !$found;$j++)
+							{
+								//echo "j:".$std_col[$j]."xx";
+								if($std_col[$j]==$i)
+								{  
+								 $found = 1; $value = $std_val[$j]; 
+								}
+							}		
+
+							if($found)
+							{	
+								if(is_numeric($value))
+								      echo "<td style='background-color:#eeeeee;text-align:right;padding-right:10px;'>".$value."</td>";
+								else  
+									  echo "<td style='background-color:#eeeeee;text-align:center'>".$value."</td>"; 
+   							}
+							else
+							    echo "<td></td>";	 
+						}
+
+
+			echo "</tr>";
+		}
+
+
 		echo "</tbody>";
 		echo "</table>";
-		echo "มาตรฐาน " . $standard_name . "<br/>";
-		echo "สรุปผลทดสอบ: " . CHtml::textField("reqstd[$reqstd_id]", $conclude, array('class'=>'span9'));
-		echo "<hr/>";
+		//echo "</form>";
+		if(count($std_col)==0)
+			echo "<b>" . $standard_name . "</b><br/><br/>";
+	
+			echo "<b>สรุปผลทดสอบ :</b> <br>" . CHtml::textArea("reqstd[$reqstd_id]", $conclude, array('class'=>'span10','rows'=>4));
+		
 	}
 
 	// ResultHeader End
-	echo CHtml::label("หมายเหตุ", "");
-	echo CHtml::textField("result_header[comment]", $comment, array('class'=>'span9'));
+	echo "<b>หมายเหตุ :</b> <br>";
+	echo CHtml::textArea("result_header[comment]", $comment, array('class'=>'span10','rows'=>2));
 	echo CHtml::hiddenField("result_header[result_header_id]", $result_header_id);
-?>
 
+?>
+<br>
 <!-- Submit Form -->
 <div class="form-actions">
 	<div class="pull-right">
@@ -202,7 +352,8 @@
 	?>
 	</div>
 </div>
-<?php echo CHtml::endForm(); ?>
+<?php// echo CHtml::endForm(); ?>
+<?php $this->endWidget(); ?>
 </div>
 <style type="text/css">
 	.modal {
@@ -243,7 +394,7 @@
                         data: $(".modal-body #add-raw-form").serialize()
                     })                                  
                     .done(function(msg) {
-                    	//console.log(msg);
+                    	window.location.reload()
                     });
                 }
             });

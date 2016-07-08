@@ -82,6 +82,12 @@ class RequestStandardController extends Controller
 				$model->value = $value;
 				$model->save(); // save the change to database
 			}
+
+
+
+			
+
+			$this->redirect(array('request/index'));	
 		}
 
 		// Request query
@@ -132,6 +138,7 @@ class RequestStandardController extends Controller
 			$labtype_name = $row->labtype->name;
 			$material_name = $row->labtype->material->name;
 			$standard_name = $row->standard->name;
+			$standard_id = $row->standard->id;
 			$conclude = $row->conclude;
 
 			// Header list			
@@ -156,12 +163,15 @@ class RequestStandardController extends Controller
 				);
 			}
 
+
 			// Set view data
 			$output['request_standard'][] = array(
 				'reqstd_id' => $reqstd_id,
+				'labtype_id' => $labtype_id,
 				'labtype_name' => $labtype_name,
 				'material_name' => $material_name,
 				'standard_name' => $standard_name,
+				'standard_id' => $standard_id,
 				'conclude' => $conclude,
 				'header_list' => $header_list,
 				'sample_list' => $sample_list,
@@ -170,7 +180,7 @@ class RequestStandardController extends Controller
 		}
 
 		// Render view
-		$this->render('index', array('output' => $output));
+		$this->render('index', array('output' => $output,'id'=>$id));
 	}
 
 	public function actionAddRaw($id){
@@ -253,6 +263,8 @@ class RequestStandardController extends Controller
 					}
 				}
 
+				
+				//calculate self header
 				$sql = "SELECT test_results_values.id as id, formula,type, value,col_index,sampling_no,self_header  FROM test_results_values JOIN labtype_inputs ON test_results_values	.labtype_input_id=labtype_inputs.id WHERE request_standard_id = '$id' AND sampling_no='$sample'  ORDER BY type DESC,id ASC";
 				$results = $connection->createCommand($sql)->queryAll();
 				foreach ($results as $key => $rs) {
