@@ -183,6 +183,105 @@ class RequestStandardController extends Controller
 		$this->render('index', array('output' => $output,'id'=>$id));
 	}
 
+	public function calculate($id)
+	{
+		
+			function avg()
+			{
+			    return $result = array_sum(func_get_args())/count(func_get_args());
+			}
+		
+
+			//----update result with formula cal------------------//
+			//1.get sampling_no
+			$sampling_no = Yii::app()->db->createCommand()
+			                    ->select('sampling_no')
+			                    ->from('test_results_values') 
+			                    ->where('request_standard_id="'.$id.'"') 
+			                    ->group('sampling_no')                                   
+			                    ->queryAll();
+
+			//print_r($sampling_no);    
+			foreach ($sampling_no as $key => $no) {
+				$sample = $no["sampling_no"];
+
+				//raw
+				/*$sql = "SELECT test_results_values.id as id, formula, value,col_index,sampling_no  FROM test_results_values JOIN labtype_inputs ON test_results_values	.labtype_input_id=labtype_inputs.id WHERE request_standard_id = '$id' AND type='raw' AND sampling_no='$sample' ";
+					
+				$results = $connection->createCommand($sql)->queryAll();
+				foreach ($results as $key => $rs) {
+					$col = $rs["col_index"];
+					eval('$'.$col.' = '.$rs["value"].';');
+				}*/
+
+
+				//header
+				$sql = "SELECT test_results_values.id as id, formula,type, value,col_index,sampling_no  FROM test_results_values JOIN labtype_inputs ON test_results_values	.labtype_input_id=labtype_inputs.id WHERE request_standard_id = '$id' AND sampling_no='$sample' AND self_header	=0 ORDER BY type DESC, col_index DESC";
+				$results = $connection->createCommand($sql)->queryAll();
+				foreach ($results as $key => $rs) {
+					$col = $rs["col_index"];
+
+					//print_r($rs);
+					if($rs['formula']!="")
+					{
+						eval('$value = '.$rs['formula'].';');
+
+					
+						$model = TestResultsValue::model()->findByPk($rs['id']);
+						$model->value = $value;
+						$model->save(); // save the change to database
+
+						//print_r($model);
+
+					}
+					else{
+					
+						if(is_numeric($rs['value']))
+						{
+						
+						  eval('$'.$col.' = '.$rs['value'].';');
+						}
+						
+					}
+				}
+
+				
+				//calculate self header
+				$sql = "SELECT test_results_values.id as id, formula,type, value,col_index,sampling_no,self_header  FROM test_results_values JOIN labtype_inputs ON test_results_values	.labtype_input_id=labtype_inputs.id WHERE request_standard_id = '$id' AND sampling_no='$sample'  ORDER BY type DESC,id ASC";
+				$results = $connection->createCommand($sql)->queryAll();
+				foreach ($results as $key => $rs) {
+					$col = $rs["col_index"];
+
+					//print_r($rs);
+					if($rs['formula']!="" && $rs['self_header']==1)
+					{
+						eval('$value = '.$rs['formula'].';');
+						eval('$'.$col.' = '.$value .';');
+
+						$model = TestResultsValue::model()->findByPk($rs['id']);
+						$model->value = $value;
+						$model->save(); // save the change to database
+
+						//print_r($model);
+
+					}
+					else{
+					
+						if(is_numeric($rs['value']))
+						{
+						
+						  eval('$'.$col.' = '.$rs['value'].';');
+						  //echo $col;
+						}
+						
+					}
+				}
+
+			   //print_r($results);
+			   //echo $no["sampling_no"];    
+			}                
+	}
+
 	public function actionAddRaw($id){
 		$connection = Yii::app()->db;
 		$output = array();
