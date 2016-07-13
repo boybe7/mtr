@@ -180,7 +180,7 @@
 		
 		//print_r($modelSTDParam);
 
-		$modelLabtype = LabtypeInput::model()->findAll(array("condition"=>"labtype_id=".$request_standard['labtype_id']));
+		$modelLabtype = LabtypeInput::model()->findAll(array("condition"=>"labtype_id=:lab AND type='header'", "params"=>array(":lab"=>$request_standard['labtype_id'])));
 		$index = 1;
 		$std_val = array();
 		$std_col = array();
@@ -201,7 +201,7 @@
 			$index++;	
 		}	
 
-		//print_r($std_col);
+		//print_r($modelLabtype);
 
 		//echo count($std_val);
 
@@ -236,7 +236,7 @@
 		     	    'type' => 'POST',
                 	'data' =>  'js:$("#request-form").serialize()',
                 	'success' => 'function(msg){ 
-
+                		window.location.reload();
          			}'
                 ) 
 
@@ -302,9 +302,9 @@
 							if($found)
 							{	
 								if(is_numeric($value))
-								      echo "<td style='background-color:#eeeeee;text-align:right;padding-right:10px;'>".$value."</td>";
+								      echo "<td style='background-color:#f89406;text-align:right;padding-right:10px;'>".$value."</td>";
 								else  
-									  echo "<td style='background-color:#eeeeee;text-align:center'>".$value."</td>"; 
+									  echo "<td style='background-color:#f89406;text-align:center'>".$value."</td>"; 
    							}
 							else
 							    echo "<td></td>";	 
@@ -352,7 +352,7 @@
 	?>
 	</div>
 </div>
-<?php// echo CHtml::endForm(); ?>
+
 <?php $this->endWidget(); ?>
 </div>
 <style type="text/css">

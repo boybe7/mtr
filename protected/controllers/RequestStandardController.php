@@ -68,13 +68,6 @@ class RequestStandardController extends Controller
 			}
 		}
 
-		if(isset($_POST['reqstd'])){
-			foreach ($_POST['reqstd'] as $reqstd_id => $conclude) {
-				$model = RequestStandard::model()->findByPk($reqstd_id);
-				$model->conclude = $conclude;
-				$model->save(); // save the change to database
-			}
-		}
 
 		if(isset($_POST['result'])){
 			foreach ($_POST['result'] as $result_id => $value) {
@@ -85,9 +78,24 @@ class RequestStandardController extends Controller
 
 
 
-			
+		}
 
-			$this->redirect(array('request/index'));	
+
+		if(isset($_POST['reqstd'])){
+			foreach ($_POST['reqstd'] as $reqstd_id => $conclude) {
+				$model = RequestStandard::model()->findByPk($reqstd_id);
+				$model->conclude = $conclude;
+				$model->save(); // save the change to database
+
+				$this->calculate($reqstd_id);
+			}
+
+
+
+			//if (Yii::app()->request->isAjaxRequest)	
+			//	$this->redirect(array('requestStandard/index/'.$id));
+			//else	
+			    $this->redirect(array('request/index'));	
 		}
 
 		// Request query
@@ -183,9 +191,12 @@ class RequestStandardController extends Controller
 		$this->render('index', array('output' => $output,'id'=>$id));
 	}
 
+
+
+
 	public function calculate($id)
 	{
-		
+		    $connection = Yii::app()->db;
 			function avg()
 			{
 			    return $result = array_sum(func_get_args())/count(func_get_args());
