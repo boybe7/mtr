@@ -1,5 +1,5 @@
 <?php
-
+require_once($_SERVER['DOCUMENT_ROOT'].'/mtr/protected/tcpdf/tcpdf.php');
 class RequestController extends Controller
 {
 	/**
@@ -27,7 +27,7 @@ class RequestController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','print'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -43,6 +43,13 @@ class RequestController extends Controller
 			),
 		);
 	}
+
+	public function actionPrint($id){
+		// Query test
+		$invoice = Invoices::model()->findByPk($id);
+		$this->renderPartial('print', array('invoice' => $invoice));
+	}
+
 
 
 
@@ -120,9 +127,9 @@ class RequestController extends Controller
 
 
 				if(count($models)>1)
-					return "<a href='../invoices/print/".$mm->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
+					return "<a href='../request/print/".$mm->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
 				else
-					return "<a href='../invoices/print/".$mm->id."'>".$data->request_no."</a>";
+					return "<a href='../request/print/".$mm->id."'>".$data->request_no."</a>";
 	}
 
 

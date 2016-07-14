@@ -2626,3 +2626,128 @@ Stack trace:
 REQUEST_URI=/mtr/requestStandard/index/37
 HTTP_REFERER=http://localhost/mtr/request/index
 ---
+2016/07/13 19:05:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "print" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('print')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('print')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/print')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/request/print/10
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/07/13 19:06:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php:1189
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(49): RequestController->loadModel('10')
+#1 [internal function]: RequestController->actionPrint('10')
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(RequestController), Array)
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(RequestController), Object(ReflectionMethod), Array)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('print')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/print')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/print/10
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/07/13 19:06:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php:1189
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(49): RequestController->loadModel('10')
+#1 [internal function]: RequestController->actionPrint('10')
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(RequestController), Array)
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(RequestController), Object(ReflectionMethod), Array)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('print')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/print')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/print/10
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/07/13 19:06:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php:1189
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(49): RequestController->loadModel('10')
+#1 [internal function]: RequestController->actionPrint('10')
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(RequestController), Array)
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(RequestController), Object(ReflectionMethod), Array)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('print')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/print')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/print/10
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/07/13 19:06:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php:1189
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(49): RequestController->loadModel('10')
+#1 [internal function]: RequestController->actionPrint('10')
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(RequestController), Array)
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(RequestController), Object(ReflectionMethod), Array)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('print')
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/print')
+#14 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/mtr/request/print/10
+HTTP_REFERER=http://localhost/mtr/request/index
+---
+2016/07/13 19:09:12 [error] [php] include(TCPDF.php): failed to open stream: No such file or directory (C:\xampp\htdocs\mtr\framework\YiiBase.php:427)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\views\request\print.php(2): spl_autoload_call()
+#1 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): RequestController->renderInternal()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#4 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(50): RequestController->renderPartial()
+#5 unknown(0): RequestController->actionPrint()
+#6 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#7 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#12 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#13 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#15 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#16 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#17 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#18 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#19 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/print/10
+in C:\xampp\htdocs\mtr\protected\views\request\print.php (2)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (50)
+in C:\xampp\htdocs\mtr\index.php (13)
