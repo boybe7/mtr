@@ -78,21 +78,17 @@
 		        
 		        // Set font
 		        //$this->SetFont('thsarabun', '', 18);
-		        $this->SetFont('angsanaupc', '', 14);
-		        $this->writeHTMLCell(145, 20, 15, 39, '<p style="font-weight:bold;">อันดับการทดสอบที่   <font size="18">   '.$this->cer_no.'</font></p>', 0, 1, false, true, 'L', false);
-
-		        $this->writeHTMLCell(145, 20, 15, 47, '<p style="font-weight:bold;">เจ้าของตัวอย่าง </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 43, 47, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
-
-		        $this->writeHTMLCell(145, 20, 15, 53, '<p style="font-weight:bold;">งานสัญญา </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 35, 53, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
-
-		        //$this->writeHTMLCell(145, 20, 40, 53, '<p style="font-weight:bold;">แนบท้ายหนังสือกมว.ที่..................</p>', 0, 1, false, true, 'C', false);
-		   
-				
-		       
+		        $this->SetFont('angsanaupc', '', 18);
+		        $this->writeHTMLCell(145, 20, 40, 41, '<p style="font-weight:bold;">ใบรับรองคุณภาพท่อและอุปกรณ์ประปาเลขที่ '.$this->cer_no, 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell(145, 20, 40, 53, '<p style="font-weight:bold;font-size:12">แนบท้ายหนังสือกมว.ที่..................</p>', 0, 1, false, true, 'C', false);
 		        
-		        $this->writeHTMLCell(145, 20, 15, 70, '<p style="font-weight:bold;">คู่สัญญา </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(150, 20, 47, 53, '<p style="font-weight:bold;font-size:12">'.$this->dept_order.'</p>', 0, 1, false, true, 'R', false);
+		        $this->writeHTMLCell(150, 20, 47, 60, '<p style="font-weight:bold;font-size:12">'.$this->inspec_no.'</p>', 0, 1, false, true, 'R', false);
+				
+		        $this->writeHTMLCell(145, 20, 15, 65, '<p style="font-weight:bold;font-size:12">สัญญา </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 30, 65, '<p style="font-weight:bold;font-size:12">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
+		        
+		        $this->writeHTMLCell(145, 20, 15, 70, '<p style="font-weight:bold;font-size:12">คู่สัญญา </p>', 0, 1, false, true, 'L', false);
 		        $this->writeHTMLCell(145, 20, 30, 70, '<p style="font-weight:bold;font-size:12">'.$this->contractor.'</p>', 0, 1, false, true, 'L', false);
 				$this->writeHTMLCell(145, 20, 110, 70, '<p style="font-weight:bold;font-size:12">ผู้ผลิต/จัดส่ง</p>', 0, 1, false, true, 'L', false);
 				$this->writeHTMLCell(145, 20, 129, 70, '<p style="font-weight:bold;font-size:12">'.$this->vendor.'</p>', 0, 1, false, true, 'L', false);
@@ -182,9 +178,13 @@
 					
 		$inspec_no = $model->request_no;
 		//$date_oper = renderDate($model->cer_oper_date);
-		
-		
-		$pdf->setHeaderInfo($model->request_no, $model->contract->name,"","",$inspec_no,"","","");
+		$con = $model->result_headers;
+		foreach ($con as $key => $value) {
+			print_r($value);
+		}
+
+
+		$pdf->setHeaderInfo($model->request_no, "","","",$inspec_no,"","","");
 		//$pdf->setHeaderInfo($model->request_no, $model->contract->name,$model->contractor,$model->vend_id,$inspec_no,$model->dept_id,$model->prod_id,$date_oper);
 
 
@@ -257,7 +257,7 @@
 		$html = '';
 
         
-		$pdf->writeHTML($html, false, false, false, false, '');
+		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
 
 		//--------watermark--------------------//
@@ -286,7 +286,7 @@
 		//---------end--------------------------//
 
         //$pdf->Output($_SERVER['DOCUMENT_ROOT'].'/engstd/print/'.$filename,'F');
-        $pdf->Output('result.pdf', 'I');
+        //$pdf->Output('result.pdf', 'I');
         //ob_end_clean() ;
 
 

@@ -57,6 +57,7 @@ class Request extends CActiveRecord
 			'vendor'=>array(self::BELONGS_TO, 'Vendor', 'vendor_id'),
 			'owner'=>array(self::BELONGS_TO, 'Vendor', 'owner_id'),
 			'job'=>array(self::BELONGS_TO, 'Job', 'job_id'),
+			'contract'=>array(self::BELONGS_TO, 'Contract', 'contract_id'),
 			'result_headers'=>array(self::HAS_MANY, 'TestResultsHeaders', 'request_id'),
 		);
 	}

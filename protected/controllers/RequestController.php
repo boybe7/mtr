@@ -46,8 +46,8 @@ class RequestController extends Controller
 
 	public function actionPrint($id){
 		// Query test
-		$invoice = Invoices::model()->findByPk($id);
-		$this->renderPartial('print', array('invoice' => $invoice));
+		$req = Request::model()->findByPk($id);
+		$this->renderPartial('_formPDF', array('model' => $req));
 	}
 
 
@@ -127,9 +127,9 @@ class RequestController extends Controller
 
 
 				if(count($models)>1)
-					return "<a href='../request/print/".$mm->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
+					return "<a href='../request/print/".$data->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
 				else
-					return "<a href='../request/print/".$mm->id."'>".$data->request_no."</a>";
+					return "<a href='../request/print/".$data->id."'>".$data->request_no."</a>";
 	}
 
 
