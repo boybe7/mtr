@@ -36,7 +36,7 @@
 
 			public function setHeaderInfo($cer_no, $contract_no,$owner,$job,$tester,$test_date) {
 		        $this->cer_no = $cer_no;
-		        $this->contract_no = $contract_no;
+		        $this->contract_no = $contract_no!="" ? $contract_no:"-" ;
 		        $this->owner = $owner;
 		        $this->job = $job;
 		        $this->tester = $tester;
@@ -166,7 +166,7 @@
 		// set default monospaced font
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 		// set margins
-		$pdf->SetMargins(10, 80, 8);
+		$pdf->SetMargins(10, 68, 8);
 		//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 		// set auto page breaks
@@ -178,6 +178,7 @@
 			require_once(dirname(__FILE__).'/lang/eng.php');
 			$pdf->setLanguageArray($l);
 		}
+		$pdf->SetFont('angsanaupc', '', 14);
 		// ---------------------------------------------------------
 		// set default font subsetting mode
 		$pdf->setFontSubsetting(true);
@@ -185,6 +186,88 @@
 		$html = '';
 
 		$requestStandards = RequestStandard::model()->findAll('request_id=:id', array(':id' => $model->id));
+
+		foreach ($requestStandards as $key => $request) {
+
+
+					$html .= '<div style="text-align:center;font-weight:bold;font-size:20px">'.$request->labtype->name_report."</div>";
+
+					$html .= '<table widht="100%" border=0>';
+					$html .= 	'<tr>';
+					$html .=		'<td width="50%">TYPE &nbsp;&nbsp;&nbsp;&nbsp;'. Material::model()->findByPk($request->labtype->material_id)->name.'</td>';
+					$html .=		'<td width="50%" style="text-align:right">SHEET 1  OF 1</td>';
+					$html .= 	'</tr>';
+					$html .= '</table>';
+
+					//----------------Result-------------//
+					$html .= '<table widht="100%" border="1">';
+					//----------------Header--------------//
+					// Header list			
+					$sql = "SELECT id, name,decimal_display FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' ORDER BY col_index";
+					$header_list = Yii::app()->db->createCommand($sql)->queryAll();
+
+					
+
+					$html .=   '<thead>';
+					$html .= 	'<tr>';
+							// $headers = LabtypeInput::model()->findAll(array("condition"=>"labtype_id=:lab AND type='header'", "params"=>array(":lab"=>$request->labtype_id)));
+							// foreach ($headers as $key => $header) {
+							// 	$html .= 	'<th style="text-align:center">'.$header->name.'</th>';
+							// }
+							foreach ($header_list as $header) {
+								$html .= 	'<th style="text-align:center">'.$header["name"].'</th>';
+							}
+				
+					$html .= 	'</tr>';
+					$html .=   '</thead>';
+
+					//--------------------value----------------------------//
+					$html .=   '<tbody>';
+					// Sample list
+					$sql = "SELECT sampling_no FROM test_results_values WHERE request_standard_id='".$request->id."' GROUP BY sampling_no ORDER BY sampling_no_fix, sampling_no";
+					$sample_list = Yii::app()->db->createCommand($sql)->queryAll();
+
+					// Result list
+					$sql = "SELECT sampling_no, labtype_input_id, test_results_values.id, value,decimal_display  FROM test_results_values JOIN labtype_inputs ON test_results_values.labtype_input_id=labtype_inputs.id WHERE request_standard_id = '".$request->id."' AND type='header'";
+					$result = Yii::app()->db->createCommand($sql)->queryAll();
+					$result_list = array();
+						foreach ($result as $row) {
+							$sampling_no = $row['sampling_no'];
+							$labtype_input_id = $row['labtype_input_id'];
+							$result_list[$sampling_no][$labtype_input_id] = array(
+								'id' => $row['id'], 
+								'value' => $row['value'],
+								'decimal'=>$row['decimal_display']
+							);
+						}
+
+
+						foreach ($sample_list as $sample) {
+							$sampling_no = $sample['sampling_no'];
+							$html .= "<tr>";
+							//echo "<td>$sampling_no</td>";
+							foreach ($header_list as $header) {
+								$labtype_input_id = $header['id'];
+								//$header_name = $header['name'];
+
+								$result_id = $result_list[$sampling_no][$labtype_input_id]['id'];
+								$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
+								$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
+								$html .= '<td style="text-align:center;">';
+
+								if($decimal==0 && !is_numeric($result_value))
+									$html .= $result_value;
+								else
+									$html .= number_format($result_value,$decimal);
+								$html .= "</td>";
+							}
+							$html .= "</tr>";
+						}
+
+					$html .=   '</tbody>';
+
+					$html .= '</table>';
+		}
 
 
         
