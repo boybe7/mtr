@@ -241,11 +241,15 @@
 							);
 						}
 
-
+							$lot = "";
+							$i_lot = 1;
 						foreach ($sample_list as $sample) {
 							$sampling_no = $sample['sampling_no'];
 							$html .= "<tr>";
 							//echo "<td>$sampling_no</td>";
+							$i = 1;
+							$num_i = count($header_list);
+						
 							foreach ($header_list as $header) {
 								$labtype_input_id = $header['id'];
 								//$header_name = $header['name'];
@@ -255,10 +259,36 @@
 								$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
 								$html .= '<td style="text-align:center;">';
 
+							
+
 								if($decimal==0 && !is_numeric($result_value))
 									$html .= $result_value;
 								else
 									$html .= number_format($result_value,$decimal);
+
+								if($i==$num_i)
+								{
+
+									if($lot != $result_value)
+									{
+										$sql = "SELECT count(id)  FROM test_results_values  WHERE value = '".$result_value."' AND type='header'";
+										$result = Yii::app()->db->createCommand($sql)->queryAll();
+										$lot = $result_value;
+										
+										$i_lot = 1;
+									}
+									else{
+										$i_lot++;
+
+										
+									}
+
+									$html .= " (".$i_lot."/)";
+
+								}
+
+								$i++;	
+
 								$html .= "</td>";
 							}
 							$html .= "</tr>";

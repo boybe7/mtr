@@ -172,7 +172,23 @@
 		$lot_num = $row->lot_num;
 		$sampling_num = $row->sampling_num;
 
-		$html .= "$labtype_name ของ$material_detail จำนวน $lot_num lot หมายเลข lot $lot_no จำนวนตัวอย่าง $sampling_num ตัวอย่าง";
+		//check retest
+		$split = explode("-", $invoice->invoice_no);
+		if(count($split)>1)
+		{
+			$retest = Retest::model()->findAll(array("condition"=>"invoice_no=:no", "params"=>array(":no"=>$invoice->invoice_no)));
+			$lot_no = "";
+			$lot_num = count($retest);
+			$sampling_num = 0;
+			foreach ($retest as $key => $value) {
+				$lot_no .= $value->lot_no.", ";
+				$sampling_num += $value->sampling_num;
+			}
+			$lot_no = substr($lot_no, 0,strlen($lot_no)-2);
+		}
+		
+
+		$html .= "$labtype_name ของ $material_detail จำนวน $lot_num lot หมายเลข lot $lot_no จำนวนตัวอย่าง $sampling_num ตัวอย่าง";
 		if ($i < $count) {
 			$html .= " และทดสอบคุณสมบัติ ";
 		}

@@ -3554,3 +3554,157 @@ in C:\xampp\htdocs\mtr\index.php (13)
 2016/07/26 16:44:16 [warning] [application] Failed to set unsafe attribute "id" of "RequestStandard".
 in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (893)
 in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:34:30 [error] [php] Array to string conversion (C:\xampp\htdocs\mtr\protected\views\invoices\print.php:187)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): InvoicesController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\InvoicesController.php(54): InvoicesController->renderPartial()
+#2 unknown(0): InvoicesController->actionPrint()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#4 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): InvoicesController->runAction()
+#7 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): InvoicesController->filterAccessControl()
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(265): InvoicesController->runActionWithFilters()
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): InvoicesController->run()
+#14 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#15 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/invoices/print/11
+in C:\xampp\htdocs\mtr\protected\views\invoices\print.php (187)
+in C:\xampp\htdocs\mtr\protected\controllers\InvoicesController.php (54)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 11:39:47 [warning] [application] Failed to set unsafe attribute "id" of "TestResultsValue".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (286)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 12:22:50 [error] [php] Undefined variable: str (C:\xampp\htdocs\mtr\protected\views\invoices\print.php:185)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): InvoicesController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\InvoicesController.php(54): InvoicesController->renderPartial()
+#2 unknown(0): InvoicesController->actionPrint()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#4 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): InvoicesController->runAction()
+#7 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): InvoicesController->filterAccessControl()
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(265): InvoicesController->runActionWithFilters()
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): InvoicesController->run()
+#14 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#15 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/invoices/print/12
+in C:\xampp\htdocs\mtr\protected\views\invoices\print.php (185)
+in C:\xampp\htdocs\mtr\protected\controllers\InvoicesController.php (54)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 14:53:56 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\mtr\protected\views\request\_formPDF.php:137)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): RequestController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(50): RequestController->renderPartial()
+#2 unknown(0): RequestController->actionPrint()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#4 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): RequestController->runAction()
+#7 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#9 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): RequestController->filterAccessControl()
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(265): RequestController->runActionWithFilters()
+#13 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): RequestController->run()
+#14 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#15 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/request/print/51
+in C:\xampp\htdocs\mtr\protected\views\request\_formPDF.php (137)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (50)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 14:55:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'where clause'. The SQL statement executed was: SELECT count(id)  FROM test_results_values  WHERE value = 'LOT-1' AND type='header'.
+in C:\xampp\htdocs\mtr\protected\views\request\_formPDF.php (275)
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (50)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/07/27 14:55:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'type' in 'where clause'. The SQL statement executed was: SELECT count(id)  FROM test_results_values  WHERE value = 'LOT-1' AND type='header'' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\views\request\_formPDF.php(275): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#5 C:\xampp\htdocs\mtr\protected\controllers\RequestController.php(50): CController->renderPartial('_formPDF', Array)
+#6 [internal function]: RequestController->actionPrint('52')
+#7 C:\xampp\htdocs\mtr\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(RequestController), Array)
+#8 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(RequestController), Object(ReflectionMethod), Array)
+#9 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#11 C:\xampp\htdocs\mtr\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#12 C:\xampp\htdocs\mtr\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#13 C:\xampp\htdocs\mtr\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#14 C:\xampp\htdocs\mtr\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 C:\xampp\htdocs\mtr\framework\web\CController.php(291): CFilterChain->run()
+#16 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('print')
+#18 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('request/print')
+#19 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#20 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/mtr/request/print/52
+HTTP_REFERER=http://localhost/mtr/request/index
+---
