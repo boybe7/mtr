@@ -134,4 +134,50 @@ class Invoices extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function beforeSave()
+    {
+      
+
+        $str_date = explode("/", $this->bill_date);
+        if(count($str_date)>1)
+        	$this->bill_date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+     
+        
+        return parent::beforeSave();
+   }
+
+	protected function afterSave(){
+            parent::afterSave();
+            $str_date = explode("-", $this->bill_date);
+            if(count($str_date)>1)
+            	$this->bill_date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+         
+    }
+
+	public function beforeFind()
+    {
+          
+
+        $str_date = explode("/", $this->bill_date);
+        if(count($str_date)>1)
+        	$this->bill_date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+        
+    
+        return parent::beforeSave();
+   }
+
+	protected function afterFind(){
+            parent::afterFind();
+    
+
+            $str_date = explode("-", $this->bill_date);
+            if($this->bill_date=='0000-00-00')
+            	$this->bill_date = '';
+            else if(count($str_date)>1)
+            	$this->bill_date = $str_date[2]."/".$str_date[1]."/".($str_date[0]+543);
+      
+           
+     }
 }

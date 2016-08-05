@@ -79,7 +79,7 @@ class Request extends CActiveRecord
 			'status' => 'สถานะ',
 			'material'=>'ชนิดวัสดุ',
 			'sampling_no'=>'หมายเลขตัวอย่าง',
-			'note'=>'สาเหตุ'
+			'note'=>'หมายเหตุ'
 
 		);
 	}
@@ -92,6 +92,7 @@ class Request extends CActiveRecord
 	                  'material'=>'req_std.labtype.material.name',
 	                  'owner_id'=>'owner.name',
 	                  'sampling_no'=>'req_std.sampling_no',
+	                  'contract_id' => 'contract.name'
 
 	             ),
 	         ),
@@ -141,7 +142,7 @@ class Request extends CActiveRecord
 		$criteria->compare($alias.'vendor_id',$this->vendor_id);
 		$criteria->compare($alias.'owner_id',$this->owner_id);
 		$criteria->compare($alias.'job_id',$this->job_id);
-		$criteria->compare($alias.'contract_id',$this->contract_id);
+		//$criteria->compare($alias.'contract_id',$this->contract_id);
 		$criteria->compare($alias.'detail',$this->detail,true);
 		$criteria->compare($alias.'status',$this->status);
 

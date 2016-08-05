@@ -27,15 +27,15 @@ class VendorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('indexOwner','indexVendor','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','createVendor','createOwner','update','deleteSelected','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -70,11 +70,51 @@ class VendorController extends Controller
 		{
 			$model->attributes=$_POST['Vendor'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+		));
+	}
+
+	public function actionCreateOwner()
+	{
+		$model=new Vendor;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Vendor']))
+		{
+			$model->attributes=$_POST['Vendor'];
+			$model->type = 1;
+			if($model->save())
+				$this->redirect(array('indexOwner'));
+		}
+
+		$this->render('create',array(
+			'model'=>$model,'title'=>'เพิ่มข้อมูลเจ้าของตัวอย่าง'
+		));
+	}
+
+	public function actionCreateVendor()
+	{
+		$model=new Vendor;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Vendor']))
+		{
+			$model->attributes=$_POST['Vendor'];
+			$model->type = 2;
+			if($model->save())
+				$this->redirect(array('indexVendor'));
+		}
+
+		$this->render('create',array(
+			'model'=>$model,'title'=>'เพิ่มข้อมูลผู้ผลิต'
 		));
 	}
 
@@ -83,23 +123,19 @@ class VendorController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate()
 	{
-		$model=$this->loadModel($id);
+		$es = new EditableSaver('Vendor');
+	
+	    try {
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Vendor']))
-		{
-			$model->attributes=$_POST['Vendor'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+	    	$es->update();
+	  
+	    } catch(CException $e) {
+	    	echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
+	    	return;
+	    }
+	    echo CJSON::encode(array('success' => true));
 	}
 
 	/**
@@ -125,13 +161,41 @@ class VendorController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndexOwner()
 	{
-		$dataProvider=new CActiveDataProvider('Vendor');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$model=new Vendor('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Vendor']))
+			$model->attributes=$_GET['Vendor'];
+
+		$this->render('admin',array(
+			'model'=>$model,'type'=>'เจ้าของตัวอย่าง','provider'=>$model->searchByType(1),'url'=>'createOwner'
 		));
 	}
+
+	public function actionIndexVendor()
+	{
+		$model=new Vendor('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Vendor']))
+			$model->attributes=$_GET['Vendor'];
+
+		$this->render('admin',array(
+			'model'=>$model,'type'=>'ผู้ผลิต','provider'=>$model->searchByType(2),'url'=>'createVendor'
+		));
+	}
+
+	public function actionDeleteSelected()
+    {
+    	$autoIdAll = $_POST['selectedID'];
+        if(count($autoIdAll)>0)
+        {
+            foreach($autoIdAll as $autoId)
+            {
+                $this->loadModel($autoId)->delete();
+            }
+        }    
+    }
 
 	/**
 	 * Manages all models.

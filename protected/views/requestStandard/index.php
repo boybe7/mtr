@@ -220,27 +220,7 @@
 		   )
 		));
 
-		$this->widget('bootstrap.widgets.TbButton', array(
-		  'buttonType'=>'ajaxLink',
-		  'type'=>'info',
-		  'label'=>'คำนวณ',
-		  'icon'=>'repeat',
-		  'url'=>array('requestStandard/index/'.$id),
-		  'htmlOptions'=>array(
-		    'class'=>'pull-right',
-		    'style'=>'margin:0px 0px 10px 10px;',
-		     
-		   ),
-		  'ajaxOptions'=>array(
-		    	    
-		     	    'type' => 'POST',
-                	'data' =>  'js:$("#request-form").serialize()',
-                	'success' => 'function(msg){ 
-                		window.location.reload();
-         			}'
-                ) 
-
-		));
+		
 		//echo "<form name='req".$reqstd_id."' action='/mtr/requestStandard/index/52'>";
 		echo "<table style='margin-top:10px' border='1' class='items table table-bordered table-condensed'>";
 		// Columns
@@ -262,10 +242,21 @@
 			foreach ($header_list as $header) {
 				$labtype_input_id = $header['id'];
 				//$header_name = $header['name'];
-
-				$result_id = $result_list[$sampling_no][$labtype_input_id]['id'];
-				$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
-				$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
+				/*if($labtype_input_id>=12)
+				{
+					$result_id = 12;
+					if($labtype_input_id==12)
+					   $result_value = print_r($result_list[$sampling_no]);
+					else
+						$result_value = 0;
+					$decimal = 0;
+				}	
+				else
+				{*/
+					$result_id = $result_list[$sampling_no][$labtype_input_id]['id'];
+					$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
+					$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
+				//}	
 				echo "<td style='text-align:center;'>";
 
 				if($decimal==0 && !is_numeric($result_value))
@@ -336,7 +327,27 @@
 <div class="form-actions">
 	<div class="pull-right">
 	<?php
+		$this->widget('bootstrap.widgets.TbButton', array(
+				  'buttonType'=>'ajaxLink',
+				  'type'=>'info',
+				  'label'=>'คำนวณ',
+				  'icon'=>'repeat',
+				  'url'=>array('requestStandard/index/'.$id),
+				  'htmlOptions'=>array(
+				    'class'=>'pull-right',
+				    'style'=>'margin:0px 0px 10px 10px;',
+				     
+				   ),
+				  'ajaxOptions'=>array(
+				    	    
+				     	    'type' => 'POST',
+		                	'data' =>  'js:$("#request-form").serialize()',
+		                	'success' => 'function(msg){ 
+		                		window.location.reload();
+		         			}'
+		                ) 
 
+				));
 		 $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',

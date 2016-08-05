@@ -58,7 +58,7 @@ class ContractController extends Controller
 	public function actionGetContract(){
             $request=trim($_GET['term']);
                     
-            $models=Contract::model()->findAll(array("condition"=>"name like '%$request%' ",'order'=>'name'));
+            $models=Contract::model()->findAll(array("condition"=>"name like '%$request%' AND status=1 ",'order'=>'name'));
             $data=array();
             foreach($models as $model){
                 //$data[]["label"]=$get->v_name;
@@ -148,9 +148,13 @@ class ContractController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Contract');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$model=new Contract('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Contract']))
+			$model->attributes=$_GET['Contract'];
+
+		$this->render('admin',array(
+			'model'=>$model,
 		));
 	}
 

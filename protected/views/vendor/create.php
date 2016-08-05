@@ -4,12 +4,8 @@ $this->breadcrumbs=array(
 	'Create',
 );
 
-$this->menu=array(
-	array('label'=>'List Vendor','url'=>array('index')),
-	array('label'=>'Manage Vendor','url'=>array('admin')),
-);
 ?>
 
-<h1>Create Vendor</h1>
+<h4><?php echo $title; ?></h4>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

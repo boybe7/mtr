@@ -64,9 +64,11 @@ class StandardController extends Controller
 		$modelLabtype = Labtype::model()->findByPk($labtype);
 
 		$material = !empty($modelLabtype) ? $modelLabtype->material_id : 0;
- 
-        $data = Standard::model()->findAll('material_id=:id', array(':id' => $material));        
-               
+     
+
+	    $sql = 'SELECT s.id,s.name FROM standards s LEFT JOIN standard_parameters sp ON sp.standard_id=s.id LEFT JOIN labtype_inputs lb ON lb.id=sp.labtype_input_id WHERE labtype_id='.$labtype.' AND material_id='.$material;	
+	    $data = Yii::app()->db->createCommand($sql)->queryAll();
+
         $data = CHtml::listData($data, 'id', 'name');
         
         echo CHtml::tag('option', array('value' => ''), CHtml::encode("กรุณาเลือกมาตรฐานการทดสอบ"), true);

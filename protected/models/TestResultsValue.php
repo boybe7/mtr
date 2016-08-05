@@ -30,7 +30,7 @@ class TestResultsValue extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('value, sampling_no, lot_no, sampling_no_fix, labtype_input_id, request_standard_id', 'required'),
+			array(' sampling_no, lot_no, sampling_no_fix, labtype_input_id, request_standard_id', 'required'),
 			array('labtype_input_id, request_standard_id', 'numerical', 'integerOnly'=>true),
 			array('value', 'length', 'max'=>300),
 			array('sampling_no, lot_no, sampling_no_fix', 'length', 'max'=>200),

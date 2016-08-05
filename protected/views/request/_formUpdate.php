@@ -308,7 +308,7 @@
                         $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
                             'name'=>'contract_id',
                             'id'=>'contract_id',
-                            'value'=>$model->contract_id,
+                            'value'=>Contract::model()->findByPK($model->contract_id)->name,
                            // 'source'=>$this->createUrl('Ajax/GetDrug'),
                            'source'=>'js: function(request, response) {
                                 $.ajax({
@@ -482,7 +482,7 @@
       <hr>
       <h5>รายการทดสอบเพิ่มเติม</h5> 
       <div class="row-fluid">
- 	<div class="span2">
+ 	  <div class="span2">
 		<?php 
 	
 		$data = array();
@@ -562,7 +562,7 @@
 		    'label'=>'ทดสอบเพิ่ม',
 		    'icon'=>'plus-sign',
 		    'url'=>array('createTempRetest'),
-		    'htmlOptions'=>array('class'=>'span6','style'=>'margin-top:23px;'),
+		    'htmlOptions'=>array('class'=>'span6','style'=>'margin-top:24px;'),
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
@@ -583,7 +583,7 @@
 		    'label'=>'ออกใบแจ้งหนี้',
 		    'icon'=>'plus-sign',
 		    'url'=>array('createInvoice'),
-		    'htmlOptions'=>array('class'=>'span6','style'=>'margin-top:23px;'),
+		    'htmlOptions'=>array('class'=>'span6','style'=>'margin-top:24px;'),
 		    'ajaxOptions'=>array(
 		    	    
 		     	    'type' => 'POST',
@@ -643,7 +643,10 @@
 								
 			  			),
 			  			'cost'=>array(
-							    'name' => 'cost',										   
+							    'name' => 'cost',
+							    'value'=>function($data){
+						            return number_format($data->cost, 2);
+						        },										   
 								'headerHtmlOptions' => array('style' => 'width:15%;text-align:center;'),  	            	  	
 								'htmlOptions'=>array('style'=>'text-align:right'),
 								
@@ -661,6 +664,80 @@
 	?>  
 
 	 <h5>รายการใบแจ้งหนี้</h5> 
+
+	 <div class="row-fluid">
+ 	  <div class="span3">
+		<?php 
+	
+	    $data = Invoices::model()->findAll('request_id=:id', array(':id' => $model->id));
+        $typelist = CHtml::listData($data,'id','invoice_no');
+        echo CHtml::label('เลขที่ใบแจ้งชำระเงิน','invoice_no');
+		echo CHtml::dropDownList('invoice_no','',$typelist, array('class'=>'span12','empty'=>'เลือกเลขที่ใบแจ้งชำระเงิน'));
+
+		   ?>
+	</div>
+	<div class="span4">
+		<?php 
+		echo CHtml::label('เลขที่ใบเสร็จรับเงิน','bill_no');
+		echo CHtml::textField('bill_no', '',array('class'=>'span12','placeholder'=>''));
+		 ?>
+	</div>
+	<div class="span2">
+		<?php 
+		echo CHtml::label('วันที่ชำระเงิน','bill_date');
+		//echo CHtml::textField('bill_date', '',array('class'=>'span12','placeholder'=>'')); 
+
+		//echo $form->labelEx($model,'date',array('class'=>'span12','style'=>'text-align:left;padding-right:10px;'));
+		echo '<div class="input-append" style="">'; //ใส่ icon ลงไป
+		$form->widget('zii.widgets.jui.CJuiDatePicker',
+
+		                    array(
+		                        'name'=>'bill_date',
+		                        'attribute'=>'bill_date',		                 
+		                        'options' => array(
+		                                          'mode'=>'focus',
+		                                          //'language' => 'th',
+		                                          'format'=>'dd/mm/yyyy', //กำหนด date Format
+		                                          'showAnim' => 'slideDown',
+		                                          ),
+		                        'htmlOptions'=>array('class'=>'span10'),  // ใส่ค่าเดิม ในเหตุการ Update 
+		                     )
+		);
+
+		echo '<span class="add-on"><i class="icon-calendar"></i></span></div>';
+
+		?>
+	</div>
+	
+	<div class="span3">
+		<?php
+		
+		$this->widget('bootstrap.widgets.TbButton', array(
+		    'buttonType'=>'ajaxLink',
+		    'id'=>'addButton',
+		    'type'=>'warning',
+		    'label'=>'บันทึกชำระเงิน',
+		    'icon'=>'plus-sign',
+		    'url'=>array('createPayment'),
+		    'htmlOptions'=>array('class'=>'span9','style'=>'margin-top:24px;'),
+		    'ajaxOptions'=>array(
+		    	    
+		     	    'type' => 'POST',
+                	'data' => array('invoice_no' => 'js:$("#invoice_no").val()','bill_no' => 'js:$("#bill_no").val()','bill_date' => 'js:$("#bill_date").val()'),
+                	'success' => 'function(msg){  
+                		            		               		
+                		$("#bill_no").val("");              		
+                		$.fn.yiiGridView.update("invoice-grid"); 
+                	}',
+                	'error'=>'function(html){  console.log("fail");  }'
+                ) 
+		)); 
+
+
+		?>
+	</div>	
+	
+</div>
 	      <?php
 			$this->widget('bootstrap.widgets.TbGridView',array(
 					'id'=>'invoice-grid',
@@ -678,14 +755,30 @@
 							    'name' => 'invoice_no',		
 							    'type'=>"raw",
 			    				'value'=>'CHtml::link($data->invoice_no,array("invoices/print","id"=>$data->id))', 								   
-								'headerHtmlOptions' => array('style' => 'width:65%;text-align:center;'),  	            	  	
+								'headerHtmlOptions' => array('style' => 'width:30%;text-align:center;'),  	            	  	
 								'htmlOptions'=>array('style'=>'text-align:center'),
 								
 			  			),
+
 			  			'cost'=>array(
-							    'name' => 'cost',										   
-								'headerHtmlOptions' => array('style' => 'width:25%;text-align:center;'),  	            	  	
+							    'name' => 'cost',	
+							    'value'=>function($data){
+						            return number_format($data->cost, 2);
+						        },											   
+								'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
 								'htmlOptions'=>array('style'=>'text-align:right'),
+								
+			  			),
+			  			'bill_no'=>array(
+							    'name' => 'bill_no',		
+							    'headerHtmlOptions' => array('style' => 'width:25%;text-align:center;'),  	          	  	
+								'htmlOptions'=>array('style'=>'text-align:center'),
+								
+			  			),
+			  			'bill_date'=>array(
+							    'name' => 'bill_date',								   
+								'headerHtmlOptions' => array('style' => 'width:20%;text-align:center;'),  	            	  	
+								'htmlOptions'=>array('style'=>'text-align:center'),
 								
 			  			),
 						array(

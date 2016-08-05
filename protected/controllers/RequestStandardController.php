@@ -1,5 +1,9 @@
 <?php
-
+function avg()
+	{
+		return $result = array_sum(func_get_args())/count(func_get_args());
+	}
+	
 class RequestStandardController extends Controller
 {
 	/**
@@ -154,7 +158,7 @@ class RequestStandardController extends Controller
 			$header_list = $connection->createCommand($sql)->queryAll();
 
 			// Sample list
-			$sql = "SELECT sampling_no FROM test_results_values WHERE request_standard_id='$reqstd_id' GROUP BY sampling_no ORDER BY sampling_no_fix, sampling_no";
+			$sql = "SELECT sampling_no FROM test_results_values WHERE request_standard_id='$reqstd_id' GROUP BY sampling_no ORDER BY lot_no,strSplit(sampling_no_fix,'-', 2)*1,id";
 			$sample_list = $connection->createCommand($sql)->queryAll();
 
 			// Result list
@@ -191,17 +195,14 @@ class RequestStandardController extends Controller
 		$this->render('index', array('output' => $output,'id'=>$id));
 	}
 
-
+	
 
 
 	public function calculate($id)
 	{
 		    $connection = Yii::app()->db;
-			function avg()
-			{
-			    return $result = array_sum(func_get_args())/count(func_get_args());
-			}
-		
+
+		 
 
 			//----update result with formula cal------------------//
 			//1.get sampling_no
@@ -235,8 +236,13 @@ class RequestStandardController extends Controller
 					//print_r($rs);
 					if($rs['formula']!="")
 					{
-						eval('$value = '.$rs['formula'].';');
+						$value = 0;
+						try{
+							eval('$value = @('.$rs['formula'].');');	
+						}catch(Exception $e){
 
+						}
+						
 					
 						$model = TestResultsValue::model()->findByPk($rs['id']);
 						$model->value = $value;
@@ -266,7 +272,12 @@ class RequestStandardController extends Controller
 					//print_r($rs);
 					if($rs['formula']!="" && $rs['self_header']==1)
 					{
-						eval('$value = '.$rs['formula'].';');
+					    $value = 0;
+						try{
+							eval('$value = @('.$rs['formula'].');');	
+						}catch(Exception $e){
+
+						}
 						eval('$'.$col.' = '.$value .';');
 
 						$model = TestResultsValue::model()->findByPk($rs['id']);
@@ -313,11 +324,11 @@ class RequestStandardController extends Controller
 			}
 
 			//echo $N;
-
-			function avg()
-			{
-			    return $result = array_sum(func_get_args())/count(func_get_args());
-			}
+		
+			// function avg()
+			// {
+			//     return $result = array_sum(func_get_args())/count(func_get_args());
+			// }
 		
 
 			//----update result with formula cal------------------//

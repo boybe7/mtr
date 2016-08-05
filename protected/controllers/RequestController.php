@@ -27,11 +27,11 @@ class RequestController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','print'),
+				'actions'=>array('index','view','print','printGuest','guest'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','gentSamplingNo','getInvoiceNo','getLot','getSamplingNo','createTempRetest','createInvoice','close','cancel'),
+				'actions'=>array('create','getReqNoGuest','createPayment','update','gentSamplingNo','getInvoiceNo','getLot','getSamplingNo','createTempRetest','createInvoice','close','cancel'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -50,15 +50,20 @@ class RequestController extends Controller
 		$this->renderPartial('_formPDF', array('model' => $req));
 	}
 
+	public function actionPrintGuest($id){
+		// Query test
+		$req = Request::model()->findByPk($id);
+		$this->renderPartial('_formPDF_A4', array('model' => $req));
+	}
 
 
 
-	public function gentRequstNo()
+	public function gentRequestNo()
 	{
 			//auto gen running_no
 			 $fiscalyear = date("Y")+543;//date("n")<10 ? date("Y")+543 : date("Y")+544;
 			 $m = Yii::app()->db->createCommand()
-	                    ->select('max(strSplit(request_no,"/", 1)) as max')
+	                    ->select('max(strSplit(request_no,"/", 1)*1) as max')
 	                    ->from('requests') 
 	                    ->where('strSplit(request_no,"/", 2)='.$fiscalyear)                                    
 	                    ->queryAll();
@@ -111,6 +116,16 @@ class RequestController extends Controller
 				return $mat;
 	}
 
+	public function getContract($data,$row)
+	{
+		
+				$model = Contract::model()->findByPk($data->contract_id);
+                
+                $contract = empty($model) ? "" : $model->name;
+
+				return $contract;
+	}
+
 	public function getReqNo($data,$row)
 	{
 		
@@ -130,6 +145,27 @@ class RequestController extends Controller
 					return "<a href='../request/print/".$data->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
 				else
 					return "<a href='../request/print/".$data->id."'>".$data->request_no."</a>";
+	}
+
+	public function getReqNoGuest($data,$row)
+	{
+		
+				$models=Invoices::model()->findAll('request_id=:id', array(':id' => $data->id));  
+				$mm = new Invoices;
+				$i = 0;
+				foreach ($models as $key => $value) {
+					if($i==0)
+					{
+						$mm = $value;
+						
+					}
+				}
+
+
+				if(count($models)>1)
+					return "<a href='../request/printGuest/".$data->id."'>".$data->request_no."</a>  <img src='".Yii::app()->baseUrl."/images/red_star.png' width='10px'>";
+				else
+					return "<a href='../request/printGuest/".$data->id."'>".$data->request_no."</a>";
 	}
 
 
@@ -284,6 +320,7 @@ class RequestController extends Controller
 			    			#insert
 			    			$modelResult = new TestResultsValue;
 			    			$modelResult->attributes = $mr->attributes;
+			    			//$modelResult->value = "";
 			    			$modelResult->sampling_no = $code."-".$no_start."-".($max_retest+$i);
 
 			    			if($specimen_col==1)
@@ -586,6 +623,22 @@ class RequestController extends Controller
 		}
 	}
 
+	public function actionCreatePayment(){
+		
+		if(isset($_POST['invoice_no']) && isset($_POST['bill_no']) && isset($_POST['bill_date']))
+		{
+			
+			$model = Invoices::model()->findByPk($_POST['invoice_no']);	
+			
+			$model->bill_no = $_POST['bill_no'];
+			$model->bill_date = $_POST['bill_date'];
+
+			$model->save();
+
+		}
+	}
+
+
 
 	
 	/**
@@ -602,7 +655,7 @@ class RequestController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		$model->request_no = $this->gentRequstNo();
+		$model->request_no = $this->gentRequestNo();
 
 		$model->date = date("d")."/".date("m")."/".(date("Y")+543);//"11/07/2526";
       
@@ -662,7 +715,7 @@ class RequestController extends Controller
               		  	  {
               		  	  	  
               		  	  	  //sum cost
-              		  	  	  $costSum += $mr->cost;
+              		  	  	  $costSum += str_replace(",", "", $mr->cost) ;
 
 
               		  	  	  //get lot_no
@@ -875,6 +928,7 @@ class RequestController extends Controller
 		    try {
 
 		    	$costSum = 0;
+		    	//header('Content-type: text/plain');
 
 		    	if($model->save())
 				{
@@ -882,17 +936,25 @@ class RequestController extends Controller
 
 					
 					
-					//header('Content-type: text/plain');
+					
 					$i = 0;
 					foreach ($modelRequests as $key => $attributes) {
 						
               		  if($i<$num_sample)	
               		  {
               		  	  
-              		  	  	$mr = new RequestStandard;
+              		  	  	if(!empty($attributes['id']))
+              		  	  		$mr = RequestStandard::model()->findByPk($attributes['id']);
+              		  	  	else
+              		  	  		$mr = new RequestStandard;
               		  	 	$mr->attributes = $attributes;
               		  	  	$mr->request_id = $model->id;
+              		  	  	$mr->material_detail = $attributes['material_detail'];
+              		  	  	//$mrOld = RequestStandard::model->findByPk($attributes['id']);
 
+              		  	  	//$mr->labtype_id = $mrOld->labtype_id;
+              		  	  	//$mr->standard_id = $mrOld->standard_id;
+        
 
 
               		  	  if($mr->save())
@@ -925,46 +987,53 @@ class RequestController extends Controller
               		  	  	  $samplings = explode("-", $mr->sampling_no);
               		  	  	  $no_start = $this->get_numerics($samplings[0]);
               		  	  	  $code = $this->get_string($samplings[0]);
-            
 
-              		  	  	  foreach ($lots as $key => $lot) {
-              		  	  	  	  if($lot!="")
-              		  	  	  	  {
-              		  	  	  	  	  for ($j=0; $j < $sample_per_lot ; $j++) { 
-              		  	  	  	  	  	
+              		  	  	  //------test-------------//
+              		  	  	  $nInput = count($modelInputs);
+              		  	  	  $nResult = count(TestResultsValue::model()->findAll('request_standard_id=:id', array(':id' => $mr->id)));
+              		  	  	
+							  if($nResult==0)
+							  {	
+	              		  	  	 
+							  	  //header('Content-type: text/plain');	
+	              		  	  	  foreach ($lots as $key => $lot) {
+	              		  	  	  	  if($lot!="")
+	              		  	  	  	  {
+	              		  	  	  	  	  for ($j=0; $j < $sample_per_lot ; $j++) { 
+	              		  	  	  	  	  	
 
-              		  	  	  	  	  	 foreach ($modelInputs as $key => $input) {
-              		  	  	  	  	  	 	 $modelResult = new TestResultsValue;
-	              		  	  	  	  	  	 $modelResult->lot_no = $lot;
-	              		  	  	  	  	  	 $modelResult->sampling_no = $code."-".($no_start);
-	              		  	  	  	  	  	 $modelResult->sampling_no_fix = $code."-".($no_start);
-	              		  	  	  	  	  	 $modelResult->request_standard_id = $mr->id;
-	              		  	  	  	  	  	 $modelResult->labtype_input_id = $input->id;
-	              		  	  	  	  	  	 $modelResult->value = "0";
+	              		  	  	  	  	  	 foreach ($modelInputs as $key => $input) {
+	              		  	  	  	  	  	 	 $modelResult = new TestResultsValue;
+		              		  	  	  	  	  	 $modelResult->lot_no = $lot;
+		              		  	  	  	  	  	 $modelResult->sampling_no = $code."-".($no_start);
+		              		  	  	  	  	  	 $modelResult->sampling_no_fix = $code."-".($no_start);
+		              		  	  	  	  	  	 $modelResult->request_standard_id = $mr->id;
+		              		  	  	  	  	  	 $modelResult->labtype_input_id = $input->id;
+		              		  	  	  	  	     $modelResult->value = "";
 
-	              		  	  	  	  	  	 if($input->id==$minID)
-	              		  	  	  	  	  	 	$modelResult->value = $code."-".($no_start);
+		              		  	  	  	  	  	
 
-	              		  	  	  	  	  	 if($input->id==$maxID)
-	              		  	  	  	  	  	 	$modelResult->value = $lot;
+		              		  	  	  	  	  	 if($input->id==$minID)
+		              		  	  	  	  	  	 {	$modelResult->value = $code."-".($no_start);}
 
-	              		  	  	  	  	  	 
+		              		  	  	  	  	  	 if($input->id==$maxID)
+		              		  	  	  	  	  	 {	$modelResult->value = $lot;}
 
+		              		  	  	  	  	  	 
+		              		  	  	  	  	  	 if(!$modelResult->save())
+		              		  	  	  	  	  	 	$saveOK = false;
 
-	              		  	  	  	  	  	 if(!$modelResult->save())
-	              		  	  	  	  	  	 	$saveOK = false;
+		              		  	  	  	  	  	 //print_r($modelResult);
+												
 
-	  //             		  	  	  	  	  	   		          	  	  header('Content-type: text/plain');
-			// print_r($modelResult);
-			// exit;
+	              		  	  	  	  	  	 }
 
+	              		  	  	  	  	  	  $no_start++;
 
-              		  	  	  	  	  	 }
-
-              		  	  	  	  	  	  $no_start++;
-
-              		  	  	  	  	  }
-              		  	  	  	  }
+	              		  	  	  	  	  }
+	              		  	  	  	  }
+	              		  	  	}
+	              		  	  	//exit;  	  
 
               		  	  	  }
 
@@ -973,25 +1042,37 @@ class RequestController extends Controller
               		  	  }
               		  	  else{
               		  	  	$saveOK = false;
+
+              		  
               		  	  }
+
               		  }
 					   $i++;	
 					}
 
 					//save invoices
 					
+					$cost = Yii::app()->db->createCommand()
+			                    ->select('sum(cost) as cost')
+			                    ->from('request_standards') 
+			                    ->where('request_id="'.$id.'"')                     
+			                    ->queryAll();
 
 					$modelInvoice =	Invoices::model()->findAll( array("condition"=>"request_id=".$id));            
 		
-					$modelInvoice[0]->cost += $costSum;
+					$modelInvoice[0]->cost = $cost[0]['cost'];
    
 
 
 					if(!$modelInvoice[0]->save())
+					{	
 						$saveOK = false;
+					
+								
+					}
 
 
-					//exit;
+					
 					//if($saveOK)
 					//{	
 				     	$transaction->commit();
@@ -1000,7 +1081,7 @@ class RequestController extends Controller
 				    //} 	
 				}
 
-				 
+				// exit;
 
 
 		    }
@@ -1158,6 +1239,18 @@ class RequestController extends Controller
 			$model->attributes=$_GET['Request'];
 
 		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+
+	public function actionGuest()
+	{
+		$model=new Request('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Request']))
+			$model->attributes=$_GET['Request'];
+
+		$this->render('guest',array(
 			'model'=>$model,
 		));
 	}

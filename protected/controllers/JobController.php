@@ -127,9 +127,13 @@ class JobController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Job');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$model=new Job('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Job']))
+			$model->attributes=$_GET['Job'];
+
+		$this->render('admin',array(
+			'model'=>$model,
 		));
 	}
 

@@ -11,13 +11,12 @@
 
 	<?php echo $form->textFieldRow($model,'address',array('class'=>'span5','maxlength'=>500)); ?>
 
-	<?php echo $form->textFieldRow($model,'type',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+			'label'=> 'บันทึก' 
 		)); ?>
 	</div>
 
