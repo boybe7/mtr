@@ -37,13 +37,13 @@
 			private $register_date;
 			private $test_date;
 
-			public function setHeaderInfo($cer_no, $contract_no,$owner,$job,$tester,$test_date) {
+			public function setHeaderInfo($cer_no, $contract_no,$owner,$job,$tester,$test_date,$register_date) {
 		        $this->cer_no = $cer_no;
 		        $this->contract_no = $contract_no!="" ? $contract_no:"-" ;
 		        $this->owner = $owner;
 		        $this->job = $job;
 		        $this->tester = $tester;
-		       //$this->register_date = $register_date;
+		        $this->register_date = $register_date;
 		        $this->test_date = $test_date;
 		      
 		        
@@ -70,23 +70,24 @@
 		        // Set font
 		        //$this->SetFont('thsarabun', '', 18);
 		        $this->SetFont('angsanaupc', '', 15);
-		        $this->writeHTMLCell(145, 20, 0, 32, '<p style="font-weight:bold;">อันดับการทดสอบที่   <font size="18">   '.$this->cer_no.'</font></p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 5, 40, '<p style="font-weight:bold;">เจ้าของตัวอย่าง </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 43, 40, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 15, 46, '<p style="font-weight:bold;">งานสัญญา </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 35, 46, '<p style="font-weight:bold;">'.$this->owner.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 1, 31, '<p style="font-weight:bold;">อันดับการทดสอบที่   <font size="18">   '.$this->cer_no.'</font></p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 1, 38, '<p style="font-weight:bold;">เจ้าของตัวอย่าง </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 28, 38, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 1, 44, '<p style="font-weight:bold;">งานสัญญา </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 22, 44, '<p style="font-weight:bold;">'.$this->owner.'</p>', 0, 1, false, true, 'L', false);
 		        //$this->writeHTMLCell(145, 20, 40, 53, '<p style="font-weight:bold;">แนบท้ายหนังสือกมว.ที่..................</p>', 0, 1, false, true, 'C', false);
 		   
-                $this->writeHTMLCell(145, 20, 110, 33, '<p style="font-weight:bold;">งาน</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 122, 33, '<p style="font-weight:bold;">'.$this->job.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 110, 40, '<p style="font-weight:bold;">เจ้าหน้าที่ทดสอบ</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 140, 40, '<p style="font-weight:bold;">'.$this->tester.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 110, 46, '<p style="font-weight:bold;">วันที่รับตัวอย่าง </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 135, 46, '<p style="font-weight:bold;">'.$this->test_date.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 150, 46, '<p style="font-weight:bold;">วันที่ทดสอบ </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 170, 46, '<p style="font-weight:bold;">'.$this->test_date.'</p>', 0, 1, false, true, 'L', false);
+                $this->writeHTMLCell(145, 20, 110, 32, '<p style="font-weight:bold;">งาน</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 122, 32, '<p style="font-weight:bold;">'.$this->job.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 110, 38, '<p style="font-weight:bold;">เจ้าหน้าที่ทดสอบ</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 140, 38, '<p style="font-weight:bold;">'.$this->tester.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 110, 44, '<p style="font-weight:bold;">วันที่รับตัวอย่าง </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 135, 44, '<p style="font-weight:bold;">'.$this->register_date.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 155, 44, '<p style="font-weight:bold;">วันที่ทดสอบ </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 175, 44, '<p style="font-weight:bold;">'.$this->test_date.'</p>', 0, 1, false, true, 'L', false);
 				
-		    
+		    	 $this->writeHTMLCell(145, 20, 180, 52, '<p style=""> SHEET '.$this->getAliasNumPage() .' OF '.$this->getAliasNbPages().'</p>', 0, 1, false, true, 'L', false);
+				
 		        // Title
 		        //\\$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
 		    }
@@ -96,20 +97,21 @@
 		        $width = 60;
 		        $this->SetY(-10);
 		        $this->SetFont('angsanaupc', '', 15);
-		        $this->writeHTMLCell($width, 20, 12, 280,'...................................................' , 0, 1, false, true, 'C', false);
-		        $this->writeHTMLCell($width, 20, 12, 285,'<p style="font-weight:bold;">('.$this->author1.')</p>' , 0, 1, false, true, 'C', false);
-		        $this->writeHTMLCell($width, 20, 12, 290,'<p style="font-weight:bold;">'.$this->pos_author1.'</p>' , 0, 1, false, true, 'C', false);
-		        $this->writeHTMLCell($width, 20, 12, 298,'<p style="font-weight:bold;">ผู้รายงานผล</p>' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 5, 265,'...................................................' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 5, 270,'<p style="font-weight:bold;">('.$this->author1.')</p>' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 5, 275,'<p style="font-weight:bold;">'.$this->pos_author1.'</p>' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 5, 283,'<p style="font-weight:bold;">ผู้รายงานผล</p>' , 0, 1, false, true, 'C', false);
 		      
-		        $this->writeHTMLCell($width, 20, 80, 280,'...................................................' , 0, 1, false, true, 'C', false);
-		        $this->writeHTMLCell($width, 20, 80, 285,'<p style="font-weight:bold;">('.$this->author2.')</p>' , 0, 1, false, true, 'C', false);
-		        $this->writeHTMLCell($width, 20, 80, 290,'<p style="font-weight:bold;">'.$this->pos_author2.'</p>' , 0, 1, false, true, 'C', false);
-		        $this->writeHTMLCell($width, 20, 80, 298,'<p style="font-weight:bold;">ผู้ตรวจ</p>' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 75, 265,'...................................................' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 75, 270,'<p style="font-weight:bold;">('.$this->author2.')</p>' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 75, 275,'<p style="font-weight:bold;">'.$this->pos_author2.'</p>' , 0, 1, false, true, 'C', false);
+		        $this->writeHTMLCell($width, 20, 75, 283,'<p style="font-weight:bold;">ผู้ตรวจ</p>' , 0, 1, false, true, 'C', false);
 		      
-			    $this->writeHTMLCell($width, 20, 147, 280,'...................................................' , 0, 1, false, true, 'C', false);
-			    $this->writeHTMLCell($width, 20, 147, 285,'<p style="font-weight:bold;">('.$this->author3.')</p>' , 0, 1, false, true, 'C', false);
-			    $this->writeHTMLCell($width, 20, 147, 290,'<p style="font-weight:bold;">'.$this->pos_author3.'</p>' , 0, 1, false, true, 'C', false);
-			    $this->writeHTMLCell($width, 20, 147, 298,'<p style="font-weight:bold;">ผู้รับรอง</p>' , 0, 1, false, true, 'C', false);
+			    $this->writeHTMLCell($width, 20, 147, 265,'...................................................' , 0, 1, false, true, 'C', false);
+			    $this->writeHTMLCell($width, 20, 147, 270,'<p style="font-weight:bold;">('.$this->author3.')</p>' , 0, 1, false, true, 'C', false);
+			    $this->writeHTMLCell($width, 20, 147, 275,'<p style="font-weight:bold;">'.$this->pos_author3.'</p>' , 0, 1, false, true, 'C', false);
+			    $this->writeHTMLCell($width, 20, 147, 283,'<p style="font-weight:bold;">ผู้รับรอง</p>' , 0, 1, false, true, 'C', false);
+			  			    
 			  			    
 		       
 		    }
@@ -142,7 +144,7 @@
 
 		$contract = empty($model->contract) ? "-" : $model->contract->name;
 			
-		$pdf->setHeaderInfo($model->request_no,$model->owner->name,$contract,$model->job->name,$tester,$result_headers[0]->test_date);
+		$pdf->setHeaderInfo($model->request_no,$model->owner->name,$contract,$model->job->name,$tester,$result_headers[0]->test_date,$model->date);
 
 	
 		//set info footer   
@@ -174,7 +176,7 @@
 		// set default monospaced font
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 		// set margins
-		$pdf->SetMargins(1, 62, 1);
+		$pdf->SetMargins(1, 58, 1);
 		//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 		// set auto page breaks
@@ -220,7 +222,7 @@
 					$html .= '<table widht="100%" border=0>';
 					$html .= 	'<tr>';
 					$html .=		'<td width="50%">TYPE &nbsp;&nbsp;&nbsp;&nbsp;'. Material::model()->findByPk($request->labtype->material_id)->name.'&nbsp;&nbsp;&nbsp;&nbsp;'.$request->material_detail.'</td>';
-					$html .=		'<td width="50%" style="text-align:right">SHEET '.($page+1).'  OF '.$npages.'</td>';
+					//$html .=		'<td width="50%" style="text-align:right">SHEET '.($page+1).'  OF '.$npages.'</td>';
 					$html .= 	'</tr>';
 					$html .= '</table>';
 
@@ -228,7 +230,7 @@
 					$html .= '<table widht="100%" border="1">';
 					//----------------Header--------------//
 					// Header list			
-					$sql = "SELECT id, name,decimal_display FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' ORDER BY col_index";
+					$sql = "SELECT id, name,decimal_display,width FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' ORDER BY col_index";
 					$header_list = Yii::app()->db->createCommand($sql)->queryAll();
 
 					
@@ -240,7 +242,10 @@
 							// 	$html .= 	'<th style="text-align:center">'.$header->name.'</th>';
 							// }
 							foreach ($header_list as $header) {
-								$html .= 	'<th style="text-align:center">'.$header["name"].'</th>';
+								if($header["width"]!=0)
+								    $html .= 	'<th style="text-align:center;width:'.$header["width"].'%">'.$header["name"].'</th>';
+								else
+									$html .= 	'<th style="text-align:center">'.$header["name"].'</th>';
 							}
 				
 					$html .= 	'</tr>';
@@ -287,7 +292,12 @@
 								$result_id = $result_list[$sampling_no][$labtype_input_id]['id'];
 								$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
 								$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
-								$html .= '<td style="text-align:center;">';
+								//$html .= '<td style="text-align:center;">';
+
+								if($header["width"]!=0)
+								    $html .= 	'<td style="text-align:center;width:'.$header["width"].'%">';
+								else
+									$html .= 	'<td style="text-align:center;">';
 
 							
 

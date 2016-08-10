@@ -31,7 +31,7 @@ class PlanController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','deleteSelected'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,19 +63,15 @@ class PlanController extends Controller
 	{
 		$model=new Plan;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Plan']))
+		if(isset($_POST['year']) && isset($_POST['sample']) && isset($_POST['income']))
 		{
-			$model->attributes=$_POST['Plan'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+			$model->sample = $_POST['sample'];
+			$model->income = $_POST['income'];
+			$model->year = $_POST['year'];
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+			$model->save();
+			
+		}
 	}
 
 	/**
@@ -83,23 +79,19 @@ class PlanController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate()
 	{
-		$model=$this->loadModel($id);
+		$es = new EditableSaver('Plan');
+	
+	    try {
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Plan']))
-		{
-			$model->attributes=$_POST['Plan'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+	    	$es->update();
+	  
+	    } catch(CException $e) {
+	    	echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
+	    	return;
+	    }
+	    echo CJSON::encode(array('success' => true));
 	}
 
 	/**
@@ -121,6 +113,18 @@ class PlanController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
+
+	public function actionDeleteSelected()
+    {
+    	$autoIdAll = $_POST['selectedID'];
+        if(count($autoIdAll)>0)
+        {
+            foreach($autoIdAll as $autoId)
+            {
+                $this->loadModel($autoId)->delete();
+            }
+        }    
+    }
 
 	/**
 	 * Lists all models.

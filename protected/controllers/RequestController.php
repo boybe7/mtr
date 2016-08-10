@@ -815,7 +815,8 @@ class RequestController extends Controller
 			// print_r($modelHeader);
 			// exit;
 				     	$transaction->commit();
-				     	$this->redirect(array('index'));	
+				     	//$this->redirect(array('index'));	
+				     	$this->redirect(array('invoices/print/'.$modelInvoice->id));	
 
 				 
 				}

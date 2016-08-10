@@ -28,7 +28,7 @@ class Plan extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('sample, income, year', 'required'),
-			array('sample, income, year', 'numerical', 'integerOnly'=>true),
+			array('sample, year', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, sample, income, year', 'safe', 'on'=>'search'),
@@ -54,7 +54,7 @@ class Plan extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'sample' => 'จำนวนตัวอย่าง',
-			'income' => 'เก็บเงินค่าบริการ',
+			'income' => 'เก็บเงินค่าบริการ (ล้านบาท)',
 			'year' => 'ปี',
 		);
 	}
