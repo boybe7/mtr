@@ -30,14 +30,15 @@ class LabtypeInput extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, col_index, type, labtype_id,self_header,decimal_display', 'required'),
-			array('labtype_id', 'numerical', 'integerOnly'=>true),
+			array('labtype_id,width', 'numerical', 'integerOnly'=>true),
 			array('name, formula', 'length', 'max'=>200),
+			array('group_header', 'length', 'max'=>500),
 			array('col_index', 'length', 'max'=>2),
 			array('type', 'length', 'max'=>10),
 			array('col_index+labtype_id', 'application.extensions.uniqueMultiColumnValidator'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, col_index, formula, type, labtype_id,self_header,decimal_display', 'safe', 'on'=>'search'),
+			array('id, name,width,group_header, col_index, formula, type, labtype_id,self_header,decimal_display', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +66,8 @@ class LabtypeInput extends CActiveRecord
 			'type' => 'ประเภท (header,raw)',
 			'labtype_id' => 'วิธีการทดสอบ',
 			'self_header'=>'self_header',
+			'width'=>'%กว้าง',
+			'group_header'=>'ชื่อกลุ่ม',
 			'decimal_display'=>'ทศนิยม'
 		);
 	}

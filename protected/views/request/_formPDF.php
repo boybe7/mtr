@@ -226,12 +226,34 @@
 					$html .= 	'</tr>';
 					$html .= '</table>';
 
+
+					/*$html .= '<table border="1"><thead>
+						<tr>
+						<th rowspan="2">Left column</th>
+						<th colspan="2">Heading Column Span 5</th>
+						<th rowspan="2" >X</th>
+						<th rowspan="2" >C</th>
+						</tr>
+						<tr>
+						
+						<th >span 2</th>
+						<th >span 2</th>
+						
+						</tr></thead><tbody>
+						<tr>
+							<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
+						</tr></tbody>
+						</table>';*/
+
 					//----------------Result-------------//
 					$html .= '<table widht="100%" border="1">';
 					//----------------Header--------------//
 					// Header list			
-					$sql = "SELECT id, name,decimal_display,width FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' ORDER BY col_index";
+					$sql = "SELECT id, name,decimal_display,width,group_header FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' ORDER BY col_index";
 					$header_list = Yii::app()->db->createCommand($sql)->queryAll();
+
+					$sql = "SELECT id, name,decimal_display,width,group_header FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' AND group_header!='' ";
+					$header_group = Yii::app()->db->createCommand($sql)->queryAll();
 
 					
 
@@ -241,15 +263,67 @@
 							// foreach ($headers as $key => $header) {
 							// 	$html .= 	'<th style="text-align:center">'.$header->name.'</th>';
 							// }
+						if(count($header_group)==0)
+						{
 							foreach ($header_list as $header) {
+
 								if($header["width"]!=0)
 								    $html .= 	'<th style="text-align:center;width:'.$header["width"].'%">'.$header["name"].'</th>';
 								else
 									$html .= 	'<th style="text-align:center">'.$header["name"].'</th>';
 							}
+						}
+						else{
+							$i = 0;
+							$start = 0;
+							$stop = 0;
+
+							foreach ($header_list as $header) {
+								if($header['group_header']=='')
+								{
+									if($header["width"]!=0)
+									    $html .= 	'<th rowspan="2" style="text-align:center;width:'.$header["width"].'%">'.$header["name"].'</th>';
+									else
+										$html .= 	'<th  rowspan="2" style="text-align:center">'.$header["name"].'</th>';
+								}
+								else if($i>$stop || $i==0)
+								{
+									$sql = "SELECT count(*) as num, sum(width) as sum FROM labtype_inputs WHERE labtype_id='".$request->labtype_id."' AND type='header' AND group_header='".$header['group_header']."' ";
+									$mtest = Yii::app()->db->createCommand($sql)->queryAll();
+									$span = $mtest[0]['num'];
+
+									$width = $mtest[0]['sum'];
+
+
+									if($width!=0)
+									    $html .= 	'<th colspan="'.$span.'" style="text-align:center;width:'.$width.'%">'.$header["group_header"].'</th>';
+									else
+										$html .= 	'<th colspan="'.$span.'" style="text-align:center">'.$header["group_header"].'</th>';
+
+
+									$start = $i;
+									$stop = $i + $span - 1;
+									
+								}
+
+								$i++;
+							}
+
+							 $html .= '</tr><tr>';
+
+							foreach ($header_group as $header) {
+
+									if($header["width"]!=0)
+									    $html .= 	'<th  style="text-align:center;width:'.$header["width"].'%">'.$header["name"].'</th>';
+									else
+										$html .= 	'<th  style="text-align:center">'.$header["name"].'</th>';
+							}
+						}	
 				
 					$html .= 	'</tr>';
 					$html .=   '</thead>';
+
+					
 
 					//--------------------value----------------------------//
 					$html .=   '<tbody>';
@@ -453,6 +527,9 @@
 		
         
 		$pdf->writeHTML($html, false, false, false, false, '');
+		//debug
+		
+
 		//--------watermark--------------------//
 		/*if($model->cer_status==3)
 		{
@@ -478,6 +555,7 @@
 		//---------end--------------------------//
         //$pdf->Output($_SERVER['DOCUMENT_ROOT'].'/engstd/print/'.$filename,'F');
        $pdf->Output('result.pdf', 'I');
+       //echo $html;
         //ob_end_clean() ;
        
 ?>

@@ -286,6 +286,7 @@
 							}'
 						)
 	  			),
+	  			
 				
 				array(
 					'class'=>'bootstrap.widgets.TbButtonColumn',
@@ -494,6 +495,62 @@
 	  			),
 				'decimal'=>array(
 					    'name' => 'decimal_display',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-header-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+	  			'width'=>array(
+					    'name' => 'width',
+					    'class' => 'editable.EditableColumn',
+					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
+						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	
+						'htmlOptions'=>array('style'=>'text-align:center'),
+						'editable' => array( //editable section
+							//'apply' => '$data->user_status != 4', //can't edit deleted users
+							//'text'=>'Click',
+							//'tooltip'=>'Click',
+							'title'=>'แก้ไข',
+							'url' => $this->createUrl('updateInput'),
+							'success' => 'js: function(response, newValue) {
+											if(!response.success) return response.msg;
+
+												$("#labtype-input-header-grid").yiiGridView("update",{});
+											}',
+							'options' => array(
+								'ajaxOptions' => array('dataType' => 'json'),
+
+							), 
+							'placement' => 'right',
+							'display' => 'js: function() {
+						
+							    
+							}'
+						)
+	  			),
+	  			'group_header'=>array(
+					    'name' => 'group_header',
 					    'class' => 'editable.EditableColumn',
 					    // 'filter'=>CHtml::activeTextField($model, 'formula',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("formula"))),
 						'headerHtmlOptions' => array('style' => 'width:10%;text-align:center;'),  	            	  	

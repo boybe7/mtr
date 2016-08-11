@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2016 at 11:47 AM
+-- Generation Time: Aug 11, 2016 at 03:49 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -45,13 +45,6 @@ CREATE TABLE `authens` (
 --
 
 INSERT INTO `authens` (`id`, `user_group_id`, `menu_id`) VALUES
-(22, 1, 1),
-(23, 1, 3),
-(24, 1, 8),
-(25, 1, 4),
-(26, 1, 5),
-(27, 1, 6),
-(28, 1, 7),
 (29, 2, 1),
 (30, 2, 3),
 (31, 2, 8),
@@ -59,7 +52,17 @@ INSERT INTO `authens` (`id`, `user_group_id`, `menu_id`) VALUES
 (33, 2, 5),
 (34, 2, 6),
 (35, 2, 7),
-(36, 3, 7);
+(36, 3, 7),
+(46, 1, 1),
+(47, 1, 3),
+(48, 1, 8),
+(49, 1, 4),
+(50, 1, 5),
+(51, 1, 6),
+(52, 1, 9),
+(53, 1, 10),
+(54, 1, 7),
+(55, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -101,16 +104,7 @@ CREATE TABLE `invoices` (
 --
 
 INSERT INTO `invoices` (`id`, `invoice_no`, `cost`, `bill_no`, `bill_date`, `request_id`, `sampling_no`) VALUES
-(1, '2/2559', '800.00', NULL, NULL, 35, ''),
-(2, '3/2559', '200.00', NULL, NULL, 36, ''),
-(3, '3/2559', '800.00', NULL, NULL, 37, ''),
-(4, '3/2559-1', '400.00', NULL, NULL, 37, 'C-7-2,C-7-3,'),
-(5, '4/2559', '600.00', NULL, NULL, 38, ''),
-(6, '5/2559', '400.00', NULL, NULL, 48, ''),
-(7, '6/2559', '200.00', NULL, NULL, 49, ''),
-(8, '7/2559', '0.00', NULL, NULL, 50, ''),
-(9, '8/2559', '400.00', NULL, NULL, 51, ''),
-(10, '9/2559', '400.00', NULL, NULL, 52, '');
+(1, '1/2559', '200.00', NULL, NULL, 1, '');
 
 -- --------------------------------------------------------
 
@@ -172,37 +166,39 @@ CREATE TABLE `labtype_inputs` (
   `type` varchar(10) NOT NULL COMMENT 'ประเภท (header,raw)',
   `labtype_id` int(11) NOT NULL COMMENT 'วิธีการทดสอบ',
   `self_header` int(2) NOT NULL,
-  `decimal_display` int(2) NOT NULL COMMENT 'ทศนิยม'
+  `decimal_display` int(2) NOT NULL COMMENT 'ทศนิยม',
+  `width` int(3) NOT NULL DEFAULT '0' COMMENT 'width',
+  `group_header` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `labtype_inputs`
 --
 
-INSERT INTO `labtype_inputs` (`id`, `name`, `col_index`, `formula`, `type`, `labtype_id`, `self_header`, `decimal_display`) VALUES
-(6, 'A', 'A', '', 'header', 1, 0, 0),
-(7, 'B', 'B', '', 'header', 1, 0, 0),
-(10, 'Z', 'Z', '', 'raw', 1, 0, 0),
-(11, 'SPECIMEN MARK', 'A', '', 'header', 2, 0, 0),
-(12, 'SIZE OF AIR VALVE (MM.)', 'D', '', 'header', 2, 0, 0),
-(13, 'MEASURE DIAMETER (CM.)', 'E', 'avg($N,$O,$P,$Q,$R)', 'header', 2, 0, 2),
-(14, 'AIR VALVE DIAMETER 1 (CM.)', 'N', '', 'raw', 2, 0, 2),
-(15, 'AIR VALVE DIAMETER 2 (CM.)', 'O', '', 'raw', 2, 0, 2),
-(16, 'AIR VALVE DIAMETER 3 (CM.)', 'P', '', 'raw', 2, 0, 2),
-(17, 'AIR VALVE DIAMETER 4 (CM.)', 'Q', '', 'raw', 2, 0, 2),
-(18, 'AIR VALVE DIAMETER 5 (CM.)', 'R', '', 'raw', 2, 0, 2),
-(19, 'VOLUME (CM^3.)', 'F', '(pi()*pow($E,3))/6', 'header', 2, 1, 2),
-(20, 'WEIGHT (GM.)', 'G', '', 'header', 2, 0, 2),
-(21, 'SPECIFIC GRAVITY', 'H', '$G/$F', 'header', 2, 1, 2),
-(22, 'REMARK', 'I', '', 'header', 2, 0, 0),
-(23, 'SPECIMEN MARK', 'A', '', 'header', 3, 0, 0),
-(24, 'SPECIMEN MARK', 'A', '', 'header', 6, 0, 0),
-(25, 'KIND', 'D', '', 'header', 6, 0, 0),
-(26, 'PIPE SIZE &(Thickness) (MM.)', 'E', '', 'header', 6, 0, 0),
-(27, 'WEIGHT IN THE AIR (GM.)', 'F', '', 'header', 6, 0, 4),
-(28, 'WEIGHT IN THE WATER (GM.)', 'G', '', 'header', 6, 0, 4),
-(29, 'SPECIFIC GRAVITY', 'H', '($F*0.99651)/($F-$G)', 'header', 6, 1, 3),
-(30, 'REMARK', 'I', '', 'header', 6, 0, 0);
+INSERT INTO `labtype_inputs` (`id`, `name`, `col_index`, `formula`, `type`, `labtype_id`, `self_header`, `decimal_display`, `width`, `group_header`) VALUES
+(6, 'A', 'A', '', 'header', 1, 0, 0, 0, NULL),
+(7, 'B', 'B', '', 'header', 1, 0, 0, 0, NULL),
+(10, 'Z', 'Z', '', 'raw', 1, 0, 0, 0, NULL),
+(11, 'SPECIMEN MARK', 'A', '', 'header', 2, 0, 0, 0, NULL),
+(12, 'SIZE OF AIR VALVE (MM.)', 'D', '', 'header', 2, 0, 0, 0, NULL),
+(13, 'MEASURE DIAMETER (CM.)', 'E', 'avg($N,$O,$P,$Q,$R)', 'header', 2, 0, 2, 0, NULL),
+(14, 'AIR VALVE DIAMETER 1 (CM.)', 'N', '', 'raw', 2, 0, 2, 0, NULL),
+(15, 'AIR VALVE DIAMETER 2 (CM.)', 'O', '', 'raw', 2, 0, 2, 0, NULL),
+(16, 'AIR VALVE DIAMETER 3 (CM.)', 'P', '', 'raw', 2, 0, 2, 0, NULL),
+(17, 'AIR VALVE DIAMETER 4 (CM.)', 'Q', '', 'raw', 2, 0, 2, 0, NULL),
+(18, 'AIR VALVE DIAMETER 5 (CM.)', 'R', '', 'raw', 2, 0, 2, 0, NULL),
+(19, 'VOLUME (CM^3.)', 'F', '(pi()*pow($E,3))/6', 'header', 2, 1, 2, 0, NULL),
+(20, 'WEIGHT (GM.)', 'G', '', 'header', 2, 0, 2, 0, NULL),
+(21, 'SPECIFIC GRAVITY', 'H', '$G/$F', 'header', 2, 1, 2, 0, NULL),
+(22, 'REMARK', 'I', '', 'header', 2, 0, 0, 0, NULL),
+(23, 'SPECIMEN MARK', 'A', '', 'header', 3, 0, 0, 0, NULL),
+(24, 'SPECIMEN MARK', 'A', '', 'header', 6, 0, 0, 10, NULL),
+(25, 'KIND', 'D', '', 'header', 6, 0, 0, 19, NULL),
+(26, 'PIPE SIZE &(Thickness) (MM.)', 'E', '', 'header', 6, 0, 0, 15, NULL),
+(27, 'IN THE AIR (GM.)', 'F', '', 'header', 6, 0, 4, 16, 'WEIGHT'),
+(28, 'IN THE WATER (GM.)', 'G', '', 'header', 6, 0, 4, 16, 'WEIGHT'),
+(29, 'SPECIFIC GRAVITY', 'H', '($F*0.99651)/($F-$G)', 'header', 6, 1, 3, 12, NULL),
+(30, 'REMARK', 'I', '', 'header', 6, 0, 0, 12, NULL);
 
 -- --------------------------------------------------------
 
@@ -259,7 +255,10 @@ INSERT INTO `menus` (`id`, `name`, `url`, `menu_group_id`) VALUES
 (5, 'วิธีการทดสอบ', 'labtype/index', 2),
 (6, 'มาตรฐาน', 'standard/index', 2),
 (7, 'ลงทะเบียนรับตัวอย่าง', 'request/index', 3),
-(8, 'ผู้ใช้งาน', 'user/index', 1);
+(8, 'ผู้ใช้งาน', 'user/index', 1),
+(9, 'เจ้าของตัวอย่าง', 'vendor/indexOwner', 2),
+(10, 'ผู้ผลิต', 'vendor/indexVendor', 2),
+(11, 'รายงานผลการทดสอบวัสดุ', 'request/guest', 4);
 
 -- --------------------------------------------------------
 
@@ -285,6 +284,19 @@ INSERT INTO `menu_groups` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `plans`
+--
+
+CREATE TABLE `plans` (
+  `id` int(11) NOT NULL,
+  `sample` int(11) NOT NULL,
+  `income` decimal(10,2) NOT NULL,
+  `year` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `positions`
 --
 
@@ -299,7 +311,7 @@ CREATE TABLE `positions` (
 --
 
 INSERT INTO `positions` (`id`, `name`, `level`) VALUES
-(1, 'หัวหน้าส่วน', 2),
+(1, 'หัวหน้าส่วนทดสอบคุณสมบัติวัสดุ', 2),
 (2, 'วิศวกร 5', 1),
 (3, 'วิศวกร 4', 1),
 (4, 'วิศวกร 3', 1),
@@ -331,14 +343,7 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`id`, `request_no`, `date`, `vendor_id`, `owner_id`, `job_id`, `contract_id`, `detail`, `status`, `note`) VALUES
-(34, '1/2559', '2016-06-15', NULL, 1, 1, NULL, '', 1, ''),
-(35, '2/2559', '2016-06-17', NULL, 1, 1, NULL, '', 1, ''),
-(37, '3/2559', '2016-06-17', NULL, 1, 3, NULL, '', 1, ''),
-(48, '5/2559', '2016-06-30', NULL, 1, 3, NULL, '', 3, '(ยกเลิก ''xxxxx'')'),
-(49, '6/2559', '2016-07-01', NULL, 1, 1, NULL, '', 1, ''),
-(50, '7/2559', '2016-07-01', NULL, 1, 1, NULL, '', 1, ''),
-(51, '8/2559', '2016-07-07', NULL, 1, 1, NULL, '', 1, ''),
-(52, '9/2559', '2016-07-07', NULL, 1, 1, NULL, '', 1, '');
+(1, '1/2559', '2016-08-10', NULL, 1, 3, NULL, '', 1, '');
 
 -- --------------------------------------------------------
 
@@ -366,14 +371,7 @@ CREATE TABLE `request_standards` (
 --
 
 INSERT INTO `request_standards` (`id`, `material_detail`, `lot_no`, `lot_num`, `sampling_num`, `cost`, `labtype_id`, `request_id`, `standard_id`, `conclude`, `note`, `sampling_no`) VALUES
-(28, '', 'lot-200', 1, 2, '400.00', 2, 34, 3, NULL, NULL, 'C1-C2'),
-(29, '', 'lot-205,lot-206', 2, 4, '800.00', 2, 35, 3, NULL, NULL, 'C3-C6'),
-(31, '', 'lot-1', 1, 2, '400.00', 2, 37, 3, NULL, NULL, 'C7-C8'),
-(32, '', 'lot-2', 1, 1, '400.00', 3, 37, 4, NULL, NULL, 'C9'),
-(53, '', 'ffff', 1, 2, '400.00', 2, 48, 3, NULL, NULL, 'C10-C11'),
-(54, '', 'xs', 1, 1, '200.00', 2, 49, 3, '', NULL, 'C12'),
-(55, '', 'LOT-1,LOT-2', 2, 2, '400.00', 6, 51, 5, NULL, NULL, 'SP1-SP2'),
-(56, '', 'LOT-1,LOT-2', 2, 2, '400.00', 6, 52, 5, '', NULL, 'SP3-SP4');
+(1, '', 'LOT-1', 1, 1, '200.00', 6, 1, 5, '', NULL, 'SP1');
 
 -- --------------------------------------------------------
 
@@ -390,13 +388,6 @@ CREATE TABLE `retests` (
   `invoice_no` varchar(200) DEFAULT NULL COMMENT 'เลขที่ใบแจ้งชำระเงิน',
   `request_standard_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `retests`
---
-
-INSERT INTO `retests` (`id`, `lot_no`, `sampling_no`, `sampling_num`, `cost`, `invoice_no`, `request_standard_id`) VALUES
-(1, 'lot-1', 'C7', 2, '400.00', '3/2559-1', 31);
 
 -- --------------------------------------------------------
 
@@ -468,13 +459,6 @@ CREATE TABLE `temp_sampling_no` (
   `num` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `temp_sampling_no`
---
-
-INSERT INTO `temp_sampling_no` (`id`, `sampling_no`, `num`) VALUES
-(1, 'SP-4', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -512,12 +496,7 @@ CREATE TABLE `test_results_headers` (
 --
 
 INSERT INTO `test_results_headers` (`id`, `test_date`, `tester_1`, `tester_2`, `approver`, `reporter`, `signer`, `signed_date`, `comment`, `request_id`) VALUES
-(8, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 45),
-(9, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 48),
-(10, '2016-07-04', 'นายบรรลือ รดาการ', 'นายสมนึก ศรีขวัญ', 'นายฐิติศักดิ์ ยุทธนาเสวิน', 'นายธีระพงษ์ แก้วศรี', 'นายวิสันต์ มิตรภานนท์', '2016-07-04', '', 49),
-(11, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 50),
-(12, '0000-00-00', '', NULL, '', '', '', '0000-00-00', NULL, 51),
-(13, '0000-00-00', '', '', 'นายฐิติศักดิ์ ยุทธนาเสวิน', '', 'นายวิสันต์ มิตรภานนท์', '0000-00-00', '', 52);
+(19, '2016-08-10', 'นายบรรลือ รดาการ', '', 'นายฐิติศักดิ์ ยุทธนาเสวิน', 'นายธีระพงษ์ แก้วศรี', 'นายวิสันต์ มิตรภานนท์', '2016-08-10', '', 1);
 
 -- --------------------------------------------------------
 
@@ -540,189 +519,13 @@ CREATE TABLE `test_results_values` (
 --
 
 INSERT INTO `test_results_values` (`id`, `value`, `sampling_no`, `lot_no`, `sampling_no_fix`, `labtype_input_id`, `request_standard_id`) VALUES
-(97, 'C-1', 'C-1', 'lot-200', 'C-1', 11, 28),
-(98, '0', 'C-1', 'lot-200', 'C-1', 12, 28),
-(99, '0', 'C-1', 'lot-200', 'C-1', 13, 28),
-(100, '0', 'C-1', 'lot-200', 'C-1', 14, 28),
-(101, '0', 'C-1', 'lot-200', 'C-1', 15, 28),
-(102, '0', 'C-1', 'lot-200', 'C-1', 16, 28),
-(103, '0', 'C-1', 'lot-200', 'C-1', 17, 28),
-(104, '0', 'C-1', 'lot-200', 'C-1', 18, 28),
-(105, '0', 'C-1', 'lot-200', 'C-1', 19, 28),
-(106, '0', 'C-1', 'lot-200', 'C-1', 20, 28),
-(107, '0', 'C-1', 'lot-200', 'C-1', 21, 28),
-(108, 'lot-200', 'C-1', 'lot-200', 'C-1', 22, 28),
-(109, 'C-2', 'C-2', 'lot-200', 'C-2', 11, 28),
-(110, '0', 'C-2', 'lot-200', 'C-2', 12, 28),
-(111, '0', 'C-2', 'lot-200', 'C-2', 13, 28),
-(112, '0', 'C-2', 'lot-200', 'C-2', 14, 28),
-(113, '0', 'C-2', 'lot-200', 'C-2', 15, 28),
-(114, '0', 'C-2', 'lot-200', 'C-2', 16, 28),
-(115, '0', 'C-2', 'lot-200', 'C-2', 17, 28),
-(116, '0', 'C-2', 'lot-200', 'C-2', 18, 28),
-(117, '0', 'C-2', 'lot-200', 'C-2', 19, 28),
-(118, '0', 'C-2', 'lot-200', 'C-2', 20, 28),
-(119, '0', 'C-2', 'lot-200', 'C-2', 21, 28),
-(120, 'lot-200', 'C-2', 'lot-200', 'C-2', 22, 28),
-(121, 'C-3', 'C-3', 'lot-205', 'C-3', 11, 29),
-(122, '0', 'C-3', 'lot-205', 'C-3', 12, 29),
-(123, '10', 'C-3', 'lot-205', 'C-3', 13, 29),
-(124, '10', 'C-3', 'lot-205', 'C-3', 14, 29),
-(125, '10', 'C-3', 'lot-205', 'C-3', 15, 29),
-(126, '10', 'C-3', 'lot-205', 'C-3', 16, 29),
-(127, '10', 'C-3', 'lot-205', 'C-3', 17, 29),
-(128, '10', 'C-3', 'lot-205', 'C-3', 18, 29),
-(129, '0', 'C-3', 'lot-205', 'C-3', 19, 29),
-(130, '0', 'C-3', 'lot-205', 'C-3', 20, 29),
-(131, '0', 'C-3', 'lot-205', 'C-3', 21, 29),
-(132, 'lot-205', 'C-3', 'lot-205', 'C-3', 22, 29),
-(133, 'C-4', 'C-4', 'lot-205', 'C-4', 11, 29),
-(134, '0', 'C-4', 'lot-205', 'C-4', 12, 29),
-(135, '10', 'C-4', 'lot-205', 'C-4', 13, 29),
-(136, '10', 'C-4', 'lot-205', 'C-4', 14, 29),
-(137, '10', 'C-4', 'lot-205', 'C-4', 15, 29),
-(138, '10', 'C-4', 'lot-205', 'C-4', 16, 29),
-(139, '10', 'C-4', 'lot-205', 'C-4', 17, 29),
-(140, '10', 'C-4', 'lot-205', 'C-4', 18, 29),
-(141, '0', 'C-4', 'lot-205', 'C-4', 19, 29),
-(142, '0', 'C-4', 'lot-205', 'C-4', 20, 29),
-(143, '0', 'C-4', 'lot-205', 'C-4', 21, 29),
-(144, 'lot-205', 'C-4', 'lot-205', 'C-4', 22, 29),
-(145, 'C-5', 'C-5', 'lot-206', 'C-5', 11, 29),
-(146, '0', 'C-5', 'lot-206', 'C-5', 12, 29),
-(147, '10', 'C-5', 'lot-206', 'C-5', 13, 29),
-(148, '10', 'C-5', 'lot-206', 'C-5', 14, 29),
-(149, '10', 'C-5', 'lot-206', 'C-5', 15, 29),
-(150, '10', 'C-5', 'lot-206', 'C-5', 16, 29),
-(151, '10', 'C-5', 'lot-206', 'C-5', 17, 29),
-(152, '10', 'C-5', 'lot-206', 'C-5', 18, 29),
-(153, '0', 'C-5', 'lot-206', 'C-5', 19, 29),
-(154, '0', 'C-5', 'lot-206', 'C-5', 20, 29),
-(155, '0', 'C-5', 'lot-206', 'C-5', 21, 29),
-(156, 'lot-206', 'C-5', 'lot-206', 'C-5', 22, 29),
-(157, 'C-6', 'C-6', 'lot-206', 'C-6', 11, 29),
-(158, '0', 'C-6', 'lot-206', 'C-6', 12, 29),
-(159, '10', 'C-6', 'lot-206', 'C-6', 13, 29),
-(160, '10', 'C-6', 'lot-206', 'C-6', 14, 29),
-(161, '10', 'C-6', 'lot-206', 'C-6', 15, 29),
-(162, '10', 'C-6', 'lot-206', 'C-6', 16, 29),
-(163, '10', 'C-6', 'lot-206', 'C-6', 17, 29),
-(164, '10', 'C-6', 'lot-206', 'C-6', 18, 29),
-(165, '0', 'C-6', 'lot-206', 'C-6', 19, 29),
-(166, '0', 'C-6', 'lot-206', 'C-6', 20, 29),
-(167, '0', 'C-6', 'lot-206', 'C-6', 21, 29),
-(168, 'lot-206', 'C-6', 'lot-206', 'C-6', 22, 29),
-(181, 'C-7-1', 'C-7-1', 'lot-1', 'C-7', 11, 31),
-(182, '0', 'C-7-1', 'lot-1', 'C-7', 12, 31),
-(183, '0', 'C-7-1', 'lot-1', 'C-7', 13, 31),
-(184, '0', 'C-7-1', 'lot-1', 'C-7', 14, 31),
-(185, '0', 'C-7-1', 'lot-1', 'C-7', 15, 31),
-(186, '0', 'C-7-1', 'lot-1', 'C-7', 16, 31),
-(187, '0', 'C-7-1', 'lot-1', 'C-7', 17, 31),
-(188, '0', 'C-7-1', 'lot-1', 'C-7', 18, 31),
-(189, '0', 'C-7-1', 'lot-1', 'C-7', 19, 31),
-(190, '0', 'C-7-1', 'lot-1', 'C-7', 20, 31),
-(191, '0', 'C-7-1', 'lot-1', 'C-7', 21, 31),
-(192, 'lot-1', 'C-7-1', 'lot-1', 'C-7', 22, 31),
-(193, 'C-8-1', 'C-8-1', 'lot-1', 'C-8', 11, 31),
-(194, '0', 'C-8-1', 'lot-1', 'C-8', 12, 31),
-(195, '0', 'C-8-1', 'lot-1', 'C-8', 13, 31),
-(196, '0', 'C-8-1', 'lot-1', 'C-8', 14, 31),
-(197, '0', 'C-8-1', 'lot-1', 'C-8', 15, 31),
-(198, '0', 'C-8-1', 'lot-1', 'C-8', 16, 31),
-(199, '0', 'C-8-1', 'lot-1', 'C-8', 17, 31),
-(200, '0', 'C-8-1', 'lot-1', 'C-8', 18, 31),
-(201, '0', 'C-8-1', 'lot-1', 'C-8', 19, 31),
-(202, '0', 'C-8-1', 'lot-1', 'C-8', 20, 31),
-(203, '0', 'C-8-1', 'lot-1', 'C-8', 21, 31),
-(204, 'lot-1', 'C-8-1', 'lot-1', 'C-8', 22, 31),
-(205, 'lot-2', 'C9', 'lot-2', 'C-9', 23, 32),
-(206, 'C-7-2', 'C-7-2', 'lot-1', 'C-7', 11, 31),
-(207, 'C-7-3', 'C-7-3', 'lot-1', 'C-7', 11, 31),
-(208, '0', 'C-7-2', 'lot-1', 'C-7', 12, 31),
-(209, '0', 'C-7-3', 'lot-1', 'C-7', 12, 31),
-(210, '0', 'C-7-2', 'lot-1', 'C-7', 13, 31),
-(211, '0', 'C-7-3', 'lot-1', 'C-7', 13, 31),
-(212, '0', 'C-7-2', 'lot-1', 'C-7', 14, 31),
-(213, '0', 'C-7-3', 'lot-1', 'C-7', 14, 31),
-(214, '0', 'C-7-2', 'lot-1', 'C-7', 15, 31),
-(215, '0', 'C-7-3', 'lot-1', 'C-7', 15, 31),
-(216, '0', 'C-7-2', 'lot-1', 'C-7', 16, 31),
-(217, '0', 'C-7-3', 'lot-1', 'C-7', 16, 31),
-(218, '0', 'C-7-2', 'lot-1', 'C-7', 17, 31),
-(219, '0', 'C-7-3', 'lot-1', 'C-7', 17, 31),
-(220, '0', 'C-7-2', 'lot-1', 'C-7', 18, 31),
-(221, '0', 'C-7-3', 'lot-1', 'C-7', 18, 31),
-(222, '0', 'C-7-2', 'lot-1', 'C-7', 19, 31),
-(223, '0', 'C-7-3', 'lot-1', 'C-7', 19, 31),
-(224, '0', 'C-7-2', 'lot-1', 'C-7', 20, 31),
-(225, '0', 'C-7-3', 'lot-1', 'C-7', 20, 31),
-(226, '0', 'C-7-2', 'lot-1', 'C-7', 21, 31),
-(227, '0', 'C-7-3', 'lot-1', 'C-7', 21, 31),
-(228, 'lot-1', 'C-7-2', 'lot-1', 'C-7', 22, 31),
-(229, 'lot-1', 'C-7-3', 'lot-1', 'C-7', 22, 31),
-(639, 'C-10', 'C-10', 'ffff', 'C-10', 11, 53),
-(640, '0', 'C-10', 'ffff', 'C-10', 12, 53),
-(641, '0', 'C-10', 'ffff', 'C-10', 13, 53),
-(642, '0', 'C-10', 'ffff', 'C-10', 14, 53),
-(643, '0', 'C-10', 'ffff', 'C-10', 15, 53),
-(644, '0', 'C-10', 'ffff', 'C-10', 16, 53),
-(645, '0', 'C-10', 'ffff', 'C-10', 17, 53),
-(646, '0', 'C-10', 'ffff', 'C-10', 18, 53),
-(647, '0', 'C-10', 'ffff', 'C-10', 19, 53),
-(648, '0', 'C-10', 'ffff', 'C-10', 20, 53),
-(649, '0', 'C-10', 'ffff', 'C-10', 21, 53),
-(650, 'ffff', 'C-10', 'ffff', 'C-10', 22, 53),
-(651, 'C-11', 'C11\r\n', 'ffff', 'C-11', 11, 53),
-(652, '0', 'C-11', 'ffff', 'C-11', 12, 53),
-(653, '0', 'C-11', 'ffff', 'C-11', 13, 53),
-(654, '0', 'C-11', 'ffff', 'C-11', 14, 53),
-(655, '0', 'C-11', 'ffff', 'C-11', 15, 53),
-(656, '0', 'C-11', 'ffff', 'C-11', 16, 53),
-(657, '0', 'C-11', 'ffff', 'C-11', 17, 53),
-(658, '0', 'C-11', 'ffff', 'C-11', 18, 53),
-(659, '0', 'C-11', 'ffff', 'C-11', 19, 53),
-(660, '0', 'C-11', 'ffff', 'C-11', 20, 53),
-(661, '0', 'C-11', 'ffff', 'C-11', 21, 53),
-(662, 'ffff', 'C-11', 'ffff', 'C-11', 22, 53),
-(663, 'C-12', 'C-12', 'xs', 'C-12', 11, 54),
-(664, '0', 'C-12', 'xs', 'C-12', 12, 54),
-(665, '12', 'C-12', 'xs', 'C-12', 13, 54),
-(666, '20', 'C-12', 'xs', 'C-12', 14, 54),
-(667, '10', 'C-12', 'xs', 'C-12', 15, 54),
-(668, '10', 'C-12', 'xs', 'C-12', 16, 54),
-(669, '10', 'C-12', 'xs', 'C-12', 17, 54),
-(670, '10', 'C-12', 'xs', 'C-12', 18, 54),
-(671, '904.77868423386', 'C-12', 'xs', 'C-12', 19, 54),
-(672, '200.00', 'C-12', 'xs', 'C-12', 20, 54),
-(673, '0.22104853207208', 'C-12', 'xs', 'C-12', 21, 54),
-(674, 'xs', 'C-12', 'xs', 'C-12', 22, 54),
-(675, 'SP-1', 'SP-1', 'LOT-1', 'SP-1', 24, 55),
-(676, '0', 'SP-1', 'LOT-1', 'SP-1', 25, 55),
-(677, '0', 'SP-1', 'LOT-1', 'SP-1', 26, 55),
-(678, '0', 'SP-1', 'LOT-1', 'SP-1', 27, 55),
-(679, '0', 'SP-1', 'LOT-1', 'SP-1', 28, 55),
-(680, 'LOT-1', 'SP-1', 'LOT-1', 'SP-1', 29, 55),
-(681, 'SP-2', 'SP-2', 'LOT-2', 'SP-2', 24, 55),
-(682, '0', 'SP-2', 'LOT-2', 'SP-2', 25, 55),
-(683, '0', 'SP-2', 'LOT-2', 'SP-2', 26, 55),
-(684, '0', 'SP-2', 'LOT-2', 'SP-2', 27, 55),
-(685, '0', 'SP-2', 'LOT-2', 'SP-2', 28, 55),
-(686, 'LOT-2', 'SP-2', 'LOT-2', 'SP-2', 29, 55),
-(687, 'SP-3', 'SP-3', 'LOT-1', 'SP-3', 24, 56),
-(688, 'XX', 'SP-3', 'LOT-1', 'SP-3', 25, 56),
-(689, '20', 'SP-3', 'LOT-1', 'SP-3', 26, 56),
-(690, '0.0000', 'SP-3', 'LOT-1', 'SP-3', 27, 56),
-(691, '0.0000', 'SP-3', 'LOT-1', 'SP-3', 28, 56),
-(692, '0.000', 'SP-3', 'LOT-1', 'SP-3', 29, 56),
-(693, 'LOT-1', 'SP-3', 'LOT-1', 'SP-3', 30, 56),
-(694, 'SP-4', 'SP-4', 'LOT-2', 'SP-4', 24, 56),
-(695, 'XX', 'SP-4', 'LOT-2', 'SP-4', 25, 56),
-(696, '10', 'SP-4', 'LOT-2', 'SP-4', 26, 56),
-(697, '0.0000', 'SP-4', 'LOT-2', 'SP-4', 27, 56),
-(698, '0.0000', 'SP-4', 'LOT-2', 'SP-4', 28, 56),
-(699, '0.000', 'SP-4', 'LOT-2', 'SP-4', 29, 56),
-(700, 'LOT-2', 'SP-4', 'LOT-2', 'SP-4', 30, 56);
+(1, 'SP-1', 'SP-1', 'LOT-1', 'SP-1', 24, 1),
+(2, 'w0', 'SP-1', 'LOT-1', 'SP-1', 25, 1),
+(3, '220', 'SP-1', 'LOT-1', 'SP-1', 26, 1),
+(4, '20.0000', 'SP-1', 'LOT-1', 'SP-1', 27, 1),
+(5, '30.0000', 'SP-1', 'LOT-1', 'SP-1', 28, 1),
+(6, '-1.99302', 'SP-1', 'LOT-1', 'SP-1', 29, 1),
+(7, 'LOT-1', 'SP-1', 'LOT-1', 'SP-1', 30, 1);
 
 -- --------------------------------------------------------
 
@@ -790,7 +593,9 @@ CREATE TABLE `vendors` (
 --
 
 INSERT INTO `vendors` (`id`, `name`, `address`, `type`) VALUES
-(1, 'บริษัท ไทยเรืองอุตสาหกรรม จำกัด ', NULL, 1);
+(1, 'บริษัท ไทยเรืองอุตสาหกรรม จำกัด', '108/122', 1),
+(2, 'บริษัท อินเตอร์เนชั่นแนลรับเบอร์พาทส์ จำกัด', NULL, 2),
+(7, 'ddddd', '', 2);
 
 --
 -- Indexes for dumped tables
@@ -857,6 +662,12 @@ ALTER TABLE `menus`
 -- Indexes for table `menu_groups`
 --
 ALTER TABLE `menu_groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `plans`
+--
+ALTER TABLE `plans`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -973,7 +784,7 @@ ALTER TABLE `vendors`
 -- AUTO_INCREMENT for table `authens`
 --
 ALTER TABLE `authens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `contracts`
 --
@@ -983,7 +794,7 @@ ALTER TABLE `contracts`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `jobs`
 --
@@ -1008,12 +819,17 @@ ALTER TABLE `materials`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `menu_groups`
 --
 ALTER TABLE `menu_groups`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `plans`
+--
+ALTER TABLE `plans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `positions`
 --
@@ -1023,17 +839,17 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `request_standards`
 --
 ALTER TABLE `request_standards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `retests`
 --
 ALTER TABLE `retests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `standards`
 --
@@ -1053,7 +869,7 @@ ALTER TABLE `temp_retests`
 -- AUTO_INCREMENT for table `temp_sampling_no`
 --
 ALTER TABLE `temp_sampling_no`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `temp_standard_parameters`
 --
@@ -1063,12 +879,12 @@ ALTER TABLE `temp_standard_parameters`
 -- AUTO_INCREMENT for table `test_results_headers`
 --
 ALTER TABLE `test_results_headers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `test_results_values`
 --
 ALTER TABLE `test_results_values`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=701;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -1083,7 +899,7 @@ ALTER TABLE `user_groups`
 -- AUTO_INCREMENT for table `vendors`
 --
 ALTER TABLE `vendors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
