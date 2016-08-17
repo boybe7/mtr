@@ -150,9 +150,9 @@
                           <table border="1" style="width:100%">
                             <thead>
                               <tr>
-                                <td style="width:40%;text-align:center;"><b>ประเภทงาน</b></td>
-                                <td style="width:30%;text-align:center;"><b>จำนวนตัวอย่าง</b></td>
-                                <td style="width:30%;text-align:center;"><b>ค่าทดสอบ<br>(บาท)</b></td>
+                                <td style="width:40%;text-align:center;">ประเภทงาน</td>
+                                <td style="width:30%;text-align:center;">จำนวนตัวอย่าง</td>
+                                <td style="width:30%;text-align:center;">ค่าทดสอบ<br>(บาท)</td>
                               </tr>
                             </thead>
                              <tbody>
@@ -179,6 +179,73 @@
                     </table>';
 
         $html .='<br pagebreak="true" />';  
+
+        $html .= '<div style="text-align:center;font-size:16;font-weight: bold;">ตารางที่ 1. ค่าทดสอบประจำเดือน '.$m_month.' '.($year+543).'</div>';
+
+        $html .= '<br><table style="width:100%">
+                      <tr>
+                        <td style="width:10%">&nbsp;</td>
+                        <td style="width:80%">
+                          <table border="1" style="width:100%">
+                            <thead>
+                              <tr>
+                                <td style="width:50%;text-align:center;font-weight:bold;">ประเภทงาน</td>
+                                <td style="width:50%;text-align:center;font-weight:bold;">ค่าทดสอบ</td>
+                                
+                              </tr>
+                            </thead>
+                             <tbody>
+                              <tr>
+                                <td style="width:50%;text-align:center;">งานภายใน กปน.</td>
+                                <td style="width:50%;text-align:right;"></td>
+                                
+                              </tr>
+                              <tr>
+                                <td style="width:50%;text-align:center;">งานบริการ</td>
+                                <td style="width:50%;text-align:right;"></td>
+                               
+                              </tr>
+                              <tr>
+                                <td style="width:50%;text-align:center;font-weight:bold;">รวม</td>
+                                <td style="width:50%;text-align:right;font-weight:bold;"></td>
+                               
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td style="width:10%">&nbsp;</td>
+                      </tr>
+                    </table>';
+
+            $html .= '<br><div style="text-align:center;font-size:16;font-weight: bold;">ตารางที่ 2. จำแนกจำนวนการตรวจสอบ  ทดสอบ  วัสดุที่ใช้ในงานก่อสร้างและวางท่อของ กปน. <br>และงานบริการทดสอบแก่ภายนอก (ประจำเดือน '.$m_month.' '.($year+543).')</div>';
+
+            $html .= '<br><table style="width:100%">
+                      <tr>
+                        <td style="width:5%">&nbsp;</td>
+                        <td style="width:90%">
+                          <table border="1" style="width:100%">
+                            <thead>
+                              <tr>
+                                <td style="width:70%;text-align:center;font-weight:bold;">ประเภทงาน</td>
+                                <td style="width:15%;text-align:center;font-weight:bold;">ภายใน กปน.</td>
+                                <td style="width:15%;text-align:center;font-weight:bold;">งานบริการ</td>
+                              </tr>
+                            </thead>
+                             <tbody>
+                              <tr>
+                                <td style="width:70%;text-align:center;"></td>
+                                <td style="width:15%;text-align:right;"></td>
+                                <td style="width:15%;text-align:right;"></td>
+                              </tr>
+                              
+                            </tbody>
+                          </table>
+                        </td>
+                        <td style="width:5%">&nbsp;</td>
+                      </tr>
+                    </table>'; 
+            $html .= '<div style="text-align:left;font-size:16;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>หมายเหตุ</u>  จำนวนตัวอย่างรวมทั้งสิ้น  2,101  ตัวอย่าง</div>';              
+
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
        
