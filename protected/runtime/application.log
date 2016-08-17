@@ -5863,3 +5863,127 @@ REQUEST_URI=/mtr/request/print/1
 in C:\xampp\htdocs\mtr\protected\views\request\_formPDF.php (249)
 in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (50)
 in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/16 15:32:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'ระบบไม่สามารถดำเนินการ "GenR10" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(270): CController->missingAction('GenR10')
+#1 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GenR10')
+#2 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('report/GenR10')
+#3 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/mtr/report/GenR10?monthEnd=08&yearEnd=2559&_=1471336354869
+HTTP_REFERER=http://localhost/mtr/report/monthlyReport
+---
+2016/08/16 15:32:44 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mtr.c_cer_doc' doesn't exist. The SQL statement executed was: SELECT count(cer_no) as sum,cer_name,SUM(workDay(TOTAL_WEEKDAYS(CONCAT( DATE_FORMAT( cer_date,  '%Y' ),  '-', DATE_FORMAT( cer_date,  '%m-%d' ) ) , CONCAT( DATE_FORMAT( cer_oper_date,  '%Y' ),  '-', DATE_FORMAT( cer_oper_date,  '%m-%d' ) ) ))) as date_oper
+FROM `c_cer_doc` `cd`
+WHERE cer_date like "2016-08%"
+GROUP BY `cer_name`.
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly.php (56)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (47)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/16 15:32:44 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mtr.c_cer_doc' doesn't exist. The SQL statement executed was: SELECT count(cer_no) as sum,cer_name,SUM(workDay(TOTAL_WEEKDAYS(CONCAT( DATE_FORMAT( cer_date,  '%Y' ),  '-', DATE_FORMAT( cer_date,  '%m-%d' ) ) , CONCAT( DATE_FORMAT( cer_oper_date,  '%Y' ),  '-', DATE_FORMAT( cer_oper_date,  '%m-%d' ) ) ))) as date_oper
+FROM `c_cer_doc` `cd`
+WHERE cer_date like "2016-08%"
+GROUP BY `cer_name`' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly.php(56): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#5 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(47): CController->renderPartial('_formReportMont...', Array, false, true)
+#6 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenMonthlyReport()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GenMonthlyRepor...')
+#11 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('report/GenMonth...')
+#12 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/mtr/report/GenMonthlyReport?monthEnd=08&yearEnd=2559&_=1471336364845
+HTTP_REFERER=http://localhost/mtr/report/monthlyReport
+---
+2016/08/16 16:02:48 [error] [php] Undefined variable: date_end (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:45)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (45)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/16 16:02:55 [error] [php] Undefined variable: date_end (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:45)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (45)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/16 17:37:39 [error] [php] cal_days_in_month() expects parameter 2 to be long, string given (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:142)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): ReportController->renderInternal()
+#1 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#2 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (142)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/16 17:38:04 [error] [php] cal_days_in_month(): invalid date. (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:142)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): ReportController->renderInternal()
+#1 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#2 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (142)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/16 17:38:34 [error] [php] cal_days_in_month(): invalid date. (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:142)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): ReportController->renderInternal()
+#1 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#2 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#3 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#8 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (142)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)

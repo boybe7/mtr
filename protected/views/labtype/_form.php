@@ -44,7 +44,7 @@
 	<?php echo $form->textFieldRow($model,'cost',array('class'=>'span3','maxlength'=>10)); ?>
 
 	<?php echo $form->checkBoxRow($model,'is_chemical_test',array('class'=>'')); ?>
-
+	<?php echo $form->checkBoxRow($model,'upload_file',array('class'=>'')); ?>
 	
 
 	<div class="form-actions">

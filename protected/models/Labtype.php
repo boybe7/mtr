@@ -28,13 +28,13 @@ class Labtype extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, cost, is_chemical_test, material_id,name_report', 'required'),
+			array('name, cost, is_chemical_test, material_id,name_report,upload_file', 'required'),
 			array('is_chemical_test, material_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>200),
 			array('cost', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, cost, is_chemical_test, material_id,matname', 'safe', 'on'=>'search'),
+			array('id, name, cost, is_chemical_test, material_id,matname,upload_file', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +76,7 @@ class Labtype extends CActiveRecord
 			'is_chemical_test' => 'ทดสอบด้านเคมี', //(0=No, 1=Yes)
 			'material_id' => 'ชนิดวัสดุ',
 			'name_report'=>'ชื่อปรากฎในรายงาน',
+			'upload_file'=>'ต้องการอัพโหลดไฟล์ผลทดสอบ'
 		
 		);
 	}
