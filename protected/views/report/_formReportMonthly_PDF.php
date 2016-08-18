@@ -1,6 +1,54 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT'].'/mtr/protected/tcpdf/tcpdf.php');
 
+
+    function bahtTranslate($value)
+    {
+        
+            $str = strval($value);
+            //$str = "1219";
+            $k = strlen($str);
+
+            $priceStr = '';
+            for ($i=0;$i<strlen($str);$i++) {
+                //echo $str[$i]."<br>";
+                $n='';
+                $b='';
+                switch (intval($str[$i])){
+                    case 1: $n="หนึ่ง"; break;
+                    case 2: $n="สอง"; break;
+                    case 3: $n="สาม"; break;
+                    case 4: $n="สี่"; break;
+                    case 5: $n="ห้า"; break;
+                    case 6: $n="หก"; break;
+                    case 7: $n="เจ็ด"; break;
+                    case 8: $n="แปด"; break;
+                    case 9: $n="เก้า"; break;
+                }
+               if(intval($str[$i])!=0) 
+                switch ($k){
+                    
+                    case 2: $b="สิบ"; break;
+                    case 3: $b="ร้อย"; break;
+                    case 4: $b="พัน"; break;
+                    case 5: $b="หมื่น"; break;
+                    case 6: $b="แสน"; break;
+                    case 7: $b="ล้าน"; break;
+                    
+                }
+                if($k==2 && intval($str[$i])==2)
+                    $n = "ยี่";
+                if($k==2 && intval($str[$i])==1)
+                    $n = "";
+                
+                $priceStr .=$n.$b;
+                $k--;
+            }
+
+            return $priceStr."บาทถ้วน";
+    }
+
+
     class MYPDF extends TCPDF {
 
             //Page header
@@ -115,15 +163,54 @@
 
         $html .= '<div style="text-indent: 12.7mm;font-size:16;font-weight: bold;text-decoration: underline;">1.  ผลงานในเดือน  '.$m_month.' '.($year+543).'</div>';
 
+        //-----------------------------------//
+        $mm = (int)$month>9 ? $month : '0'.$month;
+        $date_start = $year."-".$month."-01"; 
+        $date_end = $year."-".$month."-".cal_days_in_month(CAL_GREGORIAN,$month,$year);
+        //-----------งานภายใน------------------//
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_request = $result[0]['sum'];
+        $cost_request = $result[0]['cost'];
+
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_retest = $result[0]['sum'];
+        $cost_retest = $result[0]['cost'];
+
+        $internal_num = $num_retest + $num_request;
+        $internal_cost = $cost_retest + $cost_request;
+
         $html .= '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ส่วนทดสอบคุณสมบัติวัสดุได้ดำเนินการตรวจสอบ ทดสอบวัสดุต่างๆ ที่ใช้ในงานกรองน้ำ
-                งานก่อสร้างวางท่อที่ใช้ในขบวนการผลิตน้ำประปาของการประปานครหลวงได้จำนวน 1,849 ตัวอย่าง เก็บเงินค่าทดสอบได้ 495,450 บาท
+                งานก่อสร้างวางท่อที่ใช้ในขบวนการผลิตน้ำประปาของการประปานครหลวงได้จำนวน '.number_format($internal_num,0).' ตัวอย่าง เก็บเงินค่าทดสอบได้ '.number_format($internal_cost,0).' บาท
                 </span>';
 
-        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; นอกจากนี้ส่วนทดสอบคุณสมบัติวัสดุ ยังให้บริการการทดสอบหน่วยงานภายนอก ได้แก่ การประปาส่วนภูมิภาค และบริษัท ห้างฯ ร้านเอกชนต่างๆ เป็นจำนวน 252 ตัวอย่าง เก็บเงินค่าทดสอบได้ 66,400 บาท
-                </span>';        
-        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; คิดเป็นจำนวนตัวอย่างที่ทดสอบรวมทั้งสิ้น 2,101 ตัวอย่าง
+        //-----------งานภายนอก------------------//
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_request = $result[0]['sum'];
+        $cost_request = $result[0]['cost'];
+
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_retest = $result[0]['sum'];
+        $cost_retest = $result[0]['cost'];
+
+        $external_num = $num_retest + $num_request;
+        $external_cost = $cost_retest + $cost_request;
+        
+        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; นอกจากนี้ส่วนทดสอบคุณสมบัติวัสดุ ยังให้บริการการทดสอบหน่วยงานภายนอก ได้แก่ การประปาส่วนภูมิภาค และบริษัท ห้างฯ ร้านเอกชนต่างๆ เป็นจำนวน '.number_format($external_num,0).' ตัวอย่าง เก็บเงินค่าทดสอบได้ '.number_format($external_cost,0).' บาท
+                </span>';   
+
+
+        //--------------All-----------------//        
+        $num_overall  = $internal_num + $external_num; 
+        $cost_overall  = $internal_cost + $external_cost;        
+
+
+        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; คิดเป็นจำนวนตัวอย่างที่ทดสอบรวมทั้งสิ้น '.number_format($num_overall,0).' ตัวอย่าง
                 </span>';    
-        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เก็บค่าทดสอบในเดือนนี้ได้ทั้งสิ้น 561,850บาท (ห้าแสนหกหมื่นหนึ่งพันแปดร้อยห้าสิบบาทถ้วน)
+        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เก็บค่าทดสอบในเดือนนี้ได้ทั้งสิ้น '.number_format($cost_overall,0).' บาท ('.bahtTranslate($cost_overall).')
                 </span>';   
 
 
@@ -137,9 +224,45 @@
 
         $html .= '<br><div style="text-indent: 12.7mm;font-size:16;font-weight: bold;text-decoration: underline;">3.    สรุปผลงานการดำเนินงานในปีงบประมาณ  '.($fiscal_year).'</div>';
 
-        $html .= '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เป้าหมาย/ปริมาณงานระหว่าง 1 ตุลาคม '.($fiscal_year-1).' ถึง 30 กันยายน '.($fiscal_year).' ที่ส่วนทดสอบคุณสมบัติวัสดุได้ตั้งเป้าปริมาณงานทดสอบวัสดุต่างๆ ไว้รวมทั้งสิ้น 12,100 ตัวอย่าง และคาดว่าจะเก็บค่าให้บริการทดสอบวัสดุได้ประมาณ 5.0 ล้านบาท
+
+        //----------------plan------------------------//
+        $modelPlan = Plan::model()->findAll(array("condition"=>"year=:year", "params"=>array(":year"=>"2559")));
+        $plan_sample = !empty($modelPlan[0]) ? $modelPlan[0]->sample : 0;
+        $plan_income = !empty($modelPlan[0]) ? $modelPlan[0]->income : 0;
+
+        $html .= '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เป้าหมาย/ปริมาณงานระหว่าง 1 ตุลาคม '.($fiscal_year-1).' ถึง 30 กันยายน '.($fiscal_year).' ที่ส่วนทดสอบคุณสมบัติวัสดุ<br>ได้ตั้งเป้าปริมาณงานทดสอบวัสดุต่างๆ ไว้รวมทั้งสิ้น '.number_format($plan_sample).' ตัวอย่าง และคาดว่าจะเก็บค่าให้บริการทดสอบวัสดุได้ประมาณ '.$plan_income.' ล้านบาท
                 </span>'; 
-        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; สรุปผลงานตั้งแต่วันที่ 1 ตุลาคม '.($fiscal_year-1).'  ถึง '.cal_days_in_month(CAL_GREGORIAN,$month,$year).' '.$m_month.' '.($year+543).' ส่วนทดสอบคุณสมบัติวัสดุได้ดำเนินการทดสอบวัสดุต่างๆ เป็นปริมาณรวมทั้งสิ้น 18,165 ตัวอย่าง เก็บเงินค่าทดสอบได้ทั้งสิ้น 5,406,490บาท (ห้าล้านสี่แสนหกพันสี่ร้อยเก้าสิบบาทถ้วน)
+
+        //---------Overall until present----------------//      
+        $date_start =  ($fiscal_year-1-543)."-10-01";       
+        //-----------งานภายใน------------------//
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_request = $result[0]['sum'];
+        $cost_request = $result[0]['cost'];
+
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_retest = $result[0]['sum'];
+        $cost_retest = $result[0]['cost'];
+
+        $internal_num_sum = $num_retest + $num_request;
+        $internal_cost_sum = $cost_retest + $cost_request;
+         //-----------งานภายนอก------------------//
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_request = $result[0]['sum'];
+        $cost_request = $result[0]['cost'];
+
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
+        $num_retest = $result[0]['sum'];
+        $cost_retest = $result[0]['cost'];
+
+        $external_num_sum = $num_retest + $num_request;
+        $external_cost_sum = $cost_retest + $cost_request;
+                
+        $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; สรุปผลงานตั้งแต่วันที่ 1 ตุลาคม '.($fiscal_year-1).'  ถึง '.cal_days_in_month(CAL_GREGORIAN,$month,$year).' '.$m_month.' '.($year+543).' ส่วนทดสอบคุณสมบัติวัสดุ<br>ได้ดำเนินการทดสอบวัสดุต่างๆ เป็นปริมาณรวมทั้งสิ้น '.number_format($internal_num_sum+$external_num_sum).' ตัวอย่าง เก็บเงินค่าทดสอบได้ทั้งสิ้น '.number_format($internal_cost_sum+$external_cost_sum).' บาท ('.bahtTranslate($internal_cost_sum+$external_cost_sum).')
                 </span>';                 
         $html .= '<br><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; แบ่งตามประเภทงานได้ดังนี้
                 </span>';                  
@@ -158,18 +281,18 @@
                              <tbody>
                               <tr>
                                 <td style="width:40%;text-align:center;">งานภายใน กปน.</td>
-                                <td style="width:30%;text-align:right;"></td>
-                                <td style="width:30%;text-align:right;"></td>
+                                <td style="width:30%;text-align:right;">'.number_format($internal_num_sum).'</td>
+                                <td style="width:30%;text-align:right;">'.number_format($internal_cost_sum).'</td>
                               </tr>
                               <tr>
                                 <td style="width:40%;text-align:center;">งานบริการ</td>
-                                <td style="width:30%;text-align:right;"></td>
-                                <td style="width:30%;text-align:right;"></td>
+                                <td style="width:30%;text-align:right;">'.number_format($external_num_sum).'</td>
+                                <td style="width:30%;text-align:right;">'.number_format($external_cost_sum).'</td>
                               </tr>
                               <tr>
                                 <td style="width:40%;text-align:center;">รวม</td>
-                                <td style="width:30%;text-align:right;"></td>
-                                <td style="width:30%;text-align:right;"></td>
+                                <td style="width:30%;text-align:right;">'.number_format($internal_num_sum+$external_num_sum).'</td>
+                                <td style="width:30%;text-align:right;">'.number_format($internal_cost_sum+$external_cost_sum).'</td>
                               </tr>
                             </tbody>
                           </table>
@@ -197,17 +320,17 @@
                              <tbody>
                               <tr>
                                 <td style="width:50%;text-align:center;">งานภายใน กปน.</td>
-                                <td style="width:50%;text-align:right;"></td>
+                                <td style="width:50%;text-align:right;">'.number_format($internal_cost).'</td>
                                 
                               </tr>
                               <tr>
                                 <td style="width:50%;text-align:center;">งานบริการ</td>
-                                <td style="width:50%;text-align:right;"></td>
+                                <td style="width:50%;text-align:right;">'.number_format($external_cost).'</td>
                                
                               </tr>
                               <tr>
                                 <td style="width:50%;text-align:center;font-weight:bold;">รวม</td>
-                                <td style="width:50%;text-align:right;font-weight:bold;"></td>
+                                <td style="width:50%;text-align:right;font-weight:bold;">'.number_format($cost_overall).'</td>
                                
                               </tr>
                             </tbody>
@@ -218,6 +341,30 @@
                     </table>';
 
             $html .= '<br><div style="text-align:center;font-size:16;font-weight: bold;">ตารางที่ 2. จำแนกจำนวนการตรวจสอบ  ทดสอบ  วัสดุที่ใช้ในงานก่อสร้างและวางท่อของ กปน. <br>และงานบริการทดสอบแก่ภายนอก (ประจำเดือน '.$m_month.' '.($year+543).')</div>';
+
+
+            $materials =  array
+                            (
+                              array("name"=>"คอนกรีต","id"=>"1,15"),
+                              array("name"=>"ทราย,กรวด","id"=>"2,16"),
+                              array("name"=>"ทองแดงเจือ","id"=>"3"),
+                              array("name"=>"พี วี ซี","id"=>"4,14"),
+                              array("name"=>"ยาง","id"=>"5"),
+                              array("name"=>"เหล็กกล้าไร้สนิม","id"=>"9"),
+                              array("name"=>"เหล็กหล่อ","id"=>"10"),
+                              array("name"=>"เหล็กหล่อเหนียว","id"=>"11"),
+                              array("name"=>"เหล็กเหนียว","id"=>"12"),
+                              array("name"=>"เหล็กอาบสังกะสี","id"=>"13")                
+                            );
+
+           //-----------งานภายใน------------------//
+            $sql = "SELECT l.material_id as id, sum(sampling_num) as sum,sum(rs.cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id  WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' GROUP BY l.material_id";
+            $result_req_in1 = Yii::app()->db->createCommand($sql)->queryAll();
+           
+
+            $sql = "SELECT l.material_id as id, sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' GROUP BY l.material_id";
+            $result_req_in2 = Yii::app()->db->createCommand($sql)->queryAll();
+         
 
             $html .= '<br><table style="width:100%">
                       <tr>
@@ -231,20 +378,29 @@
                                 <td style="width:15%;text-align:center;font-weight:bold;">งานบริการ</td>
                               </tr>
                             </thead>
-                             <tbody>
-                              <tr>
-                                <td style="width:70%;text-align:center;"></td>
-                                <td style="width:15%;text-align:right;"></td>
-                                <td style="width:15%;text-align:right;"></td>
-                              </tr>
+                             <tbody>';
                               
-                            </tbody>
+            foreach ($materials as $key => $mat) {
+         
+                $id = explode(",", $mat["id"]);
+                //$html .= $result_req_in1[]$id[0]."<br>";
+            }
+
+                              // <tr>
+                              //   <td style="width:70%;text-align:center;"></td>
+                              //   <td style="width:15%;text-align:right;"></td>
+                              //   <td style="width:15%;text-align:right;"></td>
+                              // </tr>
+                             
+
+                              
+            $html .= '     </tbody>
                           </table>
                         </td>
                         <td style="width:5%">&nbsp;</td>
                       </tr>
                     </table>'; 
-            $html .= '<div style="text-align:left;font-size:16;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>หมายเหตุ</u>  จำนวนตัวอย่างรวมทั้งสิ้น  2,101  ตัวอย่าง</div>';              
+            $html .= '<div style="text-align:left;font-size:16;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>หมายเหตุ</u>  จำนวนตัวอย่างรวมทั้งสิ้น  '.number_format($num_overall).'  ตัวอย่าง</div>';              
 
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 

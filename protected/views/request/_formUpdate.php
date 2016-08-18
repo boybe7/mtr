@@ -308,7 +308,7 @@
                         $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
                             'name'=>'contract_id',
                             'id'=>'contract_id',
-                            'value'=>Contract::model()->findByPK($model->contract_id)->name,
+                            'value'=>empty($model->contract_id) ? "" : Contract::model()->findByPK($model->contract_id)->name,
                            // 'source'=>$this->createUrl('Ajax/GetDrug'),
                            'source'=>'js: function(request, response) {
                                 $.ajax({

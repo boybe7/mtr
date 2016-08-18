@@ -63,19 +63,14 @@ class JobController extends Controller
 	{
 		$model=new Job;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Job']))
+		if(isset($_POST['name']))
 		{
-			$model->attributes=$_POST['Job'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+			$model->name=$_POST['name'];
+			$model->job_group=$_POST['job_group'];
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+			$model->save();
+			
+		}
 	}
 
 	/**
