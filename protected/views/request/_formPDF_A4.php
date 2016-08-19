@@ -70,6 +70,7 @@
 		        // Set font
 		        //$this->SetFont('thsarabun', '', 18);
 		        $this->SetFont('angsanaupc', '', 14);
+		         $this->writeHTMLCell(145, 20, 30, 20, '<p style="font-szie:18px;font-weight:bold;"><font size="18"> ใบรายงานผลการทดสอบ</font></p>', 0, 1, false, true, 'C', false);
 		        $this->writeHTMLCell(145, 20, 5, 32, '<p style="font-weight:bold;">อันดับการทดสอบที่   <font size="18">   '.$this->cer_no.'</font></p>', 0, 1, false, true, 'L', false);
 		        $this->writeHTMLCell(145, 20, 5, 40, '<p style="font-weight:bold;">เจ้าของตัวอย่าง </p>', 0, 1, false, true, 'L', false);
 		        $this->writeHTMLCell(145, 20, 33, 40, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);

@@ -70,23 +70,25 @@
 		        // Set font
 		        //$this->SetFont('thsarabun', '', 18);
 		        $this->SetFont('angsanaupc', '', 15);
-		        $this->writeHTMLCell(145, 20, 1, 31, '<p style="font-weight:bold;">อันดับการทดสอบที่   <font size="18">   '.$this->cer_no.'</font></p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 1, 38, '<p style="font-weight:bold;">เจ้าของตัวอย่าง </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 28, 38, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 1, 44, '<p style="font-weight:bold;">งานสัญญา </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 22, 44, '<p style="font-weight:bold;">'.$this->owner.'</p>', 0, 1, false, true, 'L', false);
+		          $this->writeHTMLCell(145, 20, 30, 32, '<p style="font-szie:18px;font-weight:bold;"><font size="18"> ใบรายงานผลการทดสอบ</font></p>', 0, 1, false, true, 'C', false);
+
+		        $this->writeHTMLCell(145, 20, 1, 52, '<p style="font-weight:bold;">อันดับการทดสอบที่   <font size="18">   '.$this->cer_no.'</font></p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 1, 59, '<p style="font-weight:bold;">เจ้าของตัวอย่าง </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 28, 59, '<p style="font-weight:bold;">'.$this->contract_no.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 1, 65, '<p style="font-weight:bold;">งานสัญญา </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 22, 65, '<p style="font-weight:bold;">'.$this->owner.'</p>', 0, 1, false, true, 'L', false);
 		        //$this->writeHTMLCell(145, 20, 40, 53, '<p style="font-weight:bold;">แนบท้ายหนังสือกมว.ที่..................</p>', 0, 1, false, true, 'C', false);
 		   
-                $this->writeHTMLCell(145, 20, 110, 32, '<p style="font-weight:bold;">งาน</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 122, 32, '<p style="font-weight:bold;">'.$this->job.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 110, 38, '<p style="font-weight:bold;">เจ้าหน้าที่ทดสอบ</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 140, 38, '<p style="font-weight:bold;">'.$this->tester.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 110, 44, '<p style="font-weight:bold;">วันที่รับตัวอย่าง </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 135, 44, '<p style="font-weight:bold;">'.$this->register_date.'</p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 155, 44, '<p style="font-weight:bold;">วันที่ทดสอบ </p>', 0, 1, false, true, 'L', false);
-		        $this->writeHTMLCell(145, 20, 175, 44, '<p style="font-weight:bold;">'.$this->test_date.'</p>', 0, 1, false, true, 'L', false);
+                $this->writeHTMLCell(145, 20, 110, 53, '<p style="font-weight:bold;">งาน</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 122, 53, '<p style="font-weight:bold;">'.$this->job.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 110, 59, '<p style="font-weight:bold;">เจ้าหน้าที่ทดสอบ</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 140, 59, '<p style="font-weight:bold;">'.$this->tester.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 110, 65, '<p style="font-weight:bold;">วันที่รับตัวอย่าง </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 135, 65, '<p style="font-weight:bold;">'.$this->register_date.'</p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 155, 65, '<p style="font-weight:bold;">วันที่ทดสอบ </p>', 0, 1, false, true, 'L', false);
+		        $this->writeHTMLCell(145, 20, 175, 65, '<p style="font-weight:bold;">'.$this->test_date.'</p>', 0, 1, false, true, 'L', false);
 				
-		    	 $this->writeHTMLCell(145, 20, 180, 52, '<p style=""> SHEET '.$this->getAliasNumPage() .' OF '.$this->getAliasNbPages().'</p>', 0, 1, false, true, 'L', false);
+		    	 $this->writeHTMLCell(145, 20, 180, 44, '<p style=""> SHEET '.$this->getAliasNumPage() .' OF '.$this->getAliasNbPages().'</p>', 0, 1, false, true, 'L', false);
 				
 		        // Title
 		        //\\$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
@@ -176,7 +178,7 @@
 		// set default monospaced font
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 		// set margins
-		$pdf->SetMargins(1, 58, 1);
+		$pdf->SetMargins(1, 72, 1);
 		//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 		// set auto page breaks
