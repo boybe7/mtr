@@ -168,12 +168,12 @@
         $date_start = $year."-".$month."-01"; 
         $date_end = $year."-".$month."-".cal_days_in_month(CAL_GREGORIAN,$month,$year);
         //-----------งานภายใน------------------//
-        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานภายใน กปน.' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_request = $result[0]['sum'];
         $cost_request = $result[0]['cost'];
 
-        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานภายใน กปน.' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_retest = $result[0]['sum'];
         $cost_retest = $result[0]['cost'];
@@ -186,12 +186,12 @@
                 </span>';
 
         //-----------งานภายนอก------------------//
-        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานบริการ' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_request = $result[0]['sum'];
         $cost_request = $result[0]['cost'];
 
-        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานบริการ' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_retest = $result[0]['sum'];
         $cost_retest = $result[0]['cost'];
@@ -236,12 +236,12 @@
         //---------Overall until present----------------//      
         $date_start =  ($fiscal_year-1-543)."-10-01";       
         //-----------งานภายใน------------------//
-        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานภายใน กปน.' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_request = $result[0]['sum'];
         $cost_request = $result[0]['cost'];
 
-        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานภายใน กปน.' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_retest = $result[0]['sum'];
         $cost_retest = $result[0]['cost'];
@@ -249,12 +249,12 @@
         $internal_num_sum = $num_retest + $num_request;
         $internal_cost_sum = $cost_retest + $cost_request;
          //-----------งานภายนอก------------------//
-        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(sampling_num) as sum,sum(cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานบริการ' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_request = $result[0]['sum'];
         $cost_request = $result[0]['cost'];
 
-        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group=1 AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
+        $sql = "SELECT sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id WHERE job_group='งานบริการ' AND date BETWEEN '".$date_start."' AND '".$date_end."' ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
         $num_retest = $result[0]['sum'];
         $cost_retest = $result[0]['cost'];
@@ -303,7 +303,23 @@
 
         $html .='<br pagebreak="true" />';  
 
-        $html .= '<div style="text-align:center;font-size:16;font-weight: bold;">ตารางที่ 1. ค่าทดสอบประจำเดือน '.$m_month.' '.($year+543).'</div>';
+        $html .= '<br><table style="width:100%">
+                      <tr>
+                        <td style="width:70%">&nbsp;</td>
+                        <td style="width:30%">
+                          <table border="1" style="width:100%">
+                           
+                              <tr>
+                                <td style="width:100%;text-align:center;">ภาคผนวกหมายเลข 5</td>                              
+                              </tr>
+                           
+                          </table>
+                        </td>
+                       
+                      </tr>
+                    </table>';
+
+        $html .= '<br><div style="text-align:center;font-size:16;font-weight: bold;">ตารางที่ 1. ค่าทดสอบประจำเดือน '.$m_month.' '.($year+543).'</div>';
 
         $html .= '<br><table style="width:100%">
                       <tr>
@@ -357,14 +373,7 @@
                               array("name"=>"เหล็กอาบสังกะสี","id"=>"13")                
                             );
 
-           //-----------งานภายใน------------------//
-            $sql = "SELECT l.material_id as id, sum(sampling_num) as sum,sum(rs.cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id  WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' GROUP BY l.material_id";
-            $result_req_in1 = Yii::app()->db->createCommand($sql)->queryAll();
-           
-
-            $sql = "SELECT l.material_id as id, sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id WHERE job_group=0 AND date BETWEEN '".$date_start."' AND '".$date_end."' GROUP BY l.material_id";
-            $result_req_in2 = Yii::app()->db->createCommand($sql)->queryAll();
-         
+          
 
             $html .= '<br><table style="width:100%">
                       <tr>
@@ -379,20 +388,52 @@
                               </tr>
                             </thead>
                              <tbody>';
-                              
-            foreach ($materials as $key => $mat) {
-         
-                $id = explode(",", $mat["id"]);
-                //$html .= $result_req_in1[]$id[0]."<br>";
-            }
+                            
+                            $date_start = $year."-".$month."-01"; 
+                            $sum_int = 0;
+                            $sum_ext = 0;   
+                            foreach ($materials as $key => $mat) {
+                         
+                                $id = explode(",", $mat["id"]);
+                               
+                                if(count($id)==2)
+                                  $condition = " AND (l.material_id=".$id[0]." OR l.material_id=".$id[1].")";  
+                                else    
+                                  $condition = " AND l.material_id=".$id[0];
 
-                              // <tr>
-                              //   <td style="width:70%;text-align:center;"></td>
-                              //   <td style="width:15%;text-align:right;"></td>
-                              //   <td style="width:15%;text-align:right;"></td>
-                              // </tr>
+                                
+                                 //-----------งานภายใน------------------//
+                                $sql = "SELECT l.material_id as id, sum(sampling_num) as sum,sum(rs.cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id  WHERE job_group='งานภายใน กปน.' AND date BETWEEN '".$date_start."' AND '".$date_end."' ".$condition;
+                                $result_req_in1 = Yii::app()->db->createCommand($sql)->queryAll();
+                               
+
+                                $sql = "SELECT l.material_id as id, sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id WHERE job_group='งานภายใน กปน.' AND date BETWEEN '".$date_start."' AND '".$date_end."' ".$condition;
+                                $result_req_in2 = Yii::app()->db->createCommand($sql)->queryAll();
+
+                                //-----------งานภายนอก------------------//
+                                $sql = "SELECT l.material_id as id, sum(sampling_num) as sum,sum(rs.cost) as cost FROM request_standards rs LEFT JOIN requests r ON r.id=rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id  WHERE job_group='งานบริการ' AND date BETWEEN '".$date_start."' AND '".$date_end."' ".$condition;
+                                $result_req_ex1 = Yii::app()->db->createCommand($sql)->queryAll();
+                               
+
+                                $sql = "SELECT l.material_id as id, sum(rt.sampling_num) as sum,sum(rt.cost) as cost FROM retests rt LEFT JOIN request_standards rs ON rs.id=rt.request_standard_id LEFT JOIN requests r ON r.id = rs.request_id LEFT JOIN jobs j ON j.id=r.job_id LEFT JOIN labtypes l ON l.id=rs.labtype_id WHERE job_group='งานบริการ' AND date BETWEEN '".$date_start."' AND '".$date_end."' ".$condition;
+                                $result_req_ex2 = Yii::app()->db->createCommand($sql)->queryAll();
+
+                                $sum_int +=  $result_req_in1[0]['sum']+$result_req_in2[0]['sum'];
+                                $sum_ext +=  $result_req_ex1[0]['sum']+$result_req_ex2[0]['sum'];
+                                 
+                                  $html .= ' <tr>
+                                                <td style="width:70%;text-align:left;">'.$mat["name"].'</td>
+                                                <td style="width:15%;text-align:right;">'.number_format($result_req_in1[0]['sum']+$result_req_in2[0]['sum']).'</td>
+                                                <td style="width:15%;text-align:right;">'.number_format($result_req_ex1[0]['sum']+$result_req_ex2[0]['sum']).'</td>
+                                              </tr> ';          
+                            }
+
                              
-
+                            $html .= ' <tr>
+                                                <td style="width:70%;text-align:center;">รวม</td>
+                                                <td style="width:15%;text-align:right;">'.number_format($sum_int).'</td>
+                                                <td style="width:15%;text-align:right;">'.number_format($sum_ext).'</td>
+                                        </tr> ';       
                               
             $html .= '     </tbody>
                           </table>

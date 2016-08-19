@@ -6361,3 +6361,35 @@ Stack trace:
 REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
 HTTP_REFERER=http://localhost/mtr/report/monthlyReport
 ---
+2016/08/19 13:05:12 [error] [php] Array to string conversion (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:399)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (399)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/19 13:06:37 [error] [php] Undefined index: num (C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php:399)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(61): ReportController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionPrintMonthlyReport()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (399)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
+in C:\xampp\htdocs\mtr\index.php (13)
