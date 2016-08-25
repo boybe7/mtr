@@ -63,6 +63,44 @@ class ReportController extends Controller
 
    }
 
+    public function actionPaymentReport()
+	{
+		
+
+		$this->render('_reportPayment');
+	}
+
+	public function actionGenPaymentReport()
+	{
+        $month = $_GET["monthEnd"];
+        $year = $_GET["yearEnd"]-543;
+
+		
+		$this->renderPartial('_formReportPayment', array(
+           
+            'month'=>$month,
+            'year'=>$year,
+
+            'display' => 'block',
+        ), false, true);
+	}
+        
+    public function actionPrintPaymentReport()
+    {
+	    $month = $_GET["monthEnd"];
+        $year  = $_GET["yearEnd"]-543;
+
+		$this->renderPartial('_formReportPayment_PDF', array(
+
+            'month'=>$month,
+            'year'=>$year,
+
+            'display' => 'block',
+        ), false, true);
+
+
+   }
+
    
 
 

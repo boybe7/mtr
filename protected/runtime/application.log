@@ -6393,3 +6393,32 @@ REQUEST_URI=/mtr/report/printMonthlyReport?monthEnd=08&yearEnd=2559
 in C:\xampp\htdocs\mtr\protected\views\report\_formReportMonthly_PDF.php (399)
 in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (61)
 in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/23 18:26:03 [error] [exception.CException] exception 'CException' with message 'ReportController ไม่สามารถค้นหา "_formReportPayment" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:878
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(85): CController->renderPartial('_formReportPaym...', Array, false, true)
+#1 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenPaymentReport()
+#2 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GenPaymentRepor...')
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('report/GenPayme...')
+#7 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&_=1471951563053
+HTTP_REFERER=http://localhost/mtr/report/paymentReport
+---
+2016/08/23 18:26:47 [error] [exception.CException] exception 'CException' with message 'ReportController ไม่สามารถค้นหา "_formReportPayment" ตามคำสั่งได้' in C:\xampp\htdocs\mtr\framework\web\CController.php:878
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(85): CController->renderPartial('_formReportPaym...', Array, false, true)
+#1 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenPaymentReport()
+#2 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GenPaymentRepor...')
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('report/GenPayme...')
+#7 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&_=1471951563053
+---
