@@ -36,13 +36,12 @@ class ReportController extends Controller
 	{
         $month = $_GET["monthEnd"];
         $year = $_GET["yearEnd"]-543;
-
-		
+       
 		$this->renderPartial('_formReportMonthly', array(
            
             'month'=>$month,
             'year'=>$year,
-
+           
             'display' => 'block',
         ), false, true);
 	}
@@ -74,13 +73,19 @@ class ReportController extends Controller
 	{
         $month = $_GET["monthEnd"];
         $year = $_GET["yearEnd"]-543;
+         $cat = "all";
+        if(isset($_GET["cat1"]) && !isset($_GET["cat2"]))
+           $cat = $_GET["cat1"];
+        elseif (isset($_GET["cat2"]) && !isset($_GET["cat1"]))
+            $cat = $_GET["cat2"];
+
 
 		
 		$this->renderPartial('_formReportPayment', array(
            
             'month'=>$month,
             'year'=>$year,
-
+             'cat'=>$cat,
             'display' => 'block',
         ), false, true);
 	}
@@ -89,12 +94,19 @@ class ReportController extends Controller
     {
 	    $month = $_GET["monthEnd"];
         $year  = $_GET["yearEnd"]-543;
+          $cat = "all";
+        if(isset($_GET["cat1"]) && !isset($_GET["cat2"]))
+           $cat = $_GET["cat1"];
+        elseif (isset($_GET["cat2"]) && !isset($_GET["cat1"]))
+            $cat = $_GET["cat2"];
+
+
 
 		$this->renderPartial('_formReportPayment_PDF', array(
 
             'month'=>$month,
             'year'=>$year,
-
+            'cat'=>$cat,
             'display' => 'block',
         ), false, true);
 

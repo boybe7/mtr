@@ -6422,3 +6422,84 @@ Stack trace:
 #9 {main}
 REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&_=1471951563053
 ---
+2016/08/26 16:43:46 [error] [php] Undefined variable: cat (C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php:50)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(89): ReportController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenPaymentReport()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&cat1=overdue&_=1472204626513
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php (50)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (89)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/26 16:44:37 [error] [php] Undefined variable: date_start (C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php:56)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#1 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(90): ReportController->renderPartial()
+#2 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenPaymentReport()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#5 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#6 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#7 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&cat1=overdue&_=1472204677207
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php (56)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (90)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/26 16:45:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM requests rq LEFT JOIN invoices i ON rq.id=i.request_id  WHERE  rq.date BETW' at line 1. The SQL statement executed was: SELECT  FROM requests rq LEFT JOIN invoices i ON rq.id=i.request_id  WHERE  rq.date BETWEEN '2016-08-01' AND '2016-08-31'   AND  bill_date IS NULL  .
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php (58)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (90)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/26 16:45:29 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand ล้มเหลวในการดำเนินการเรียกลักษณะของ SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM requests rq LEFT JOIN invoices i ON rq.id=i.request_id  WHERE  rq.date BETW' at line 1. The SQL statement executed was: SELECT  FROM requests rq LEFT JOIN invoices i ON rq.id=i.request_id  WHERE  rq.date BETWEEN '2016-08-01' AND '2016-08-31'   AND  bill_date IS NULL  ' in C:\xampp\htdocs\mtr\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\mtr\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php(58): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#4 C:\xampp\htdocs\mtr\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#5 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(90): CController->renderPartial('_formReportPaym...', Array, false, true)
+#6 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenPaymentReport()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\mtr\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): CController->run('GenPaymentRepor...')
+#11 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController('report/GenPayme...')
+#12 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\mtr\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&cat1=overdue&_=1472204729783
+HTTP_REFERER=http://localhost/mtr/report/PaymentReport
+---
+2016/08/26 16:46:02 [error] [php] include(Vender.php): failed to open stream: No such file or directory (C:\xampp\htdocs\mtr\framework\YiiBase.php:427)
+Stack trace:
+#0 C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php(82): spl_autoload_call()
+#1 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(126): require()
+#2 C:\xampp\htdocs\mtr\framework\web\CBaseController.php(95): ReportController->renderInternal()
+#3 C:\xampp\htdocs\mtr\framework\web\CController.php(869): ReportController->renderFile()
+#4 C:\xampp\htdocs\mtr\protected\controllers\ReportController.php(90): ReportController->renderPartial()
+#5 C:\xampp\htdocs\mtr\framework\web\actions\CInlineAction.php(49): ReportController->actionGenPaymentReport()
+#6 C:\xampp\htdocs\mtr\framework\web\CController.php(308): CInlineAction->runWithParams()
+#7 C:\xampp\htdocs\mtr\framework\web\CController.php(286): ReportController->runAction()
+#8 C:\xampp\htdocs\mtr\framework\web\CController.php(265): ReportController->runActionWithFilters()
+#9 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(282): ReportController->run()
+#10 C:\xampp\htdocs\mtr\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#11 C:\xampp\htdocs\mtr\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\mtr\index.php(13): CWebApplication->run()
+REQUEST_URI=/mtr/report/GenPaymentReport?monthEnd=08&yearEnd=2559&cat1=overdue&_=1472204761991
+in C:\xampp\htdocs\mtr\protected\views\report\_formReportPayment.php (82)
+in C:\xampp\htdocs\mtr\protected\controllers\ReportController.php (90)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/26 16:54:18 [warning] [application] Failed to set unsafe attribute "id" of "RequestStandard".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (906)
+in C:\xampp\htdocs\mtr\index.php (13)
+2016/08/26 16:54:18 [warning] [application] Failed to set unsafe attribute "id" of "RequestStandard".
+in C:\xampp\htdocs\mtr\protected\controllers\RequestController.php (951)
+in C:\xampp\htdocs\mtr\index.php (13)

@@ -56,7 +56,14 @@ $this->breadcrumbs=array(
 
               ?>
     </div>
-      <div class="span5 ">
+    <div class="span4">
+            <?php
+        
+                echo '<span style="padding-top:20px;" class="span6"><input type="checkbox"  id="cat1" value="overdue" > ค้างชำระ </span>'; 
+                echo '<span style="padding-top:20px;" class="span6"><input type="checkbox" id="cat2" value="paid" > ชำระแล้ว </span>'; 
+              ?>
+    </div>
+      <div class="span4 ">
 <?php
             $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'link',
@@ -76,7 +83,7 @@ $this->breadcrumbs=array(
                 'label' => 'Print',
                 'icon' => 'print white',
                 'htmlOptions' => array(
-                    'class' => 'span3',
+                    'class' => 'span4',
                     'style' => 'margin:25px 0px 0px 0px;',
                     'id' => 'printReport'
                 ),
@@ -105,7 +112,7 @@ $("#gentReport").click(function(e){
         $.ajax({
             url: "GenPaymentReport",
             cache:false,
-            data: {monthEnd:$("#monthEnd").val(),yearEnd:$("#yearEnd").val(),workcat:$("#workcat").val()
+            data: {monthEnd:$("#monthEnd").val(),yearEnd:$("#yearEnd").val(),cat1:$("#cat1:checked").val(),cat2:$("#cat2:checked").val()
               },
             success:function(response){
                
@@ -123,7 +130,7 @@ $("#printReport").click(function(e){
 
     $.ajax({
         url: "printPaymentReport",
-        data: {monthEnd:$("#monthEnd").val(),yearEnd:$("#yearEnd").val()
+        data: {monthEnd:$("#monthEnd").val(),yearEnd:$("#yearEnd").val(),cat1:$("#cat1:checked").val(),cat2:$("#cat2:checked").val()
               },
         success:function(response){
             window.open("../print/tempReport.pdf", "_blank", "fullscreen=yes");
