@@ -55,8 +55,6 @@ class RequestStandardController extends Controller
 		// Save Data
 		if(isset($_POST['result_header'])){
 			$result_header = $_POST['result_header'];
-			//echo '<br/><br/><br/><br/><br/>';
-			//var_dump($result_header);
 			$result_header_id = $result_header['result_header_id'];
 			$model = TestResultsHeaders::model()->findByPk($result_header_id);
 			if($model){
@@ -72,18 +70,82 @@ class RequestStandardController extends Controller
 			}
 		}
 
+		$upload = false; // manual input ok
+		if(isset($_FILES['rawupload'])){
+			//echo "<br/><br/><br/><br/>";
+			foreach ($_FILES['rawupload']['size'] as $reqstd_id => $size) {
+				if($size > 0){
+					$upload = true; // prevent manual input
+					$name = $_FILES['rawupload']['name'][$reqstd_id];
+					$type = $_FILES['rawupload']['type'][$reqstd_id];
+					$tmp_name = $_FILES['rawupload']['tmp_name'][$reqstd_id];
+					
+					// CSV mimetypes
+					$csv_mimetypes = array(
+						'text/csv',
+						'application/csv',
+						'text/comma-separated-values',
+						'application/excel',
+						'application/vnd.ms-excel',
+						'application/vnd.msexcel',
+						//'text/plain',
+						//'text/anytext',
+						//'application/octet-stream',
+						//'application/txt',
+					);
 
-		if(isset($_POST['result'])){
+					// CSV type checking
+					if(in_array($type, $csv_mimetypes)){
+						$row = 1;
+						if (($handle = fopen($tmp_name, "r")) !== FALSE) {
+							while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+								if($row >= 4){ // Begin extracting at row 4
+									$rowno = $data[0];
+									if($rowno){
+										$sampling_no = $data[1];
+										
+										// Values to update!
+										$values = array();
+										$values['C'] = $data[2];
+										$values['D'] = $data[3];
+										$values['E'] = $data[4];
+										$values['F'] = $data[5];
+										$values['G'] = $data[6];
+										$values['H'] = $data[7];
+										$values['I'] = $data[8];
+										$values['J'] = $data[9];
+
+										foreach($values as $col_index => $value){
+											//echo "$reqstd_id | $sampling_no | $col_index | $value<br/>";
+											$sql = "SELECT test_results_values.id as id FROM test_results_values JOIN labtype_inputs ON test_results_values.labtype_input_id=labtype_inputs.id WHERE request_standard_id = '$reqstd_id' AND sampling_no='$sampling_no' AND labtype_inputs.col_index='$col_index'";
+											//echo $sql . "<br/>";
+											$result = $connection->createCommand($sql)->queryRow();
+											if($result > 0){
+												$result_id = $result['id'];
+												$model = TestResultsValue::model()->findByPk($result_id);
+												$model->value = $value;
+												$model->save(); // save the change to database
+											}
+										}
+									}
+								}
+								$row++;
+							}
+							fclose($handle);
+						}
+					}
+				}
+			}
+			//exit;
+		} 
+		
+		if(isset($_POST['result']) && $upload == false){
 			foreach ($_POST['result'] as $result_id => $value) {
 				$model = TestResultsValue::model()->findByPk($result_id);
 				$model->value = $value;
 				$model->save(); // save the change to database
 			}
-
-
-
 		}
-
 
 		if(isset($_POST['reqstd'])){
 			foreach ($_POST['reqstd'] as $reqstd_id => $conclude) {
@@ -94,12 +156,10 @@ class RequestStandardController extends Controller
 				$this->calculate($reqstd_id);
 			}
 
-
-
 			//if (Yii::app()->request->isAjaxRequest)	
 			//	$this->redirect(array('requestStandard/index/'.$id));
 			//else	
-			    $this->redirect(array('request/index'));	
+			$this->redirect(array('request/index'));	
 		}
 
 		// Request query
@@ -175,7 +235,6 @@ class RequestStandardController extends Controller
 				);
 			}
 
-
 			// Set view data
 			$output['request_standard'][] = array(
 				'reqstd_id' => $reqstd_id,
@@ -194,9 +253,6 @@ class RequestStandardController extends Controller
 		// Render view
 		$this->render('index', array('output' => $output,'id'=>$id));
 	}
-
-	
-
 
 	public function calculate($id)
 	{

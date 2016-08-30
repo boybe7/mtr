@@ -11,8 +11,8 @@
 
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'request-form',
-	'htmlOptions' => array('class' => ''),
-	'enableAjaxValidation'=>false,
+	'htmlOptions' => array('class' => '', 'enctype'=>'multipart/form-data'),
+	'enableAjaxValidation'=>false
 )); 
 ?>
 
@@ -187,7 +187,6 @@
 
 		$max_col = count($modelLabtype);
 		foreach ($modelLabtype as $key => $value) {
-			
 			foreach ($modelSTDParam as $key => $sd) {
 				if($sd['labtype_input_id']==$value->id)
 				{
@@ -196,16 +195,11 @@
 					
 				}	
 			}
-				
-			
 			$index++;	
 		}	
 
 		//print_r($modelLabtype);
-
 		//echo count($std_val);
-
-
 		echo "<div class='main_title'>$labtype_name</div>";
 		echo "ชนิดวัสดุ: " . CHtml::textField("", $material_name, array('readonly'=>true));
 		$this->widget('bootstrap.widgets.TbButton', array(
@@ -219,7 +213,10 @@
 		     'onclick'=>'addRaw(' . $reqstd_id . ')'
 		   )
 		));
-
+		echo "<span>  เลือกไฟล์ผลการทดสอบ</span>";
+		
+		echo CHtml::fileField("rawupload[$reqstd_id]", '',array());    
+		
 		
 		//echo "<form name='req".$reqstd_id."' action='/mtr/requestStandard/index/52'>";
 		echo "<table style='margin-top:10px' border='1' class='items table table-bordered table-condensed'>";
@@ -227,8 +224,9 @@
 		echo "<thead>";
 		echo "<tr>";
 		//echo "<th>Sampling no</th>";
+		$tb_width = 100/count($header_list);
 		foreach ($header_list as $header) {
-			echo "<th style='text-align:center;'>" . $header['name'] . "</th>";
+			echo "<th style='text-align:center;width:".$tb_width."%'>" . $header['name'] . "</th>";
 		}
 		echo "</tr>";
 		echo "</thead>";
@@ -242,27 +240,16 @@
 			foreach ($header_list as $header) {
 				$labtype_input_id = $header['id'];
 				//$header_name = $header['name'];
-				/*if($labtype_input_id>=12)
-				{
-					$result_id = 12;
-					if($labtype_input_id==12)
-					   $result_value = print_r($result_list[$sampling_no]);
-					else
-						$result_value = 0;
-					$decimal = 0;
-				}	
-				else
-				{*/
-					$result_id = $result_list[$sampling_no][$labtype_input_id]['id'];
-					$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
-					$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
-				//}	
-				echo "<td style='text-align:center;'>";
+
+				$result_id = $result_list[$sampling_no][$labtype_input_id]['id'];
+				$result_value = $result_list[$sampling_no][$labtype_input_id]['value'];
+				$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
+				echo "<td style='text-align:center;width:".$tb_width."%'>";
 
 				if($decimal==0 && !is_numeric($result_value))
-					echo CHtml::textField("result[$result_id]", $result_value, array('style'=>'width:100px;text-align:center'));
+					echo CHtml::textField("result[$result_id]", $result_value, array('style'=>'width:85%;text-align:center'));
 				else
-					echo CHtml::textField("result[$result_id]", number_format($result_value,$decimal), array('style'=>'width:100px;text-align:right'));
+					echo CHtml::textField("result[$result_id]", number_format($result_value,$decimal), array('style'=>'width:85%;text-align:right'));
 				echo "</td>";
 			}
 			echo "</tr>";
