@@ -31,7 +31,7 @@ class JobController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','deleteSelected','list'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,38 +63,62 @@ class JobController extends Controller
 	{
 		$model=new Job;
 
-		if(isset($_POST['name']))
+		// Uncomment the following line if AJAX validation is needed
+		 //$this->performAjaxValidation($model);
+
+		if(isset($_POST['name'] ) && isset($_POST['job_group']))
 		{
 			$model->name=$_POST['name'];
 			$model->job_group=$_POST['job_group'];
 
-			$model->save();
 			
+			$model->save();
+			// header('Content-type: text/plain');
+			// print_r($model);
+			// exit;
 		}
-	}
 
+		// if(isset($_POST['Job']))
+		// {
+		// 	$model->attributes=$_POST['Job'];
+		// 	if($model->save())
+		// 		$this->redirect(array('view','id'=>$model->id));
+		// }
+
+		// $this->render('create',array(
+		// 	'model'=>$model,
+		// ));
+	}
+	/**
+	 * List a particular model.
+	 * If list is successful, the browser will be redirected to the 'view' page.
+	 * @param 
+	 */
+	public function actionList()
+	{
+		 $data = array(array("value"=>"งานภายใน กปน.","text"=>"งานภายใน กปน."),array("value"=>"งานบริการ","text"=>"งานบริการ"));      
+ 		 echo CJSON::encode($data);
+		
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate()
 	{
-		$model=$this->loadModel($id);
+		
+		$es = new EditableSaver('Job');
+	
+	    try {
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Job']))
-		{
-			$model->attributes=$_POST['Job'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+	    	$es->update();
+	  
+	    } catch(CException $e) {
+	    	echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
+	    	return;
+	    }
+	    echo CJSON::encode(array('success' => true));
 	}
 
 	/**
@@ -116,6 +140,23 @@ class JobController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
+
+	/**
+	 * Deletes a selected model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionDeleteSelected()
+    {
+    	$autoIdAll = $_POST['selectedID'];
+        if(count($autoIdAll)>0)
+        {
+            foreach($autoIdAll as $autoId)
+            {
+                $this->loadModel($autoId)->delete();
+            }
+        }    
+    }
 
 	/**
 	 * Lists all models.

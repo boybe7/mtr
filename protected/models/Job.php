@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'jobs':
  * @property integer $id
  * @property string $name
+ * @property string $job_group
  */
 class Job extends CActiveRecord
 {
@@ -26,10 +27,17 @@ class Job extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name', 'required'),
+			array('name,job_group', 'required'),
 			array('name', 'length', 'max'=>200),
+			array('job_group', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			//array('id, name', 'safe', 'on'=>'search'),
+			// เพิ่ม rule สำหรับรับ input job_group
+			//array('job_group', 'required'),
+			// array('name','job_group', 'required'),
+			array('id, name, job_group', 'safe', 'on'=>'search'),
+			//array('name', 'length', 'max'=>200),
 		);
 	}
 
@@ -52,6 +60,7 @@ class Job extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'ชื่อประเภทงาน',
+			'job_group' => 'กลุ่มประเภทงาน'
 		);
 	}
 
@@ -75,11 +84,12 @@ class Job extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-
+		$criteria->compare('job_group',$this->job_group,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+	
 
 	/**
 	 * Returns the static model of the specified AR class.

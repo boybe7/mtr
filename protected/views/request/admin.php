@@ -4,7 +4,15 @@ $this->breadcrumbs=array(
 	'Manage',
 );
 
+echo "<input type='hidden' id='invoice' value='".$invoice_no."'>";
 ?>
+
+<script language="javascript" type="text/javascript">
+$(function() {
+  if($("#invoice").val()!='')
+  window.open('../../invoices/print/'+$("#invoice").val());
+});
+</script>
 
 <div class="main_title">รับตัวอย่างทดสอบ</div>
 

@@ -27,7 +27,7 @@ class RequestController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','print','printGuest','guest'),
+				'actions'=>array('index','index2','view','print','printGuest','guest'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -815,8 +815,9 @@ class RequestController extends Controller
 			// print_r($modelHeader);
 			// exit;
 				     	$transaction->commit();
-				     	//$this->redirect(array('index'));	
-				     	$this->redirect(array('invoices/print/'.$modelInvoice->id));	
+				     	//$this->redirect(array('invoices/print/'.$modelInvoice->id), array('target'=>'_blank'));	
+				     	$this->redirect(array('request/index2/'.$modelInvoice->id));	
+				     	
 
 				 
 				}
@@ -1239,8 +1240,24 @@ class RequestController extends Controller
 		if(isset($_GET['Request']))
 			$model->attributes=$_GET['Request'];
 
+		
+
 		$this->render('admin',array(
-			'model'=>$model,
+			'model'=>$model,'invoice_no'=>''
+		));
+	}
+
+	public function actionIndex2($id)
+	{
+		$model=new Request('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Request']))
+			$model->attributes=$_GET['Request'];
+
+		//$this->redirect(array('invoices/print/'.$id));	
+
+		$this->render('admin',array(
+			'model'=>$model,'invoice_no'=>$id
 		));
 	}
 

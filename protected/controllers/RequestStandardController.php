@@ -123,7 +123,7 @@ class RequestStandardController extends Controller
 											if($result > 0){
 												$result_id = $result['id'];
 												$model = TestResultsValue::model()->findByPk($result_id);
-												$model->value = $value;
+												$model->value = str_replace(",", "", $value) ;
 												$model->save(); // save the change to database
 											}
 										}

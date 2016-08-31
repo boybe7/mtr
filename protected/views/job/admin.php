@@ -30,7 +30,7 @@ $('.search-form form').submit(function(){
 	</div>
 	<div class="span2">
 		<?php 
-			echo CHtml::radioButtonList('job_group','',array(0=>'งานภายใน',1=>'งานบริการ'),array('labelOptions'=>array('style'=>'display:inline'))); 
+			echo CHtml::radioButtonList('job_group','',array('งานภายใน กปน.'=>'งานภายใน กปน.','งานบริการ'=>'งานบริการ'),array('labelOptions'=>array('style'=>'display:inline'))); 
 
     	?>
 	</div>
@@ -49,7 +49,7 @@ $('.search-form form').submit(function(){
 		    	    //'url'=>$this->createUrl('create'),
 		     	    'type' => 'POST',
                 	'data' => array('name' => 'js:$("#newjob").val()','job_group' => 'js:$("#job_group :checked").val()'),
-                	'success' => 'function(html){ console.log($("#job-grid")); $("#newjob").val("");$("#job_group").val(""); $("#job-grid").yiiGridView("update",{}); }'
+                	'success' => 'function(html){ console.log("success"); $("#newjob").val("");$("#job_group").val(""); $("#job-grid").yiiGridView("update",{}); }'
                 ) 
 		)); 
 
@@ -74,7 +74,7 @@ $('.search-form form').submit(function(){
 			        'onclick'=>'      
 
 			                       if($.fn.yiiGridView.getSelection("job-grid").length==0)
-			                       		js:bootbox.alert("กรุณาเลือกแถวข้อมูลที่ต้องการลบ?","ตกลง");
+			                       		js:bootbox.alert("กรุณาเลือกแถวข้อมูลที่ต้องการลบ","ตกลง");
 			                       else  
 			                          js:bootbox.confirm("คุณต้องการจะลบข้อมูล?","ยกเลิก","ตกลง",
 						                   function(confirmed){
@@ -142,37 +142,39 @@ $this->widget('bootstrap.widgets.TbGridView',array(
 					), 
 					'placement' => 'right',
 					'display' => 'js: function() {
-				
+						$(this).attr( "rel", "tooltip");
+						$(this).attr( "data-original-title", "แก้ไข");
 					    
 					}'
 				)
 	  	),
 		'job_group'=>array(
-			    'name' => 'job_group',
+				'name' => 'job_group',
 			    'class' => 'editable.EditableColumn',
 			    'filter'=>CHtml::activeTextField($model, 'job_group',array("placeholder"=>"ค้นหาตาม".$model->getAttributeLabel("job_group"))),
 				'headerHtmlOptions' => array('style' => 'width:25%;text-align:center;'),  	            	  	
 				'htmlOptions'=>array('style'=>'text-align:left'),
-				'editable' => array( //editable section
-					//'apply' => '$data->user_status != 4', //can't edit deleted users
-					//'text'=>'Click',
-					//'tooltip'=>'Click',
-					'title'=>'แก้ไข',
+				'editable' => array(
+					'type' => 'select',
+					'title'=>'แก้ไขกลุ่มประเภทงาน',
 					'url' => $this->createUrl('update'),
-					'success' => 'js: function(response, newValue) {
-									if(!response.success) return response.msg;
+					'source' => $this->createUrl('list'),
+					'options' => array('ajaxOptions' => array('dataType' => 'json'),
+					'display' => 'js: function(value, sourceData) {
 
-										$("#job-grid").yiiGridView("update",{});
-									}',
-					'options' => array(
-						'ajaxOptions' => array('dataType' => 'json'),
+						var selected = $.grep(sourceData, function(o){ return o.value == value; });
 
-					), 
-					'placement' => 'right',
-					'display' => 'js: function() {
-				
-					    
+						colors = {1: "green", 2: "blue", 3: "purple", 4: "gray"};
+						$(this).text(selected[0].text).css("color", colors[value]);            
+						$(this).attr( "rel", "tooltip");
+						$(this).attr( "data-original-title", "แก้ไข");
 					}'
+					),
+					//onsave event handler
+					'onSave' => 'js: function(e, params) {
+						//console && console.log("saved value: "+params.newValue);
+					}',
+					
 				)
 	  	),
 	),
