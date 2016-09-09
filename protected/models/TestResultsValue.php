@@ -67,6 +67,14 @@ class TestResultsValue extends CActiveRecord
 		);
 	}
 
+	public function beforeSave()
+    {
+
+        $this->value = str_replace(",", "", $this->value);
+
+        return parent::beforeSave();
+   }
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *

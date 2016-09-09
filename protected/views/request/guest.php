@@ -14,7 +14,7 @@ $this->breadcrumbs=array(
 
  $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'labtype-grid',
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$model->searchGuest(),
 	'type'=>'bordered condensed',
 	'filter'=>$model,
 	'selectableRows' =>2,

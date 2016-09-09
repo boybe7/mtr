@@ -152,11 +152,11 @@
 		//set info footer   
 		$user = User::model()->findAll('name=:id', array(':id' => $result_headers[0]->reporter));
 		//print_r($user[0]->positionsId1);
-		$pos_reporter = $user[0]->positionsId1->name;
+		$pos_reporter = empty($user) ? "" : $user[0]->positionsId1->name;
 		$user = User::model()->findAll('name=:id', array(':id' => $result_headers[0]->approver));
-		$pos_approver = $user[0]->positionsId1->name;
+		$pos_approver = empty($user) ? "" : $user[0]->positionsId1->name;
 		$user = User::model()->findAll('name=:id', array(':id' => $result_headers[0]->signer));
-		$pos_signer = $user[0]->positionsId1->name;
+		$pos_signer = empty($user) ? "" : $user[0]->positionsId1->name;
 
 
 		$pdf->setFooterInfo($result_headers[0]->reporter,$result_headers[0]->approver,$result_headers[0]->signer,$pos_reporter,$pos_approver,$pos_signer);
@@ -375,7 +375,7 @@
 								else
 									$html .= 	'<td style="text-align:center;">';
 
-							
+							    $result_value = str_replace(",", "", $result_value);
 
 								if($decimal==0 && !is_numeric($result_value))
 									$html .= $result_value;

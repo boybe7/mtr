@@ -11,7 +11,16 @@
   	echo "<h4>".$title." : ".$modelMat->name."/".$modelLab->name."</h4>";
   	echo "<hr>";	
  ?>
-
+     <div class="alert alert-info">
+	 <h5>คำแนะนำการกรอกข้อมูล</h5>
+	 <ul>
+	  <li>ชื่อ input ที่เป็นเลขยกกำลังให้ใช้ <code>&lt;sup&gt;ตัวเลข&lt;/sup&gt;</code> เช่น mm<sup>2</sup> =><code>mm&lt;sup&gt;2&lt;/sup&gt;</code> </li>
+	  <li>สูตรคำนวณ ให้ใส่ "$"หน้าคอลัมภ์ ทุกครั้ง เช่น E/F =><code>$E/$F</code> </li>
+	  <li>สูตรคำนวณ ที่เป็นเลขยกกำลังให้ใช้ <code>pow(ฐาน,เลขยกกำลัง)</code> เช่น E<sup>3</sup> =><code>pow($E,3)</code> </li>
+	  <li>สูตรคำนวณ ค่า "π" ให้ใส่ว่า <code>pi()</code> </li>
+	  <li>สูตรคำนวณ ค่าเฉลี่ย ให้ใส่ว่า <code>avg(ตัวเลข,ตัวเลข)</code> เช่น AVERAGE(A:D) => <code>avg($A,$B,$C,$D)</code>   </li>
+	</ul>
+	</div>
 	
 	<?php echo $form->errorSummary($model); ?>
 

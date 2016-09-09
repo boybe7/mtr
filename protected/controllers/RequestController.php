@@ -1263,7 +1263,7 @@ class RequestController extends Controller
 
 	public function actionGuest()
 	{
-		$model=new Request('search');
+		$model=new Request('searchGuest');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Request']))
 			$model->attributes=$_GET['Request'];

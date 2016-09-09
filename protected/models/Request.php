@@ -41,7 +41,7 @@ class Request extends CActiveRecord
 			array('detail,note', 'length', 'max'=>500),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, request_no, date, vendor_id, owner_id, job_id, contract_id, detail, status,material,sampling_no,note', 'safe', 'on'=>'search'),
+			array('id, request_no, date, vendor_id, owner_id, job_id, contract_id, detail, status,material,sampling_no,note,signed_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -92,7 +92,8 @@ class Request extends CActiveRecord
 	                  'material'=>'req_std.labtype.material.name',
 	                  'owner_id'=>'owner.name',
 	                  'sampling_no'=>'req_std.sampling_no',
-	                  'contract_id' => 'contract.name'
+	                  'contract_id' => 'contract.name',
+	                  'signed_date' => 'result_headers.signed_date'
 
 	             ),
 	         ),
@@ -158,10 +159,63 @@ class Request extends CActiveRecord
 			  )
 		));*/
 
+		$sort=array(
+		    'defaultOrder'=>'date DESC, request_no DESC ',
+		);
+
 		return $this->relatedSearch(
 	            $criteria,
 	            array(
 	                    'pagination'=>array('pageSize'=>10),
+	                    'sort'=>$sort
+	            	
+	            )
+	
+	    );
+	}
+
+	public function searchGuest()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+		$alias=$this->getTableAlias(true,false).".";
+		//$criteria->with = array("req_std");
+		//$criteria->together = true;
+
+		//$criteria->compare($alias.'id',$this->id);
+		$criteria->compare($alias.'request_no',$this->request_no,true);
+		$criteria->compare($alias.'date',$this->date,true);
+		$criteria->compare($alias.'vendor_id',$this->vendor_id);
+		$criteria->compare($alias.'owner_id',$this->owner_id);
+		$criteria->compare($alias.'job_id',$this->job_id);
+		//$criteria->compare($alias.'contract_id',$this->contract_id);
+		$criteria->compare($alias.'detail',$this->detail,true);
+		$criteria->compare($alias.'status',$this->status);
+		$criteria->with = array('result_headers');
+		$criteria->addCondition('result_headers.signed_date != "0000-00-00"');
+
+
+		//$criteria->compare( 'req_std.labtype_id.', $this->material, true );
+
+		
+
+		/*return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'sort'=>array(
+			    'defaultOrder'=>'date ASC',
+			  )
+		));*/
+
+		$sort=array(
+		    'defaultOrder'=>'date DESC, request_no DESC ',
+		);
+
+		return $this->relatedSearch(
+	            $criteria,
+	            array(
+	                    'pagination'=>array('pageSize'=>10),
+	                    'sort'=>$sort
 	            	
 	            )
 	
@@ -186,6 +240,8 @@ class Request extends CActiveRecord
         $str_date = explode("/", $this->date);
         if(count($str_date)>1)
         	$this->date= ($str_date[2]-543)."-".$str_date[1]."-".$str_date[0];
+
+        
         
      
         

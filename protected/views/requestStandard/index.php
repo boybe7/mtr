@@ -246,10 +246,10 @@
 				$decimal = $result_list[$sampling_no][$labtype_input_id]['decimal'];
 				echo "<td style='text-align:center;width:".$tb_width."%'>";
 
-				if($decimal==0 && !is_numeric($result_value))
+				//if($decimal==0 && !is_numeric($result_value))
 					echo CHtml::textField("result[$result_id]", $result_value, array('style'=>'width:85%;text-align:center'));
-				else
-					echo CHtml::textField("result[$result_id]", number_format($result_value,$decimal), array('style'=>'width:85%;text-align:right'));
+				//else
+				//	echo CHtml::textField("result[$result_id]", number_format($result_value,$decimal), array('style'=>'width:85%;text-align:right'));
 				echo "</td>";
 			}
 			echo "</tr>";
